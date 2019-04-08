@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "558572922532",
+    "firebase_url": "https://rabbithabbit-itcom2.firebaseio.com",
+    "project_id": "rabbithabbit-itcom2",
+    "storage_bucket": "rabbithabbit-itcom2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:558572922532:android:fa014481bbe324ad",
+        "android_client_info": {
+          "package_name": "aau.itcom.rabbithabit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZZiTJFF_Lid3jFN5OcwbBDqEur-Z1B9w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "558572922532-oviri9ic9qt47rnvrvmuptflkeb3kq6m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

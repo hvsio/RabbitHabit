@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">RabbitHabbit</string>
+    <string name="google_web_client_id">558572922532-oviri9ic9qt47rnvrvmuptflkeb3kq6m.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">2153253404721031</string>
+    <string name="fb_login_protocol_scheme">fb2153253404721031</string>
+    <string name="how_should_we_call_you">HOW SHOULD WE CALL YOU?</string>
+    <string name="email_input">Email</string>
+    <string name="name_input">Name</string>
+    <string name="password_input">Password</string>
+    <string name="confirm_password_input">Confirm password</string>
+    <string name="register_finally">Register</string>
+    <string name="fb_log">Login with Facebook</string>
+    <string name="google_log">Login with Google</string>
+    <string name="login">Login</string>
+
+</resources>
