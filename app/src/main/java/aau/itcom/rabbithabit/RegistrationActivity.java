@@ -1,6 +1,5 @@
 package aau.itcom.rabbithabit;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +14,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class Registration extends AppCompatActivity {
+public class RegistrationActivity extends AppCompatActivity {
 
     Button registrationButton;
     EditText email;
@@ -66,7 +65,7 @@ public class Registration extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser currentUser) {
-        startActivity(MainPage.createNewIntent(getApplicationContext()));
+        startActivity(MainPageActivity.createNewIntent(getApplicationContext()));
     }
 
     private void createAccount(String email, String password) {

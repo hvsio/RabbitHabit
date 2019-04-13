@@ -34,7 +34,6 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.UserProfileChangeRequest;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -153,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
          ClickableSpan cs = new ClickableSpan() {
             public void onClick(View widget) {
 //                createUserWithEmailAndPassword();
-                startActivity(new Intent(getApplicationContext(), Registration.class));
+                startActivity(new Intent(getApplicationContext(), RegistrationActivity.class));
             }
         };
         ss.setSpan(cs, 23, 30, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -164,7 +163,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void updateUI(FirebaseUser currentUser) {
-        startActivity(MainPage.createNewIntent(getApplicationContext()));
+        startActivity(MainPageActivity.createNewIntent(getApplicationContext()));
     }
 
     private void signInGoogle() {

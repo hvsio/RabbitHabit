@@ -12,7 +12,7 @@ import android.view.View;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainPage extends AppCompatActivity {
+public class MainPageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class MainPage extends AppCompatActivity {
     }
 
     static Intent createNewIntent(Context context) {
-        return new Intent(context, MainPage.class);
+        return new Intent(context, MainPageActivity.class);
     }
 
     public void logOutFromFirebase(View view){
