@@ -12,6 +12,8 @@
     <string name="fb_log">Login with Facebook</string>
     <string name="google_log">Login with Google</string>
     <string name="login">Login</string>
+    <string name="stats">Statistics</string>
+    <string name="habitsname">Habit name</string>
     <string name="title_activity_button">Button</string>
     <string name="title_activity_test">Settings</string>
     <string name="profile_picture">Profile picture</string>

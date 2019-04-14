@@ -41,12 +41,6 @@ public class RegistrationActivity extends AppCompatActivity {
         name = findViewById(R.id.name);
         registrationButton = findViewById(R.id.registerWithEmailButton3);
 
-//      Drawable error = getResources().getDrawable(R.drawable.baseline_error_outline_24);
-        email.setError("Please insert unique email");
-        password.setError("Please provide password");
-        name.setError("Please insert name");
-        passwordConf.setError("Passwords have to be identical");
-
 
     }
 

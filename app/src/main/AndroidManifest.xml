@@ -13,6 +13,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".SettingsActivity"/>
         <activity android:name=".CalendarActivity" />
+        <activity android:name=".HabitDetailsActivity" />
         <activity android:name=".AddHabitActivity" />
         <activity android:name=".AddPhotoActivity" />
         <activity android:name=".StoryActivity" />
