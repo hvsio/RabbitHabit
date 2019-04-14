@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="aau.itcom.rabbithabit">
 
-    <uses-permission android:date="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,46 +11,46 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:date=".SettingsActivity"></activity>
-        <activity android:date=".CalendarActivity" />
-        <activity android:date=".AddHabitActivity" />
-        <activity android:date=".AddPhotoActivity" />
-        <activity android:date=".StoryActivity" />
-        <activity android:date=".HabitActivity" />
+        <activity android:name=".SettingsActivity"/>
+        <activity android:name=".CalendarActivity" />
+        <activity android:name=".AddHabitActivity" />
+        <activity android:name=".AddPhotoActivity" />
+        <activity android:name=".StoryActivity" />
+        <activity android:name=".HabitActivity" />
+        <!--activity
+            android:name=".Test"
+            android:label="@string/title_activity_test" /-->
         <activity
-            android:date=".Test"
-            android:label="@string/title_activity_test" />
-        <activity
-            android:date=".MainPageActivity"
+            android:name=".MainPageActivity"
             android:label="@string/title_activity_button"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
-            android:date="com.facebook.sdk.ApplicationId"
+            android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:date="com.facebook.FacebookActivity"
+            android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
         <activity
-            android:date="com.facebook.CustomTabActivity"
+            android:name="com.facebook.CustomTabActivity"
             android:exported="true">
             <intent-filter>
-                <action android:date="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:date="android.intent.category.DEFAULT" />
-                <category android:date="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:date=".RegistrationActivity" />
-        <activity android:date=".LoginActivity">
+        <activity android:name=".RegistrationActivity" />
+        <activity android:name=".LoginActivity">
             <intent-filter>
-                <action android:date="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:date="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

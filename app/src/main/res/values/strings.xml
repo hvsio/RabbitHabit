@@ -1,60 +1,60 @@
 <resources>
-    <string date="app_name">RabbitHabbit</string>
-    <string date="google_web_client_id">558572922532-oviri9ic9qt47rnvrvmuptflkeb3kq6m.apps.googleusercontent.com</string>
-    <string date="facebook_app_id">2153253404721031</string>
-    <string date="fb_login_protocol_scheme">fb2153253404721031</string>
-    <string date="how_should_we_call_you">HOW SHOULD WE CALL YOU?</string>
-    <string date="email_input">Email</string>
-    <string date="name_input">Name</string>
-    <string date="password_input">Password</string>
-    <string date="confirm_password_input">Confirm password</string>
-    <string date="register_finally">Register</string>
-    <string date="fb_log">Login with Facebook</string>
-    <string date="google_log">Login with Google</string>
-    <string date="login">Login</string>
-    <string date="title_activity_button">Button</string>
-    <string date="title_activity_test">Settings</string>
-    <string date="profile_picture">Profile picture</string>
-    <string date="button_log_out">Log out</string>
-    <string date="button_habit1">Eat more vegetables</string>
-    <string date="button_habit2">Work out 3 times a week</string>
-    <string date="button_habit3">Read book 30 minutes a day</string>
-    <string date="button_habit4">Wake up at 6 am every day</string>
-    <string date="button_habit5">Bike to school instead of taking the bus</string>
-    <string date="story_title">Story of the day</string>
-    <string date="story_content">Today\'s classes were interesting, but my mom called my in a middle of them to tell me that my do died. It really hurt me.</string>
+    <string name="app_name">RabbitHabbit</string>
+    <string name="google_web_client_id">558572922532-oviri9ic9qt47rnvrvmuptflkeb3kq6m.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">2153253404721031</string>
+    <string name="fb_login_protocol_scheme">fb2153253404721031</string>
+    <string name="how_should_we_call_you">HOW SHOULD WE CALL YOU?</string>
+    <string name="email_input">Email</string>
+    <string name="name_input">Name</string>
+    <string name="password_input">Password</string>
+    <string name="confirm_password_input">Confirm password</string>
+    <string name="register_finally">Register</string>
+    <string name="fb_log">Login with Facebook</string>
+    <string name="google_log">Login with Google</string>
+    <string name="login">Login</string>
+    <string name="title_activity_button">Button</string>
+    <string name="title_activity_test">Settings</string>
+    <string name="profile_picture">Profile picture</string>
+    <string name="button_log_out">Log out</string>
+    <string name="button_habit1">Eat more vegetables</string>
+    <string name="button_habit2">Work out 3 times a week</string>
+    <string name="button_habit3">Read book 30 minutes a day</string>
+    <string name="button_habit4">Wake up at 6 am every day</string>
+    <string name="button_habit5">Bike to school instead of taking the bus</string>
+    <string name="story_title">Story of the day</string>
+    <string name="story_content">Today\'s classes were interesting, but my mom called my in a middle of them to tell me that my do died. It really hurt me.</string>
 
 
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
-    <string date="pref_header_general">General</string>
+    <string name="pref_header_general">General</string>
 
-    <string date="pref_title_social_recommendations">Enable social recommendations</string>
-    <string date="pref_description_social_recommendations">Recommendations for people to contact
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact
         based on your message history
     </string>
 
-    <string date="pref_title_display_name">Display date</string>
-    <string date="pref_default_display_name">John Smith</string>
+    <string name="pref_title_display_name">Display date</string>
+    <string name="pref_default_display_name">John Smith</string>
 
-    <string date="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array date="pref_example_list_titles">
+    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string-array name="pref_example_list_titles">
         <item>Always</item>
         <item>When possible</item>
         <item>Never</item>
     </string-array>
-    <string-array date="pref_example_list_values">
+    <string-array name="pref_example_list_values">
         <item>1</item>
         <item>0</item>
         <item>-1</item>
     </string-array>
 
     <!-- Example settings for Data & Sync -->
-    <string date="pref_header_data_sync">Data &amp; sync</string>
+    <string name="pref_header_data_sync">Data &amp; sync</string>
 
-    <string date="pref_title_sync_frequency">Sync frequency</string>
-    <string-array date="pref_sync_frequency_titles">
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles">
         <item>15 minutes</item>
         <item>30 minutes</item>
         <item>1 hour</item>
@@ -62,7 +62,7 @@
         <item>6 hours</item>
         <item>Never</item>
     </string-array>
-    <string-array date="pref_sync_frequency_values">
+    <string-array name="pref_sync_frequency_values">
         <item>15</item>
         <item>30</item>
         <item>60</item>
@@ -71,30 +71,30 @@
         <item>-1</item>
     </string-array>
 
-    <string-array date="list_preference_entries">
+    <string-array name="list_preference_entries">
         <item>Entry 1</item>
         <item>Entry 2</item>
         <item>Entry 3</item>
     </string-array>
 
-    <string-array date="list_preference_entry_values">
+    <string-array name="list_preference_entry_values">
         <item>1</item>
         <item>2</item>
         <item>3</item>
     </string-array>
 
-    <string-array date="multi_select_list_preference_default_value" />
+    <string-array name="multi_select_list_preference_default_value" />
 
-    <string date="pref_title_system_sync_settings">System sync settings</string>
+    <string name="pref_title_system_sync_settings">System sync settings</string>
 
     <!-- Example settings for Notifications -->
-    <string date="pref_header_notifications">Notifications</string>
+    <string name="pref_header_notifications">Notifications</string>
 
-    <string date="pref_title_new_message_notifications">New message notifications</string>
+    <string name="pref_title_new_message_notifications">New message notifications</string>
 
-    <string date="pref_title_ringtone">Ringtone</string>
-    <string date="pref_ringtone_silent">Silent</string>
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
 
-    <string date="pref_title_vibrate">Vibrate</string>
+    <string name="pref_title_vibrate">Vibrate</string>
 
 </resources>
