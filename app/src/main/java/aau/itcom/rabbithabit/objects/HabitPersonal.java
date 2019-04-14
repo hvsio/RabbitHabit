@@ -2,18 +2,22 @@ package aau.itcom.rabbithabit.objects;
 
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class HabitPersonal extends Habit {
     private Date startDate;
-    private Date endDate;
-    Map<Date, Boolean> complexion;
+    private String[] arrayOfDates;
+    private Map<String, Boolean> complexion;
 
-    public HabitPersonal(String name, int duration, Date startDate, Date endDate) {
+    public HabitPersonal(String name, int duration, Date startDate) {
         super(name, duration);
         this.startDate = startDate;
-        this.endDate = endDate;
     }
 
     @Override
@@ -24,16 +28,8 @@ public class HabitPersonal extends Habit {
         return startDate;
     }
 
-    public Date getEndDate() {
-        return endDate;
-    }
-
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
     }
 
     public boolean isCompletedOn(Date date){
@@ -42,6 +38,14 @@ public class HabitPersonal extends Habit {
 
     public void setCompletedOn(Date date){
 
+    }
+
+    public String[] getArrayOfDates(){
+        return (String[]) complexion.keySet().toArray();
+    }
+
+    public Map<String,Boolean> getComplexionMap(){
+        return complexion;
     }
 
     public void displayStatistics(){

@@ -5,14 +5,12 @@ import android.widget.TextView;
 public class HabitPublished extends Habit {
     private String showCreator;
     private String creator;
-    private int suggestedDuration;
     private int numberOfLikes;
 
-    public HabitPublished(String name, int duration, String showCreator, String creator, int suggestedDuration, int numberOfLikes) {
+    public HabitPublished(String name, int duration, String showCreator, String creator, int numberOfLikes) {
         super(name, duration);
         this.showCreator = showCreator;
         this.creator = creator;
-        this.suggestedDuration = suggestedDuration;
         this.numberOfLikes = numberOfLikes;
     }
 
@@ -36,13 +34,5 @@ public class HabitPublished extends Habit {
 
     public void setCreator(String creator) {
         this.creator = creator;
-    }
-
-    public int getSuggestedDuration() {
-        return suggestedDuration;
-    }
-
-    public void setSuggestedDuration(int suggestedDuration) {
-        this.suggestedDuration = suggestedDuration;
     }
 }
