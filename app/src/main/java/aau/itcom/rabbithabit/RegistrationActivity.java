@@ -13,6 +13,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+
+import aau.itcom.rabbithabit.objects.Database;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -22,12 +25,13 @@ public class RegistrationActivity extends AppCompatActivity {
     EditText passwordConf;
     EditText name;
     private FirebaseAuth mAuth;
-
+    private Database db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         mAuth = FirebaseAuth.getInstance();
+        db = Database.getInstance();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration);
 
@@ -60,15 +64,17 @@ public class RegistrationActivity extends AppCompatActivity {
 
         }
         else {
-            createAccount(emailText, passwordText);
+            createAccount(emailText, passwordText, nameText);
         }
     }
 
     private void updateUI(FirebaseUser currentUser) {
-        startActivity(MainPageActivity.createNewIntent(getApplicationContext()));
+        if (currentUser != null) {
+            startActivity(MainPageActivity.createNewIntent(getApplicationContext()));
+        }
     }
 
-    private void createAccount(String email, String password) {
+    private void createAccount(String email, String password, final String nameOfUser) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -76,9 +82,15 @@ public class RegistrationActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(nameOfUser).build();
+                            user.updateProfile(profileUpdates);
+
+                            db.createNewUser(mAuth.getCurrentUser());
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
+                            // TODO FIX THIS, INFO IS NOT ENOUGH
                             Toast.makeText(getApplicationContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);

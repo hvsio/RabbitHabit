@@ -44,6 +44,10 @@ public class HabitPersonal extends Habit {
 
     }
 
+    public Map<Date,Boolean> getComplexionMap(){
+        return complexion;
+    }
+
     public void displayStatistics(){
 
     }
