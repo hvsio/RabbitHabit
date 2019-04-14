@@ -41,4 +41,9 @@ public class MainPageActivity extends AppCompatActivity {
         startActivity(LoginActivity.createNewIntent(getApplicationContext()));
     }
 
+    public void abc (View view) {
+        Intent intent = new Intent(getApplicationContext(), HabitDetailsActivity.class);
+        startActivity(intent);
+    }
+
 }

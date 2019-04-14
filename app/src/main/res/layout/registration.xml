@@ -38,6 +38,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="432dp"
+        android:drawableStart="@drawable/ic_action_email"
         android:ems="10"
         android:hint="@string/email_input"
         android:importantForAutofill="no"
@@ -49,7 +50,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.0" tools:targetApi="o" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:targetApi="o" />
 
     <EditText
         android:id="@+id/name"
@@ -79,6 +81,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:drawableStart="@drawable/ic_action_password"
         android:ems="10"
         android:hint="@string/password_input"
         android:importantForAutofill="no"
@@ -89,7 +92,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email"
-        app:layout_constraintVertical_bias="0.029" tools:targetApi="o" />
+        app:layout_constraintVertical_bias="0.029"
+        tools:targetApi="o" />
 
     <EditText
         android:id="@+id/passwordConf"

@@ -12,6 +12,7 @@ import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +46,9 @@ public class LoginActivity extends AppCompatActivity {
     TextView passwordField;
     TextView signInTextView;
     Button googleLoginButton;
+    ImageView logo;
     LoginButton loginButton;
+    Button buttonToBeDeleted;
     GoogleSignInClient googleSignInClient;
     private CallbackManager callbackManager;
 
@@ -71,6 +74,8 @@ public class LoginActivity extends AppCompatActivity {
         passwordField = findViewById(R.id.editTextPassword);
         googleLoginButton = findViewById(R.id.buttonLoginGoogle);
         loginButton = findViewById(R.id.login_button);
+        logo = findViewById(R.id.imageViewLogo);
+        buttonToBeDeleted = findViewById(R.id.button);
 
         initializeGoogleLogin();
         initializeFbLoginButton();
@@ -199,8 +204,6 @@ public class LoginActivity extends AppCompatActivity {
                                         Toast.LENGTH_SHORT).show();
                                 updateUI(null);
                             }
-
-                            // ...
                         }
                     });
         }
@@ -297,4 +300,5 @@ public class LoginActivity extends AppCompatActivity {
     static Intent createNewIntent(Context context) {
         return new Intent(context, LoginActivity.class);
     }
+
 }
