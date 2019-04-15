@@ -35,6 +35,8 @@ public class MainPageActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        fabAdd = findViewById(R.id.fabAdd);
+
         transitionsContainer = findViewById(R.id.mainLayout);
         fabHabit = transitionsContainer.findViewById(R.id.fabHabit);
         fabStory = transitionsContainer.findViewById(R.id.fabStory);
