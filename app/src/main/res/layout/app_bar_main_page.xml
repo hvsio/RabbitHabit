@@ -70,4 +70,11 @@
         app:fabSize="mini"
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
+    <View
+        android:id="@+id/viewBlurred"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CFFF"
+        android:visibility="gone" />
+
 </android.support.design.widget.CoordinatorLayout>
