@@ -105,7 +105,7 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/my_button3"
         android:text="@string/button_habit4"
-        app:layout_constraintBottom_toBottomOf="@+id/button6"
+        app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
         app:layout_constraintEnd_toStartOf="@+id/progressBar"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -115,16 +115,16 @@
     <Button
         android:id="@+id/button6"
         android:layout_width="313dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="240dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/my_button3"
         android:text="@string/button_habit5"
+        app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
         app:layout_constraintEnd_toStartOf="@+id/progressBar"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/scrollView2" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
         android:id="@+id/progressBar"
