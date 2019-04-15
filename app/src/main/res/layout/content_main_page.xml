@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MainPageActivity"
+    tools:context=".MainPage"
     android:background="#0091EA"
     tools:showIn="@layout/activity_main_page">
 
@@ -73,17 +73,17 @@
 
                     <TextView
                         android:id="@+id/textView1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="190dp"
                         android:layout_height="wrap_content"
                         android:text="TextView" />
 
                     <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
+                        android:layout_width="84dp"
+                        android:layout_height="36dp" />
 
                     <Button
                         android:id="@+id/button1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="75dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/my_button3"
                         android:text="Button" />
@@ -96,13 +96,13 @@
 
                     <TextView
                         android:id="@+id/textView2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="202dp"
                         android:layout_height="wrap_content"
                         android:text="TextView" />
 
                     <Space
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
+                        android:layout_height="34dp" />
 
                     <Button
                         android:id="@+id/button2"
@@ -125,7 +125,7 @@
 
                     <Space
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
+                        android:layout_height="33dp" />
 
                     <Button
                         android:id="@+id/button3"
