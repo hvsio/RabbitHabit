@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/mainPageLayout"
-    tools:context=".MainPageActivity">
+    tools:context=".MainPage">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -38,22 +38,24 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
+        app:fabSize="mini"
         android:visibility="gone"
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="86dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="24dp"
         app:srcCompat="@android:drawable/ic_menu_search" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabStory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="129dp"
         android:clickable="true"
         android:focusable="true"
         android:visibility="gone"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="146dp"
+        app:fabSize="mini"
         app:srcCompat="@android:drawable/btn_star" />
 
     <android.support.design.widget.FloatingActionButton
@@ -62,10 +64,11 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
+        app:fabSize="mini"
         android:visibility="gone"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="206dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="172dp"
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <View
