@@ -36,15 +36,11 @@ public class MainPageActivity extends AppCompatActivity
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-<<<<<<< HEAD
         viewBlurred = findViewById(R.id.viewBlurred);
         transitionsContainer = findViewById(R.id.mainPageLayout);
-=======
         fabAdd = findViewById(R.id.fabAdd);
 
         transitionsContainer = findViewById(R.id.mainLayout);
->>>>>>> ec0cfbb55d692bc2b377891182dd6a2d7160ee6a
         fabHabit = transitionsContainer.findViewById(R.id.fabHabit);
         fabStory = transitionsContainer.findViewById(R.id.fabStory);
         fabPhoto = transitionsContainer.findViewById(R.id.fabPhoto);
@@ -74,8 +70,6 @@ public class MainPageActivity extends AppCompatActivity
             }
         });
 
-<<<<<<< HEAD
-=======
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -115,7 +109,6 @@ public class MainPageActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
->>>>>>> ec0cfbb55d692bc2b377891182dd6a2d7160ee6a
     }
 
     static Intent createNewIntent(Context context) {
