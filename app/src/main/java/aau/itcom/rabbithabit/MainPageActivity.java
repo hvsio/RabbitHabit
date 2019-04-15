@@ -30,6 +30,7 @@ public class MainPageActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+<<<<<<< HEAD
         viewBlurred = findViewById(R.id.viewBlurred);
         transitionsContainer = findViewById(R.id.mainPageLayout);
         fabHabit = transitionsContainer.findViewById(R.id.fabHabit);
