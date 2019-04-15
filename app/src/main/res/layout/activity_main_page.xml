@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/mainPageLayout"
     tools:context=".MainPageActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -23,11 +24,52 @@
     <include layout="@layout/content_main_page" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fabAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/plus" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabHabit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        app:fabSize="mini"
+        android:visibility="gone"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="86dp"
+        android:layout_marginEnd="24dp"
+        app:srcCompat="@android:drawable/ic_menu_search" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabStory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        app:fabSize="mini"
+        android:visibility="gone"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="129dp"
+        app:srcCompat="@android:drawable/btn_star" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        app:fabSize="mini"
+        android:visibility="gone"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="172dp"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+
 
 </android.support.design.widget.CoordinatorLayout>
