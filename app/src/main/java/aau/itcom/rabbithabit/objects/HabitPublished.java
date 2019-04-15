@@ -35,4 +35,5 @@ public class HabitPublished extends Habit {
     public void setCreator(String creator) {
         this.creator = creator;
     }
+
 }
