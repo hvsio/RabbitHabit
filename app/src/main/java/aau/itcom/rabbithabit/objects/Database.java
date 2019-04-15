@@ -50,6 +50,7 @@ public class Database {
         map.put("startDate", habit.getStartDate());
         map.put("arrayOfDates", habit.getArrayOfDates());
         map.put("duration", habit.getDuration());
+        map.put("details", habit.getDetails());
         map.put("complexity", habit.getComplexionMap());
 
         db.collection("Users").document(user.getUid()).collection("Habits").document(habit.getName())

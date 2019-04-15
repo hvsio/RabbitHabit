@@ -7,10 +7,12 @@ import java.io.Serializable;
 public class Habit implements Serializable {
     private String name;
     private int duration;
+    private String details;
 
-    public Habit(String name, int duration) {
+    public Habit(String name, int duration, String details) {
         this.name = name;
         this.duration = duration;
+        this.details = details;
     }
 
     @Override
@@ -37,4 +39,8 @@ public class Habit implements Serializable {
     public void setDuration(int duration) {
         this.duration = duration;
     }
+
+    public String getDetails() { return details; }
+
+    public void setDetails(String details) { this.details = details; }
 }

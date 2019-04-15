@@ -7,8 +7,8 @@ public class HabitPublished extends Habit {
     private String creator;
     private int numberOfLikes;
 
-    public HabitPublished(String name, int duration, String showCreator, String creator, int numberOfLikes) {
-        super(name, duration);
+    public HabitPublished(String name, int duration, String details, String showCreator, String creator, int numberOfLikes) {
+        super(name, duration, details);
         this.showCreator = showCreator;
         this.creator = creator;
         this.numberOfLikes = numberOfLikes;

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainPageActivity"
-    android:background="#0091EA"
+    android:background="@color/colorBackground"
     tools:showIn="@layout/activity_main_page">
 
 
@@ -43,6 +43,7 @@
         tools:src="@tools:sample/avatars[2]" />
 
     <ScrollView
+        android:id="@+id/scrollView3"
         android:layout_width="404dp"
         android:layout_height="340dp"
         android:layout_marginStart="8dp"
@@ -224,6 +225,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/my_button3"
+                        android:text="Button" />
+
+                    <Button
+                        android:id="@+id/button10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Button" />
                 </TableRow>
             </TableLayout>
