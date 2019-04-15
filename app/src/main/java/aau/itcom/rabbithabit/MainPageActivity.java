@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainPageActivity extends AppCompatActivity {
 
-    FloatingActionButton fabHabit, fabStory, fabAdd;
+    FloatingActionButton fabHabit, fabStory, fabAdd, fabPhoto;
     CoordinatorLayout transitionsContainer;
 
 
@@ -30,7 +30,8 @@ public class MainPageActivity extends AppCompatActivity {
 
         transitionsContainer = findViewById(R.id.mainPageLayout);
         fabHabit = transitionsContainer.findViewById(R.id.fabHabit);
-        fabAdd = transitionsContainer.findViewById(R.id.fabAdd);
+        fabStory = transitionsContainer.findViewById(R.id.fabStory);
+        fabPhoto = transitionsContainer.findViewById(R.id.fabPhoto);
 
         fabAdd = transitionsContainer.findViewById(R.id.fabAdd);
         fabAdd.setOnClickListener(new View.OnClickListener() {
@@ -39,7 +40,9 @@ public class MainPageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 TransitionManager.beginDelayedTransition(transitionsContainer);
                 fabHabit.setVisibility(View.VISIBLE);
-                fabAdd.setVisibility(View.VISIBLE);
+                fabStory.setVisibility(View.VISIBLE);
+                fabPhoto.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -48,8 +51,9 @@ public class MainPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 TransitionManager.beginDelayedTransition(transitionsContainer);
-                fabHabit.setVisibility(View.GONE);
-                fabAdd.setVisibility(View.GONE);
+                fabHabit.setVisibility(View.INVISIBLE);
+                fabStory.setVisibility(View.INVISIBLE);
+                fabPhoto.setVisibility(View.INVISIBLE);
             }
         });
     }
