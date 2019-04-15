@@ -10,21 +10,25 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name="android.support.multidex.MultiDexApplication"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".SettingsActivity"/>
+        <activity
+            android:name=".MainPageActivity"
+            android:label="@string/title_activity_main_page"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".SettingsActivity" />
         <activity android:name=".CalendarActivity" />
         <activity android:name=".HabitDetailsActivity" />
         <activity android:name=".AddHabitActivity" />
         <activity android:name=".AddPhotoActivity" />
         <activity android:name=".StoryActivity" />
         <activity android:name=".HabitActivity" />
-        <!--activity
+        <!--
+activity
             android:name=".Test"
-            android:label="@string/title_activity_test" /-->
+            android:label="@string/title_activity_test" /
+        -->
         <activity
-            android:name=".MainPageActivity"
+            android:name=".MainPage"
             android:label="@string/title_activity_button"
             android:theme="@style/AppTheme.NoActionBar" />
 
