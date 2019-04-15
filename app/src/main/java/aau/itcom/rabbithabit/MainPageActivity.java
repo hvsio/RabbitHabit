@@ -3,6 +3,7 @@ package aau.itcom.rabbithabit;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +20,7 @@ public class MainPageActivity extends AppCompatActivity {
 
     FloatingActionButton fabHabit, fabStory, fabAdd, fabPhoto;
     CoordinatorLayout transitionsContainer;
+    View viewBlurred;
 
 
     @Override
@@ -28,6 +30,7 @@ public class MainPageActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        viewBlurred = findViewById(R.id.viewBlurred);
         transitionsContainer = findViewById(R.id.mainPageLayout);
         fabHabit = transitionsContainer.findViewById(R.id.fabHabit);
         fabStory = transitionsContainer.findViewById(R.id.fabStory);
@@ -39,23 +42,26 @@ public class MainPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 TransitionManager.beginDelayedTransition(transitionsContainer);
-                fabHabit.setVisibility(View.VISIBLE);
-                fabStory.setVisibility(View.VISIBLE);
-                fabPhoto.setVisibility(View.VISIBLE);
-
+                    viewBlurred.setVisibility(View.VISIBLE);
+                    fabHabit.setVisibility(View.VISIBLE);
+                    fabStory.setVisibility(View.VISIBLE);
+                    fabPhoto.setVisibility(View.VISIBLE);
+                }
             }
-        });
+        );
 
-        transitionsContainer.setOnClickListener(new View.OnClickListener() {
+        viewBlurred.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("RestrictedApi")
             @Override
             public void onClick(View v) {
                 TransitionManager.beginDelayedTransition(transitionsContainer);
+                viewBlurred.setVisibility(View.GONE);
                 fabHabit.setVisibility(View.INVISIBLE);
                 fabStory.setVisibility(View.INVISIBLE);
                 fabPhoto.setVisibility(View.INVISIBLE);
             }
         });
+
     }
 
     static Intent createNewIntent(Context context) {
