@@ -1,5 +1,7 @@
 package aau.itcom.rabbithabit;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -8,12 +10,21 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 
+import aau.itcom.rabbithabit.objects.HabitPersonal;
+import aau.itcom.rabbithabit.objects.HabitPublished;
+
 public class HabitDetailsActivity extends AppCompatActivity {
 
+    HabitPersonal habit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.habitdetails);
+
+        if (getIntent().getSerializableExtra("habitPersonal") != null){
+            habit = (HabitPersonal) getIntent().getSerializableExtra("habitPersonal");
+        }
+
         GraphView graph = (GraphView) findViewById(R.id.graph);
         PointsGraphSeries<DataPoint> series = new PointsGraphSeries<>(new DataPoint[] {
                 new DataPoint(0, 1),
@@ -33,5 +44,7 @@ public class HabitDetailsActivity extends AppCompatActivity {
 
     }
 
-
+    public static Intent createNewIntent(Context context) {
+        return new Intent(context, HabitDetailsActivity.class);
+    }
 }

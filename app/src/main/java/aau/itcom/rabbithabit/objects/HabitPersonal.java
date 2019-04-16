@@ -2,6 +2,7 @@ package aau.itcom.rabbithabit.objects;
 
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,7 +11,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class HabitPersonal extends Habit {
+public class HabitPersonal extends Habit implements Serializable {
     private Date startDate;
     private String[] arrayOfDates;
     private Map<String, Boolean> complexion;
