@@ -187,6 +187,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordField.getText().toString();
 
         if (email.equals("") || password.equals("")) {
+
             Toast.makeText(getApplicationContext(), "Please fill all the fields!", Toast.LENGTH_SHORT).show();
         } else {
             mAuth.signInWithEmailAndPassword(email, password)
