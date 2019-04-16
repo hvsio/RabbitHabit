@@ -65,6 +65,7 @@
         android:layout_marginBottom="206dp"
         android:clickable="true"
         android:focusable="true"
+        android:onClick="addPhoto"
         android:visibility="gone"
         app:srcCompat="@drawable/photo"
         />
