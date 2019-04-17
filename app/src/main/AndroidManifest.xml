@@ -3,6 +3,11 @@
     package="aau.itcom.rabbithabit">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature android:name="android.hardware.camera"/>
+
 
     <application
         android:allowBackup="true"
@@ -14,7 +19,7 @@
         <activity
             android:name=".MainPageActivity"
             android:label="@string/title_activity_main_page"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".SettingsActivity" />
         <activity android:name=".CalendarActivity" />
         <activity android:name=".HabitDetailsActivity" />
@@ -28,7 +33,7 @@ activity
             android:label="@string/title_activity_test" /
         -->
         <activity
-            android:name=".MainPageA"
+            android:name=".MainPage"
             android:label="@string/title_activity_button"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -53,8 +58,7 @@ activity
             </intent-filter>
         </activity>
         <activity android:name=".RegistrationActivity" />
-        <activity android:name=".LoginActivity"/>
-            <activity android:name=".objects.WelcomePage">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

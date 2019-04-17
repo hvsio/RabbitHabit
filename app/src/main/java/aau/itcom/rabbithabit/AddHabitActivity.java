@@ -1,5 +1,6 @@
 package aau.itcom.rabbithabit;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -53,8 +54,11 @@ public class AddHabitActivity extends AppCompatActivity {
     }
 
     public void addOwnHabit(View view) {
-        Intent intent = new Intent(getApplicationContext(), HabitActivity.class);
-        startActivity(intent);
+        startActivity(HabitActivity.createNewIntent(getApplicationContext()));
+    }
+
+    static Intent createNewIntent(Context context) {
+        return new Intent(context, AddHabitActivity.class);
     }
 
 }
