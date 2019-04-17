@@ -34,6 +34,11 @@
     <string name="button_habit4">Wake up at 6 am every day</string>
     <string name="button_habit5">Bike to school instead of taking the bus</string>
     <string name="story_title">Story of the day</string>
+    <string name="welcome_name">Hello Brian</string>
+    <string-array name="welcome">
+    <item>Hello Brian</item>
+    <item>Enjoy our app</item>
+    </string-array>
     <string name="story_content">Today\'s classes were interesting, but my mom called my in a middle of them to tell me that my do died. It really hurt me.</string>
 
 

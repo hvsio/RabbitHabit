@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
+    android:id="@+id/welcomePage"
     tools:context=".objects.WelcomePage">
 
     <ImageView
@@ -26,8 +27,8 @@
         app:layout_constraintVertical_bias="0.075"
         app:srcCompat="@drawable/logo" />
 
-    <TextView
-        android:id="@+id/textViewWelcomeName"
+    <com.tomer.fadingtextview.FadingTextView
+    android:id="@+id/textViewWelcomeName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -35,7 +36,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="414dp"
         android:ems="10"
-        android:text="Name"
+        android:textAlignment="center"
+        app:texts="@array/welcome"
+        app:timeout="1000"
+        android:textColor="#FFF"
+        android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

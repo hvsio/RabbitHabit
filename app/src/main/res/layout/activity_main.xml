@@ -129,7 +129,7 @@
         android:elevation="10dp"
         android:onClick="signInWithEmailAndPassword"
         android:text="@string/login"
-        android:textColor="#fff"
+        android:textColor="#000"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

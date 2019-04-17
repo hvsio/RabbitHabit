@@ -26,6 +26,23 @@
         app:srcCompat="@drawable/com_facebook_profile_picture_blank_square"
         tools:src="@tools:sample/avatars[2]" />
 
+    <Button
+        android:id="@+id/button11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="logOutFromFirebase"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.026"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.97" />
+
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="404dp"
@@ -257,6 +274,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView11"
                         app:layout_constraintVertical_bias="0.111" />
+
                 </android.support.constraint.ConstraintLayout>
             </LinearLayout>
 

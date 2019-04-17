@@ -52,7 +52,7 @@ public class RegistrationActivity extends AppCompatActivity {
         String emailText = email.getText().toString().replaceAll(" ","");
         String passwordText = password.getText().toString();
         String passwordConfText = passwordConf.getText().toString();
-         nameText = name.getText().toString();
+        nameText = name.getText().toString();
         if (emailText.equals("") || passwordText.equals("") || nameText.equals("")) {
             Toast.makeText(getApplicationContext(), "Please fill all the fields!", Toast.LENGTH_SHORT).show();
         }
@@ -67,10 +67,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser currentUser) {
         if (currentUser != null) {
-            startActivity(MainPageActivity.createNewIntent(getApplicationContext()));
+           // startActivity(MainPageActivity.createNewIntent(getApplicationContext()));
             Intent i = new Intent(RegistrationActivity.this, WelcomePage.class);
-
             i.putExtra("Name", nameText);
+            startActivity(i);
         }
     }
 
