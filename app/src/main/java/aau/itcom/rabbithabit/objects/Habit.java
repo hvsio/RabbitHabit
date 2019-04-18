@@ -4,12 +4,12 @@ import android.widget.TextView;
 
 import java.io.Serializable;
 
-public class Habit implements Serializable {
+public class Habit implements Serializable{
     private String name;
-    private int duration;
+    private long duration;
     private String details;
 
-    public Habit(String name, int duration, String details) {
+    public Habit(String name, long duration, String details) {
         this.name = name;
         this.duration = duration;
         this.details = details;
@@ -32,11 +32,11 @@ public class Habit implements Serializable {
         this.name = name;
     }
 
-    public int getDuration() {
+    public long getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(long duration) {
         this.duration = duration;
     }
 

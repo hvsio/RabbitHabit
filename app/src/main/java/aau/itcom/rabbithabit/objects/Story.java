@@ -5,10 +5,12 @@ import java.util.Date;
 public class Story {
     private Date date;
     private String textContent;
-    private int mood;
+    private long mood;
 
-    public Story(Date date) {
+    public Story(Date date, String textContent, long mood) {
         this.date = date;
+        this.textContent = textContent;
+        this.mood = mood;
     }
 
     public Date getDate() {
@@ -27,11 +29,11 @@ public class Story {
         this.textContent = textContent;
     }
 
-    public int getMood() {
+    public long getMood() {
         return mood;
     }
 
-    public void setMood(int mood) {
+    public void setMood(long mood) {
         this.mood = mood;
     }
 }

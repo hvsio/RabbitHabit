@@ -7,9 +7,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -20,19 +22,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
-public class Database {
+import aau.itcom.rabbithabit.CalendarActivity;
 
-    // TODO : MAKE IT SINGLETON !!!
+public class Database{
+
     // TODO : UPDATE LOGS AFTER COPY & PASTE
 
     private static final String TAG = "DatabaseClass";
-    FirebaseFirestore db;
-    static Database instance = null;
+    private FirebaseFirestore db;
+    private static Database instance = null;
+
     private HabitPersonal habitPersonal;
     private HabitPublished habitPublished;
     private Photo photo;
     private Story story;
+    private ArrayList<HabitPersonal> habitPersonals;
 
     private Database(){
         db = FirebaseFirestore.getInstance();
@@ -86,16 +92,10 @@ public class Database {
         habitPersonal = object;
     }
 
-    /**
-     *
-     * @param date
-     * @param user
-     * @return all ongoing habits during passed date
-     */
-    public ArrayList<HabitPersonal> getSetHabitPersonalOnDay(Date date, FirebaseUser user){
+    public void loadSetOfHabitsOnDate(Date date, FirebaseUser user){
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy.mm.dd");
-        final ArrayList<HabitPersonal> arrayList = new ArrayList<>();
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        habitPersonals = new ArrayList<>();
 
         db.collection("Users").document(user.getUid()).collection("Habits")
                 .whereArrayContains("arrayOfDates", dateFormat.format(date))
@@ -106,14 +106,21 @@ public class Database {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                arrayList.add(document.toObject(HabitPersonal.class));
+                                habitPersonals.add(new HabitPersonal(document.getId(), document.getLong("duration"), document.getString("details"), document.getTimestamp("startDate").toDate()));
+                            }
+                            synchronized (CalendarActivity.LOCK_FOR_HABITS){
+                                CalendarActivity.LOCK_FOR_HABITS.notify();
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
-        return arrayList;
+    }
+
+    public ArrayList<HabitPersonal> getArrayListOfHabits(){
+        Log.d(TAG, "final result() and habitPersonal is: " + habitPersonals);
+        return habitPersonals;
     }
 
     public void addHabitPublished(HabitPublished habit){
@@ -161,7 +168,7 @@ public class Database {
         Map<String, Object> map = new HashMap<>();
         map.put("URLinDATABASE", photo.getPhotoURLinDB());
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy.mm.dd");
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
         db.collection("Users").document(user.getUid()).collection("Photos").document(dateFormat.format(photo.getDate()))
                 .set(map)
@@ -179,22 +186,26 @@ public class Database {
                 });
     }
 
-    public Photo getPhoto(Date date, FirebaseUser user){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy.mm.dd");
+    public void loadPhotoOnDate(final Date date, FirebaseUser user){
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
         DocumentReference docRef = db.collection("Users").document(user.getUid()).collection("Photos").document(dateFormat.format(date));
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                setPhotoToReturn(documentSnapshot.toObject(Story.class));
+                photo = new Photo(date, documentSnapshot.getString("URLinDATABASE"));
+                synchronized (CalendarActivity.LOCK_FOR_PHOTO){
+                    CalendarActivity.LOCK_FOR_PHOTO.notify();
+                }
             }
         });
-
-        return photo;
     }
 
-    private void setPhotoToReturn(Story story) {
-        this.story = story;
+    public Photo getPhoto() throws NoSuchElementException {
+        if (photo == null){
+            throw new NoSuchElementException("Photo needs to be loaded before getting");
+        }
+        return photo;
     }
 
     public void addStory (Story story, FirebaseUser user){
@@ -202,7 +213,7 @@ public class Database {
         map.put("storyContent", story.getTextContent());
         map.put("mood", story.getMood());
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy.mm.dd");
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
         db.collection("Users").document(user.getUid()).collection("Stories").document(dateFormat.format(story.getDate()))
                 .set(map)
@@ -220,22 +231,37 @@ public class Database {
                 });
     }
 
-    public Story getStory (Date date, FirebaseUser user){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy.mm.dd");
+    public void loadStoryOnDate(final Date date, FirebaseUser user){
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        Log.d(TAG, "I am inside loadStoryOnDate() and date is: " + dateFormat.format(date));
 
-        DocumentReference docRef = db.collection("Users").document(user.getUid()).collection("Stories").document(dateFormat.format(date));
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                setStoryToReturn(documentSnapshot.toObject(Story.class));
-            }
-        });
+        db.collection("Users").document(user.getUid()).collection("Story")
+                .whereEqualTo("date", dateFormat.format(date))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                story = new Story(date, document.getString("storyContent"), (long) document.get("mood"));
 
-        return story;
+                            }
+                            synchronized (CalendarActivity.LOCK_FOR_STORY){
+                                CalendarActivity.LOCK_FOR_STORY.notify();
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 
-    private void setStoryToReturn(Story object) {
-        story = object;
+    public Story getStory() throws NoSuchElementException{
+        if (story == null){
+            throw new NoSuchElementException("Story needs to be loaded before getting");
+        }
+        return story;
     }
 
     /**

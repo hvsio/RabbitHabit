@@ -16,7 +16,8 @@ public class HabitPersonal extends Habit implements Serializable {
     private String[] arrayOfDates;
     private Map<String, Boolean> complexion;
 
-    public HabitPersonal(String name, int duration, String details, Date startDate) {
+
+    public HabitPersonal(String name, long duration, String details, Date startDate) {
         super(name, duration, details);
         this.startDate = startDate;
     }
@@ -51,5 +52,14 @@ public class HabitPersonal extends Habit implements Serializable {
 
     public void displayStatistics(){
 
+    }
+
+    @Override
+    public String toString() {
+        return "HabitPersonal{" +
+                "startDate=" + startDate +
+                ", arrayOfDates=" + Arrays.toString(arrayOfDates) +
+                ", complexion=" + complexion +
+                '}';
     }
 }

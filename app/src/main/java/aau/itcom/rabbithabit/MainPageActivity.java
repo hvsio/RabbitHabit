@@ -143,18 +143,27 @@ public class MainPageActivity extends AppCompatActivity
         return new Intent(context, MainPageActivity.class);
     }
 
-    public void addPhoto(View view) {
-        startActivity(AddPhotoActivity.createNewIntent(getApplicationContext()));
-    }
-
-    public void addHabit(View view) {
-        startActivity(AddHabitActivity.createNewIntent(getApplicationContext()));
-    }
-
     public void logOutFromFirebase(View view) {
         LoginManager.getInstance().logOut();
         FirebaseAuth.getInstance().signOut();
         startActivity(LoginActivity.createNewIntent(getApplicationContext()));
     }
 
+    public void addHabit(View view) {
+        Intent intent = new Intent(getApplicationContext(), AddHabitActivity.class);
+        startActivity(intent);
+    }
+
+    private boolean checkCameraHardware(Context context) {
+        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+            // this device has a camera
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void calendarTest(View view){
+        startActivity(new Intent(getApplicationContext(), CalendarActivity.class));
+    }
 }
