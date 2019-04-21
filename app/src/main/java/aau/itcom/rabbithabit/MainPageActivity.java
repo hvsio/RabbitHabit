@@ -172,7 +172,7 @@ public class MainPageActivity extends AppCompatActivity
         }
     }
 
-    public void calendarTest(View view){
+    /*public void calendarTest(View view){
         startActivity(new Intent(getApplicationContext(), CalendarActivity.class));
-    }
+    }*/
 }
