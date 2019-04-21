@@ -22,7 +22,7 @@ public class WelcomePage extends AppCompatActivity {
         setContentView(R.layout.activity_welcome_page);
 
         name = findViewById(R.id.textViewWelcomeName);
-      //  name.setText(getIntent().getStringExtra("Name"));
+        //  name.setText(getIntent().getStringExtra("Name"));
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -31,7 +31,6 @@ public class WelcomePage extends AppCompatActivity {
             }
         }, 4*1000);
     }
-
 
 
 
