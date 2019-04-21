@@ -14,6 +14,7 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.transition.TransitionManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -41,10 +42,12 @@ public class MainPageActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainpage);
+
         isButtonAddClicked = false;
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         viewBlurred = findViewById(R.id.viewBlurred);
         transitionsContainer = findViewById(R.id.mainPageLayout);
         fabAdd = findViewById(R.id.fabAdd);
@@ -98,6 +101,10 @@ public class MainPageActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_main);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new MainPageFragment()).commit();
+
     }
 
     public boolean isButtonAddClicked() {
@@ -125,9 +132,11 @@ public class MainPageActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_calendar) {
-            // Handle the camera action
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new CalendarFragment()).commit();
+        } else if (id == R.id.nav_main) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new MainPageFragment()).commit();
         } else if (id == R.id.nav_profile) {
-
+            //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new MainPageFragment()).commit();
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_log_out) {

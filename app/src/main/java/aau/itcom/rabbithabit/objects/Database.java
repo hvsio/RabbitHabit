@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import aau.itcom.rabbithabit.CalendarActivity;
+import aau.itcom.rabbithabit.CalendarFragment;
 
 public class Database{
 
@@ -108,8 +109,11 @@ public class Database{
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 habitPersonals.add(new HabitPersonal(document.getId(), document.getLong("duration"), document.getString("details"), document.getTimestamp("startDate").toDate()));
                             }
-                            synchronized (CalendarActivity.LOCK_FOR_HABITS){
+                            /*synchronized (CalendarActivity.LOCK_FOR_HABITS){
                                 CalendarActivity.LOCK_FOR_HABITS.notify();
+                            }*/
+                            synchronized (CalendarFragment.LOCK_FOR_HABITS){
+                                CalendarFragment.LOCK_FOR_HABITS.notify();
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -247,8 +251,11 @@ public class Database{
                                 story = new Story(date, document.getString("storyContent"), (long) document.get("mood"));
 
                             }
-                            synchronized (CalendarActivity.LOCK_FOR_STORY){
+                            /*synchronized (CalendarActivity.LOCK_FOR_STORY){
                                 CalendarActivity.LOCK_FOR_STORY.notify();
+                            }*/
+                            synchronized (CalendarFragment.LOCK_FOR_STORY){
+                                CalendarFragment.LOCK_FOR_STORY.notify();
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());

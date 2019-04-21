@@ -1,4 +1,4 @@
-package aau.itcom.rabbithabit.objects;
+package aau.itcom.rabbithabit;
 
 import android.content.Intent;
 import android.os.Handler;

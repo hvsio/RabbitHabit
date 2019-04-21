@@ -17,7 +17,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
 import aau.itcom.rabbithabit.objects.Database;
-import aau.itcom.rabbithabit.objects.WelcomePage;
 
 public class RegistrationActivity extends AppCompatActivity {
 

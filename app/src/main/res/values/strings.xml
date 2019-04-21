@@ -36,8 +36,8 @@
     <string name="story_title">Story of the day</string>
     <string name="welcome_name">Hello Brian</string>
     <string-array name="welcome">
-    <item>Hello Brian</item>
-    <item>Enjoy our app</item>
+        <item>Hello Brian</item>
+        <item>Enjoy our app</item>
     </string-array>
     <string name="story_content">Today\'s classes were interesting, but my mom called my in a middle of them to tell me that my do died. It really hurt me.</string>
 
@@ -120,5 +120,8 @@
     <string name="nav_header_subtitle">sample @gmail.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

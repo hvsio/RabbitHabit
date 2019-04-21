@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
     android:id="@+id/welcomePage"
-    tools:context=".objects.WelcomePage">
+    tools:context=".WelcomePage">
 
     <ImageView
         android:id="@+id/imageViewLogo"

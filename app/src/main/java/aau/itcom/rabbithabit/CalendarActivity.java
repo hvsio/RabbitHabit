@@ -1,3 +1,4 @@
+/*
 package aau.itcom.rabbithabit;
 
 import android.content.Context;
@@ -44,7 +45,7 @@ public class CalendarActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calendar);
+        setContentView(R.layout.fragment_calendar);
 
         habitArray = new ArrayList<>();
 
@@ -218,3 +219,4 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
 }
+*/

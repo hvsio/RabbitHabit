@@ -35,7 +35,7 @@ public class AddPhotoActivity extends AppCompatActivity implements SurfaceHolder
         setContentView(R.layout.activity_add_photo);
 
         takePhoto = findViewById(R.id.take_photo_button);
-        surfaceViewCamera = (SurfaceView) findViewById(R.id.surfaceView3);
+        surfaceViewCamera = findViewById(R.id.surfaceView3);
 
         surfaceViewCamera.getHolder().addCallback(this);
 
