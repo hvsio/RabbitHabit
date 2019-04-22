@@ -140,7 +140,7 @@ public class MainPageActivity extends AppCompatActivity
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_log_out) {
-
+            logOutFromFirebase();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -152,7 +152,7 @@ public class MainPageActivity extends AppCompatActivity
         return new Intent(context, MainPageActivity.class);
     }
 
-    public void logOutFromFirebase(View view) {
+    public void logOutFromFirebase() {
         LoginManager.getInstance().logOut();
         FirebaseAuth.getInstance().signOut();
         startActivity(LoginActivity.createNewIntent(getApplicationContext()));

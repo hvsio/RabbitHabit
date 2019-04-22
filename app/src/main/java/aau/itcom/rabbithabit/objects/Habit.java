@@ -1,5 +1,7 @@
 package aau.itcom.rabbithabit.objects;
 
+import android.content.Context;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.Serializable;
@@ -21,7 +23,8 @@ public class Habit implements Serializable{
         return super.equals(obj);
     }
 
-    void display(TextView textView){
+    public TextView display(final Context context, int textSize, LinearLayout.LayoutParams params, Habit listener ){
+        return null;
     }
 
     public String getName() {

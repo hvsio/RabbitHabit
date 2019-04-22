@@ -7,24 +7,6 @@
     android:layout_height="match_parent"
     android:background="#0091EA">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabAdd2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.964"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.977"
-        app:srcCompat="@drawable/plus" />
-
     <TextView
         android:id="@+id/questionBar"
         android:layout_width="match_parent"
@@ -74,7 +56,7 @@
         android:autofillHints=""
         android:ems="10"
         android:hint="@string/habitsdruration"
-        android:inputType="date"
+        android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -124,13 +106,14 @@
         app:layout_constraintTop_toTopOf="@+id/cloudArea" />
 
     <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="371dp"
-        android:layout_height="34dp"
+        android:id="@+id/radioGroupPublishment"
+        android:layout_width="363dp"
+        android:layout_height="100dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
@@ -138,35 +121,19 @@
         app:layout_constraintTop_toBottomOf="@+id/questionBar"
         app:layout_constraintVertical_bias="0.0">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/yesButton"
+            android:layout_width="133dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/yes" />
 
-            <LinearLayout
-                android:layout_width="190dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <RadioButton
-                    android:id="@+id/yesButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/yes" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <RadioButton
-                    android:id="@+id/noButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/no" />
-            </LinearLayout>
-        </LinearLayout>
+        <RadioButton
+            android:id="@+id/noButton"
+            android:layout_width="127dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/no" />
 
     </RadioGroup>
 
@@ -179,12 +146,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/my_button3"
+        android:onClick="collectInformation"
         android:text="@string/addhabit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupPublishment"
         app:layout_constraintVertical_bias="0.144" />
 
 

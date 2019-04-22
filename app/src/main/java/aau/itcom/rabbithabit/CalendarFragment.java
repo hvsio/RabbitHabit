@@ -39,10 +39,6 @@ public class CalendarFragment extends Fragment {
     Photo photo;
     Database db;
 
-    public static final Object LOCK_FOR_HABITS = new Object();
-    public static final Object LOCK_FOR_STORY = new Object();
-    public static final Object LOCK_FOR_PHOTO = new Object();
-
     private static final String TAG = "CalendarFragment";
 
 
@@ -64,7 +60,7 @@ public class CalendarFragment extends Fragment {
                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
         storyTextView = v.findViewById(R.id.textViewStory);
-        layout = v.findViewById(R.id.linearLayoutDay);
+        layout = v.findViewById(R.id.linearLayoutOfDay);
         calendar = v.findViewById(R.id.calendarViewDaily);
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -99,6 +95,7 @@ public class CalendarFragment extends Fragment {
     }
 
     private void displayStory() {
+        Log.d(TAG, "Inside displayStory()");
         story = new Story(db.getStory().getDate(),db.getStory().getTextContent(), db.getStory().getMood());
         storyTextView.setText(story.getTextContent());
     }
@@ -125,22 +122,7 @@ public class CalendarFragment extends Fragment {
 
         for (int i =0; i<habitArray.size(); i++){
             Log.d(TAG, "Inside loop for textfields - createTextFieldsForHabits()");
-            TextView textView = new TextView(getContext());
-            textView.setText(habitArray.get(i).getName());
-            textView.setTextSize(18);
-
-            final HabitPersonal habitPersonal = habitArray.get(i);
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = HabitDetailsActivity.createNewIntent(getContext());
-                    intent.putExtra("habitPersonal",habitPersonal);
-                    getContext().startActivity(intent);
-                }
-            });
-            textView.setLayoutParams(params);
-            textView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.my_button_white));
-            arrayOfTextViews.add(textView);
+            arrayOfTextViews.add(habitArray.get(i).display(getContext(), 18, params, habitArray.get(i)));
         }
         return arrayOfTextViews;
     }
@@ -155,14 +137,15 @@ public class CalendarFragment extends Fragment {
         public void run() {
             Log.d(THREAD_HABIT_TAG, "is running");
             try {
-                synchronized (LOCK_FOR_HABITS) {
+                synchronized (Database.LOCK_FOR_HABITS) {
                     Log.d(THREAD_HABIT_TAG, "I am waiting");
-                    LOCK_FOR_HABITS.wait();
+                    Database.LOCK_FOR_HABITS.wait();
+                    Log.d(TAG, "I was notified!");
                 }
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            Log.d(THREAD_HABIT_TAG, "After try-catch statement");
 
             Log.d(THREAD_HABIT_TAG, "First element of array is: " + db.getArrayListOfHabits().get(0).toString());
 
@@ -187,14 +170,15 @@ public class CalendarFragment extends Fragment {
         public void run() {
             Log.d(THREAD_PHOTO_TAG, "is running");
             try {
-                synchronized (LOCK_FOR_PHOTO) {
+                synchronized (Database.LOCK_FOR_PHOTO) {
                     Log.d("THREAD !", "I am waiting");
-                    LOCK_FOR_PHOTO.wait();
+                    Database.LOCK_FOR_PHOTO.wait();
                 }
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            Log.d(THREAD_PHOTO_TAG, "After try-catch statement");
 
             Log.d(THREAD_PHOTO_TAG, "First element of array is: " + db.getArrayListOfHabits().get(0).toString());
 
@@ -219,9 +203,9 @@ public class CalendarFragment extends Fragment {
         public void run() {
             Log.d(THREAD_STORY_TAG, "is running");
             try {
-                synchronized (LOCK_FOR_STORY) {
+                synchronized (Database.LOCK_FOR_STORY) {
                     Log.d(THREAD_STORY_TAG, "I am waiting");
-                    LOCK_FOR_STORY.wait();
+                    Database.LOCK_FOR_STORY.wait();
                 }
 
             } catch (InterruptedException e) {

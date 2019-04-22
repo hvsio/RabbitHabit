@@ -17,12 +17,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
-import aau.itcom.rabbithabit.CalendarFragment;
 
 public class Database{
 
@@ -38,6 +37,10 @@ public class Database{
     private Story story;
     private ArrayList<HabitPersonal> habitPersonals;
 
+    public static final Object LOCK_FOR_HABITS = new Object();
+    public static final Object LOCK_FOR_STORY = new Object();
+    public static final Object LOCK_FOR_PHOTO = new Object();
+
     private Database(){
         db = FirebaseFirestore.getInstance();
     }
@@ -52,7 +55,7 @@ public class Database{
     public void addHabitPersonal(HabitPersonal habit, FirebaseUser user){
         Map<String, Object> map = new HashMap<>();
         map.put("startDate", habit.getStartDate());
-        map.put("arrayOfDates", habit.getArrayOfDates());
+        map.put("arrayOfDates", Arrays.asList(habit.getArrayOfDates()));
         map.put("duration", habit.getDuration());
         map.put("details", habit.getDetails());
         map.put("complexity", habit.getComplexionMap());
@@ -106,11 +109,11 @@ public class Database{
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 habitPersonals.add(new HabitPersonal(document.getId(), document.getLong("duration"), document.getString("details"), document.getTimestamp("startDate").toDate()));
                             }
-                            /*synchronized (CalendarActivity.LOCK_FOR_HABITS){
-                                CalendarActivity.LOCK_FOR_HABITS.notify();
-                            }*/
-                            synchronized (CalendarFragment.LOCK_FOR_HABITS){
-                                CalendarFragment.LOCK_FOR_HABITS.notify();
+                            Log.d(TAG, "Habits are now loaded!");
+                            synchronized (LOCK_FOR_HABITS){
+                                Log.d(TAG, "I am about to notify about finishing loading habits");
+                                LOCK_FOR_HABITS.notify();
+                                Log.d(TAG, "NOTIFIED!");
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -195,8 +198,8 @@ public class Database{
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 photo = new Photo(date, documentSnapshot.getString("URLinDATABASE"));
-                synchronized (CalendarFragment.LOCK_FOR_PHOTO){
-                    CalendarFragment.LOCK_FOR_PHOTO.notify();
+                synchronized (LOCK_FOR_PHOTO){
+                    LOCK_FOR_PHOTO.notify();
                 }
             }
         });
@@ -233,6 +236,7 @@ public class Database{
     }
 
     public void loadStoryOnDate(final Date date, FirebaseUser user){
+
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         Log.d(TAG, "I am inside loadStoryOnDate() and date is: " + dateFormat.format(date));
 
@@ -248,11 +252,8 @@ public class Database{
                                 story = new Story(date, document.getString("storyContent"), (long) document.get("mood"));
 
                             }
-                            /*synchronized (CalendarActivity.LOCK_FOR_STORY){
-                                CalendarActivity.LOCK_FOR_STORY.notify();
-                            }*/
-                            synchronized (CalendarFragment.LOCK_FOR_STORY){
-                                CalendarFragment.LOCK_FOR_STORY.notify();
+                            synchronized (LOCK_FOR_STORY){
+                                LOCK_FOR_STORY.notify();
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());

@@ -14,12 +14,6 @@ public class HabitPublished extends Habit {
         this.numberOfLikes = numberOfLikes;
     }
 
-    @Override
-    void display(TextView textView) {
-        // TODO : CHANGE IT ACCORDINGLY
-        super.display(textView);
-    }
-
     public String getShowCreator() {
         return showCreator;
     }

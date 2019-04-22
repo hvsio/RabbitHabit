@@ -1,38 +1,36 @@
 package aau.itcom.rabbithabit;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
-import android.transition.TransitionManager;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import aau.itcom.rabbithabit.objects.Database;
+import aau.itcom.rabbithabit.objects.HabitPersonal;
 
 public class MainPageFragment extends Fragment {
 
-    /*FloatingActionButton fabHabit, fabStory, fabAdd, fabPhoto;
-    CoordinatorLayout transitionsContainer;
-    View viewBlurred;
-    boolean isButtonAddClicked;
-*/
+    Database db;
+    private static final String TAG = "MainPageFragment";
+    private LinearLayout.LayoutParams params;
+    private LinearLayout habitsLayout;
+    private TextView storyTextView;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,8 +40,145 @@ public class MainPageFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        db = Database.getInstance();
 
         View v = getView();
+        params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        habitsLayout = v.findViewById(R.id.LinearLayout);
+        storyTextView = v.findViewById(R.id.myStoryContentTextView);
+        loadDetails();
+    }
+
+    private void loadDetails(){
+        Log.d(TAG, "I am inside loadDetails(), and I am starting THREADS!");
+        /*ExecutorService service = Executors.newCachedThreadPool();
+        service.submit(new LoadHabitsTask());
+        service.submit(new LoadStoryTask());
+        //service.submit(new LoadPhotoTask());
+        service.shutdown();
+
+        Log.d(TAG, "I am inside loadDetails(), and I am loading info");
+        db.loadSetOfHabitsOnDate(Calendar.getInstance().getTime(), FirebaseAuth.getInstance().getCurrentUser());
+        //db.loadPhotoOnDate(Calendar.getInstance().getTime(), FirebaseAuth.getInstance().getCurrentUser());
+        db.loadStoryOnDate(Calendar.getInstance().getTime(), FirebaseAuth.getInstance().getCurrentUser());
+*/
 
     }
+
+    private void displayHabits(){
+
+        for (int i =0; i<db.getArrayListOfHabits().size(); i++){
+            Log.d(TAG, "Inside loop for textfields - createTextFieldsForHabits()");
+            TextView textView = new TextView(getContext());
+            textView.setText(db.getArrayListOfHabits().get(i).getName());
+            textView.setTextSize(18);
+
+            final HabitPersonal habitPersonal = db.getArrayListOfHabits().get(i);
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = HabitDetailsActivity.createNewIntent(getContext());
+                    intent.putExtra("habitPersonal",habitPersonal);
+                    getContext().startActivity(intent);
+                }
+            });
+            textView.setLayoutParams(params);
+            textView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.my_button_white));
+            habitsLayout.addView(textView);
+        }
+    }
+
+    private void displayStory(){
+        storyTextView.setText(db.getStory().getTextContent());
+    }
+
+    private void displayPhoto(){
+
+    }
+
+    private class LoadHabitsTask implements Runnable{
+
+        private static final String THREAD_HABIT_TAG = "LoadHabitsTask";
+
+        @Override
+        public void run() {
+            try {
+                synchronized (Database.LOCK_FOR_HABITS) {
+                    Database.LOCK_FOR_HABITS.wait();
+                }
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if(isAdded()){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        displayHabits();
+                    }
+                });
+            } else {
+                Log.w(THREAD_HABIT_TAG, "Fragment is no longer attached to its activity");
+            }
+        }
+    }
+
+    private class LoadPhotoTask implements Runnable{
+
+        private static final String THREAD_PHOTO_TAG = "LoadPhotoTask";
+
+        @Override
+        public void run() {
+            try {
+                synchronized (Database.LOCK_FOR_PHOTO) {
+                    Database.LOCK_FOR_PHOTO.wait();
+                }
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (isAdded()){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        displayPhoto();
+                    }
+                });
+            } else {
+                Log.w(THREAD_PHOTO_TAG, "Fragment is no longer attached to its activity");
+            }
+        }
+    }
+
+    private class LoadStoryTask implements Runnable{
+
+        private static final String THREAD_STORY_TAG = "LoadStoryTask";
+
+        @Override
+        public void run() {
+            try {
+                synchronized (Database.LOCK_FOR_STORY) {
+                    Database.LOCK_FOR_STORY.wait();
+                }
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (isAdded()){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        displayStory();
+                    }
+                });
+            } else {
+                Log.w(THREAD_STORY_TAG, "Fragment is no longer attached to its activity");
+            }
+        }
+    }
+
 }
