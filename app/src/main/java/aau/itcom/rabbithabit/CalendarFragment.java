@@ -1,10 +1,8 @@
 package aau.itcom.rabbithabit;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -107,7 +105,7 @@ public class CalendarFragment extends Fragment {
 
     private void displayHabits(){
         Log.d(TAG, "Inside displayHabits()");
-        habitArray.addAll(db.getArrayListOfHabits());
+        habitArray.addAll(db.getArrayListOfHabitsPersonal());
 
         Log.d(TAG, "Inside displayHabits() and habit array size is: " + habitArray.size());
         ArrayList<TextView> textViews = new ArrayList<>(createTextFieldsForHabits());
@@ -147,7 +145,7 @@ public class CalendarFragment extends Fragment {
             }
             Log.d(THREAD_HABIT_TAG, "After try-catch statement");
 
-            Log.d(THREAD_HABIT_TAG, "First element of array is: " + db.getArrayListOfHabits().get(0).toString());
+            Log.d(THREAD_HABIT_TAG, "First element of array is: " + db.getArrayListOfHabitsPersonal().get(0).toString());
 
             if(isAdded()){
                 getActivity().runOnUiThread(new Runnable() {
@@ -180,7 +178,7 @@ public class CalendarFragment extends Fragment {
             }
             Log.d(THREAD_PHOTO_TAG, "After try-catch statement");
 
-            Log.d(THREAD_PHOTO_TAG, "First element of array is: " + db.getArrayListOfHabits().get(0).toString());
+            Log.d(THREAD_PHOTO_TAG, "First element of array is: " + db.getArrayListOfHabitsPersonal().get(0).toString());
 
             if (isAdded()){
                 getActivity().runOnUiThread(new Runnable() {

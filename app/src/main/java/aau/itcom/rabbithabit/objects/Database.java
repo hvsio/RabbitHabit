@@ -1,5 +1,7 @@
 package aau.itcom.rabbithabit.objects;
 
+import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -8,12 +10,16 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,36 +29,40 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public class Database{
+public class Database {
 
     // TODO : UPDATE LOGS AFTER COPY & PASTE
 
     private static final String TAG = "DatabaseClass";
     private FirebaseFirestore db;
     private static Database instance = null;
+    private StorageReference mStorageRef;
 
     private HabitPersonal habitPersonal;
     private HabitPublished habitPublished;
-    private Photo photo;
+    private Uri photoUri;
     private Story story;
     private ArrayList<HabitPersonal> habitPersonals;
+    private ArrayList<HabitPublished> habitsPublished;
 
     public static final Object LOCK_FOR_HABITS = new Object();
+    public static final Object LOCK_FOR_HABITS_PUBLISHED = new Object();
     public static final Object LOCK_FOR_STORY = new Object();
     public static final Object LOCK_FOR_PHOTO = new Object();
 
-    private Database(){
+    private Database() {
         db = FirebaseFirestore.getInstance();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
     }
 
-    public synchronized static Database getInstance(){
-        if (instance == null){
+    public synchronized static Database getInstance() {
+        if (instance == null) {
             instance = new Database();
         }
         return instance;
     }
 
-    public void addHabitPersonal(HabitPersonal habit, FirebaseUser user){
+    public void addHabitPersonal(HabitPersonal habit, FirebaseUser user) {
         Map<String, Object> map = new HashMap<>();
         map.put("startDate", habit.getStartDate());
         map.put("arrayOfDates", Arrays.asList(habit.getArrayOfDates()));
@@ -76,7 +86,7 @@ public class Database{
                 });
     }
 
-    public HabitPersonal getHabitPersonalByName(String name, FirebaseUser user){
+   /* public HabitPersonal getHabitPersonalByName(String name, FirebaseUser user) {
 
         DocumentReference docRef = db.collection("Users").document(user.getUid()).collection("Habits").document(name);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -92,8 +102,8 @@ public class Database{
     private void setHabitToReturn(HabitPersonal object) {
         habitPersonal = object;
     }
-
-    public void loadSetOfHabitsOnDate(Date date, FirebaseUser user){
+*/
+    public void loadSetOfHabitsOnDate(Date date, FirebaseUser user) {
 
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         habitPersonals = new ArrayList<>();
@@ -110,7 +120,7 @@ public class Database{
                                 habitPersonals.add(new HabitPersonal(document.getId(), document.getLong("duration"), document.getString("details"), document.getTimestamp("startDate").toDate()));
                             }
                             Log.d(TAG, "Habits are now loaded!");
-                            synchronized (LOCK_FOR_HABITS){
+                            synchronized (LOCK_FOR_HABITS) {
                                 Log.d(TAG, "I am about to notify about finishing loading habits");
                                 LOCK_FOR_HABITS.notify();
                                 Log.d(TAG, "NOTIFIED!");
@@ -122,12 +132,12 @@ public class Database{
                 });
     }
 
-    public ArrayList<HabitPersonal> getArrayListOfHabits(){
+    public ArrayList<HabitPersonal> getArrayListOfHabitsPersonal() {
         Log.d(TAG, "final result() and habitPersonal is: " + habitPersonals);
         return habitPersonals;
     }
 
-    public void addHabitPublished(HabitPublished habit){
+    public void addHabitPublished(HabitPublished habit) {
         Map<String, Object> map = new HashMap<>();
         map.put("showCreator", habit.getShowCreator());
         map.put("creator", habit.getCreator());
@@ -150,25 +160,41 @@ public class Database{
                 });
     }
 
-    public HabitPublished getHabitPublishedByName(String name){
+    public void loadSetOfTrendingHabits() {
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        habitsPublished = new ArrayList<>();
 
-        DocumentReference docRef = db.collection("Users").document(name);
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                setHabitPublishedToReturn(documentSnapshot.toObject(HabitPublished.class));
-            }
-        });
-
-        return habitPublished;
+        db.collection("HabitsPublished")
+                .orderBy("numberOfLikes")
+                .limit(10)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                habitsPublished.add(new HabitPublished(document.getId(), document.getLong("duration"), document.getString("details"), document.getString("showCreator"), document.getString("creator"), document.getLong("numberOfLikes")));
+                            }
+                            Log.d(TAG, "Habits are now loaded!");
+                            synchronized (LOCK_FOR_HABITS_PUBLISHED) {
+                                Log.d(TAG, "I am about to notify about finishing loading habits");
+                                LOCK_FOR_HABITS_PUBLISHED.notify();
+                                Log.d(TAG, "NOTIFIED!");
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 
-    private void setHabitPublishedToReturn(HabitPublished object) {
-        habitPublished = object;
+    public ArrayList<HabitPublished> getArrayListOfHabitsPublished() {
+        Log.d(TAG, "final result() and habitsPublished is: " + habitsPublished);
+        return habitsPublished;
     }
 
-
-    public void addPhoto(Photo photo, FirebaseUser user){
+    public void addPhoto(Photo photo, FirebaseUser user) {
         Map<String, Object> map = new HashMap<>();
         map.put("URLinDATABASE", photo.getPhotoURLinDB());
 
@@ -190,36 +216,85 @@ public class Database{
                 });
     }
 
-    public void loadPhotoOnDate(final Date date, FirebaseUser user){
+    public void loadPhotoOnDate(final Date date, FirebaseUser user, Context context) {
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
-        DocumentReference docRef = db.collection("Users").document(user.getUid()).collection("Photos").document(dateFormat.format(date));
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+
+        File directory = context.getCacheDir();
+        File outputFile = null;
+        try {
+            outputFile = File.createTempFile(dateFormat.format(date), "jpg", directory);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        final File finalOutputFile = outputFile;
+        mStorageRef.child(user.getUid() + "/" + dateFormat.format(date) + ".jpg")
+                .getFile(outputFile)
+                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        // Successfully downloaded data to local file
+                        photoUri = Uri.fromFile(finalOutputFile);
+
+                        synchronized (LOCK_FOR_PHOTO) {
+                            LOCK_FOR_PHOTO.notify();
+                            Log.d(TAG, "NOTIFIED!");
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                photo = new Photo(date, documentSnapshot.getString("URLinDATABASE"));
-                synchronized (LOCK_FOR_PHOTO){
+            public void onFailure(@NonNull Exception exception) {
+                // Handle failed download
+                Log.d(TAG, "Cannot download the photo. The photo may not exist!");
+                synchronized (LOCK_FOR_PHOTO) {
                     LOCK_FOR_PHOTO.notify();
+                    Log.d(TAG, "NOTIFIED!");
                 }
             }
         });
     }
 
-    public Photo getPhoto() throws NoSuchElementException {
-        if (photo == null){
+    public Uri getPhoto() throws NoSuchElementException {
+        if (photoUri == null) {
             throw new NoSuchElementException("Photo needs to be loaded before getting");
         }
-        return photo;
+        return photoUri;
     }
 
-    public void addStory (Story story, FirebaseUser user){
+    public void uploadPhotoFile(Date date, FirebaseUser user, File filePassed) {
+
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        //Uri file = Uri.fromFile(new File(AddPhotoActivity.getCurrentPhotoPath()));
+        Uri file = Uri.fromFile(filePassed);
+        StorageReference riversRef = mStorageRef.child(user.getUid() + "/" + dateFormat.format(date) + ".jpg");
+
+        riversRef.putFile(file)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+                        Uri downloadUrl = taskSnapshot.getUploadSessionUri();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        Log.d(TAG, "Cannot upload the photo. Check your internet connection!");
+                        exception.printStackTrace();
+                    }
+                });
+    }
+
+    public void addStory(Story story, FirebaseUser user) {
         Map<String, Object> map = new HashMap<>();
         map.put("storyContent", story.getTextContent());
         map.put("mood", story.getMood());
 
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
-        db.collection("Users").document(user.getUid()).collection("Stories").document(dateFormat.format(story.getDate()))
+        db.collection("Users").document(user.getUid()).collection("Story").document(dateFormat.format(story.getDate()))
                 .set(map)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -235,7 +310,7 @@ public class Database{
                 });
     }
 
-    public void loadStoryOnDate(final Date date, FirebaseUser user){
+    public void loadStoryOnDate(final Date date, FirebaseUser user) {
 
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         Log.d(TAG, "I am inside loadStoryOnDate() and date is: " + dateFormat.format(date));
@@ -252,7 +327,7 @@ public class Database{
                                 story = new Story(date, document.getString("storyContent"), (long) document.get("mood"));
 
                             }
-                            synchronized (LOCK_FOR_STORY){
+                            synchronized (LOCK_FOR_STORY) {
                                 LOCK_FOR_STORY.notify();
                             }
                         } else {
@@ -262,8 +337,8 @@ public class Database{
                 });
     }
 
-    public Story getStory() throws NoSuchElementException{
-        if (story == null){
+    public Story getStory() throws NoSuchElementException {
+        if (story == null) {
             throw new NoSuchElementException("Story needs to be loaded before getting");
         }
         return story;
@@ -271,9 +346,10 @@ public class Database{
 
     /**
      * Create field for the user in the database
+     *
      * @param firebaseUser
      */
-    public void createNewUser (FirebaseUser firebaseUser){
+    public void createNewUser(FirebaseUser firebaseUser) {
         Map<String, Object> map = new HashMap<>();
         map.put("name", firebaseUser.getDisplayName());
 

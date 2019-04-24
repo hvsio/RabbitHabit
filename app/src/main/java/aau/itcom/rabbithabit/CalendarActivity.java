@@ -100,7 +100,7 @@ public class CalendarActivity extends AppCompatActivity {
 
     private void displayHabits(){
         Log.d("CalendarActivity", "Inside displayHabits()");
-        habitArray.addAll(db.getArrayListOfHabits());
+        habitArray.addAll(db.getArrayListOfHabitsPersonal());
 
         Log.d("CalendarActivity", "Inside displayHabits() and habit array size is: " + habitArray.size());
         ArrayList<TextView> textViews = new ArrayList<>();
@@ -151,7 +151,7 @@ public class CalendarActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            Log.d(THREAD_HABIT_TAG, "First element of array is: " + db.getArrayListOfHabits().get(0).toString());
+            Log.d(THREAD_HABIT_TAG, "First element of array is: " + db.getArrayListOfHabitsPersonal().get(0).toString());
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -179,7 +179,7 @@ public class CalendarActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            Log.d(THREAD_PHOTO_TAG, "First element of array is: " + db.getArrayListOfHabits().get(0).toString());
+            Log.d(THREAD_PHOTO_TAG, "First element of array is: " + db.getArrayListOfHabitsPersonal().get(0).toString());
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

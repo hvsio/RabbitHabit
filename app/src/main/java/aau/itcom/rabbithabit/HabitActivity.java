@@ -61,7 +61,7 @@ public class HabitActivity extends AppCompatActivity {
 
     private boolean checkInformation() {
         if (publishmentRadio.getCheckedRadioButtonId() == -1){
-            Log.d("habitact", "to jest kurwa dziwne");
+            Log.d(TAG, "to jest kurwa dziwne");
         }
 
         return !nameTextView.getText().equals("") && !durationTextView.getText().equals("")

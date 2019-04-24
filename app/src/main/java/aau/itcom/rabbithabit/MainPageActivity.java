@@ -79,6 +79,12 @@ public class MainPageActivity extends AppCompatActivity
 
             }
         });
+        fabPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPhoto(v);
+            }
+        });
 
         viewBlurred.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("RestrictedApi")
@@ -163,16 +169,7 @@ public class MainPageActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    private boolean checkCameraHardware(Context context) {
-        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-            // this device has a camera
-            return true;
-        } else {
-            return false;
-        }
+    public void addPhoto(View view){
+        startActivity(AddPhotoActivity.createNewIntent(getApplicationContext()));
     }
-
-    /*public void calendarTest(View view){
-        startActivity(new Intent(getApplicationContext(), CalendarActivity.class));
-    }*/
 }

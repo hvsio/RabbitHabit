@@ -10,12 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,11 +30,12 @@ public class MainPageFragment extends Fragment {
     private LinearLayout.LayoutParams params;
     private LinearLayout habitsLayout;
     private TextView storyTextView;
+    private ImageView photoView;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_to_main_page, container, false);
+        return inflater.inflate(R.layout.fragment_to_mainpage, container, false);
     }
 
     @Override
@@ -45,36 +46,36 @@ public class MainPageFragment extends Fragment {
         View v = getView();
         params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        habitsLayout = v.findViewById(R.id.LinearLayout);
-        storyTextView = v.findViewById(R.id.myStoryContentTextView);
+        habitsLayout = v.findViewById(R.id.habitLinearLayout);
+        storyTextView = v.findViewById(R.id.textViewForStoryContent);
+        photoView = v.findViewById(R.id.photoOfTheDay);
         loadDetails();
     }
 
     private void loadDetails(){
         Log.d(TAG, "I am inside loadDetails(), and I am starting THREADS!");
-        /*ExecutorService service = Executors.newCachedThreadPool();
-        service.submit(new LoadHabitsTask());
-        service.submit(new LoadStoryTask());
-        //service.submit(new LoadPhotoTask());
+        ExecutorService service = Executors.newCachedThreadPool();
+        //service.submit(new LoadHabitsTask());
+        //service.submit(new LoadStoryTask());
+        service.submit(new LoadPhotoTask());
         service.shutdown();
 
         Log.d(TAG, "I am inside loadDetails(), and I am loading info");
-        db.loadSetOfHabitsOnDate(Calendar.getInstance().getTime(), FirebaseAuth.getInstance().getCurrentUser());
-        //db.loadPhotoOnDate(Calendar.getInstance().getTime(), FirebaseAuth.getInstance().getCurrentUser());
-        db.loadStoryOnDate(Calendar.getInstance().getTime(), FirebaseAuth.getInstance().getCurrentUser());
-*/
+        //db.loadSetOfHabitsOnDate(Calendar.getInstance().getTime(), FirebaseAuth.getInstance().getCurrentUser());
+        db.loadPhotoOnDate(Calendar.getInstance().getTime(), FirebaseAuth.getInstance().getCurrentUser(), getContext());
+        //db.loadStoryOnDate(Calendar.getInstance().getTime(), FirebaseAuth.getInstance().getCurrentUser());
 
     }
 
     private void displayHabits(){
 
-        for (int i =0; i<db.getArrayListOfHabits().size(); i++){
+        for (int i = 0; i<db.getArrayListOfHabitsPersonal().size(); i++){
             Log.d(TAG, "Inside loop for textfields - createTextFieldsForHabits()");
             TextView textView = new TextView(getContext());
-            textView.setText(db.getArrayListOfHabits().get(i).getName());
+            textView.setText(db.getArrayListOfHabitsPersonal().get(i).getName());
             textView.setTextSize(18);
 
-            final HabitPersonal habitPersonal = db.getArrayListOfHabits().get(i);
+            final HabitPersonal habitPersonal = db.getArrayListOfHabitsPersonal().get(i);
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -94,7 +95,7 @@ public class MainPageFragment extends Fragment {
     }
 
     private void displayPhoto(){
-
+        photoView.setImageURI(db.getPhoto());
     }
 
     private class LoadHabitsTask implements Runnable{
