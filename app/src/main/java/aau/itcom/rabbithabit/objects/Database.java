@@ -45,6 +45,11 @@ public class Database {
     private ArrayList<HabitPersonal> habitPersonals;
     private ArrayList<HabitPublished> habitsPublished;
 
+    private boolean isStoryDownloadCompleted = false;
+    private boolean isPhotoDownloadCompleted = false;
+    private boolean isHabitsPersonalDownloadCompleted = false;
+    private boolean isHabitsPublishedDownloadCompleted = false;
+
     public static final Object LOCK_FOR_HABITS = new Object();
     public static final Object LOCK_FOR_HABITS_PUBLISHED = new Object();
     public static final Object LOCK_FOR_STORY = new Object();
@@ -86,23 +91,7 @@ public class Database {
                 });
     }
 
-   /* public HabitPersonal getHabitPersonalByName(String name, FirebaseUser user) {
 
-        DocumentReference docRef = db.collection("Users").document(user.getUid()).collection("Habits").document(name);
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                setHabitToReturn(documentSnapshot.toObject(HabitPersonal.class));
-            }
-        });
-
-        return habitPersonal;
-    }
-
-    private void setHabitToReturn(HabitPersonal object) {
-        habitPersonal = object;
-    }
-*/
     public void loadSetOfHabitsOnDate(Date date, FirebaseUser user) {
 
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -120,21 +109,28 @@ public class Database {
                                 habitPersonals.add(new HabitPersonal(document.getId(), document.getLong("duration"), document.getString("details"), document.getTimestamp("startDate").toDate()));
                             }
                             Log.d(TAG, "Habits are now loaded!");
+                            isHabitsPersonalDownloadCompleted = true;
                             synchronized (LOCK_FOR_HABITS) {
                                 Log.d(TAG, "I am about to notify about finishing loading habits");
                                 LOCK_FOR_HABITS.notify();
                                 Log.d(TAG, "NOTIFIED!");
                             }
                         } else {
+                            isHabitsPersonalDownloadCompleted = false;
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
     }
 
-    public ArrayList<HabitPersonal> getArrayListOfHabitsPersonal() {
-        Log.d(TAG, "final result() and habitPersonal is: " + habitPersonals);
-        return habitPersonals;
+    public ArrayList<HabitPersonal> getArrayListOfHabitsPersonal() throws NoSuchElementException{
+        Log.d(TAG, "HabitsPersonal consists: " + habitPersonals);
+
+        if (isHabitsPersonalDownloadCompleted){
+            return habitPersonals;
+        } else {
+            throw new NoSuchElementException("Unable to execute getArrayListOfHabitsPersonal(). Files doesn't exist or connection error occurred!");
+        }
     }
 
     public void addHabitPublished(HabitPublished habit) {
@@ -161,7 +157,6 @@ public class Database {
     }
 
     public void loadSetOfTrendingHabits() {
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         habitsPublished = new ArrayList<>();
 
         db.collection("HabitsPublished")
@@ -177,43 +172,28 @@ public class Database {
                                 habitsPublished.add(new HabitPublished(document.getId(), document.getLong("duration"), document.getString("details"), document.getString("showCreator"), document.getString("creator"), document.getLong("numberOfLikes")));
                             }
                             Log.d(TAG, "Habits are now loaded!");
+                            isHabitsPublishedDownloadCompleted = true;
                             synchronized (LOCK_FOR_HABITS_PUBLISHED) {
                                 Log.d(TAG, "I am about to notify about finishing loading habits");
                                 LOCK_FOR_HABITS_PUBLISHED.notify();
                                 Log.d(TAG, "NOTIFIED!");
                             }
                         } else {
+                            isHabitsPublishedDownloadCompleted = false;
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
     }
 
-    public ArrayList<HabitPublished> getArrayListOfHabitsPublished() {
-        Log.d(TAG, "final result() and habitsPublished is: " + habitsPublished);
-        return habitsPublished;
-    }
+    public ArrayList<HabitPublished> getArrayListOfHabitsPublished() throws NoSuchElementException{
+        Log.d(TAG, "HabitsPublished consists: " + habitsPublished);
 
-    public void addPhoto(Photo photo, FirebaseUser user) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("URLinDATABASE", photo.getPhotoURLinDB());
-
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-
-        db.collection("Users").document(user.getUid()).collection("Photos").document(dateFormat.format(photo.getDate()))
-                .set(map)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Directory for Habits created!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error creating directory for Habits!", e);
-                    }
-                });
+        if (isHabitsPublishedDownloadCompleted){
+            return habitsPublished;
+        } else {
+            throw new NoSuchElementException("Unable to execute getArrayListOfHabitsPublished(). Files doesn't exist or connection error occurred!");
+        }
     }
 
     public void loadPhotoOnDate(final Date date, FirebaseUser user, Context context) {
@@ -237,6 +217,7 @@ public class Database {
                         // Successfully downloaded data to local file
                         photoUri = Uri.fromFile(finalOutputFile);
 
+                        isPhotoDownloadCompleted = true;
                         synchronized (LOCK_FOR_PHOTO) {
                             LOCK_FOR_PHOTO.notify();
                             Log.d(TAG, "NOTIFIED!");
@@ -246,6 +227,7 @@ public class Database {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle failed download
+                isPhotoDownloadCompleted = false;
                 Log.d(TAG, "Cannot download the photo. The photo may not exist!");
                 synchronized (LOCK_FOR_PHOTO) {
                     LOCK_FOR_PHOTO.notify();
@@ -256,10 +238,10 @@ public class Database {
     }
 
     public Uri getPhoto() throws NoSuchElementException {
-        if (photoUri == null) {
-            throw new NoSuchElementException("Photo needs to be loaded before getting");
-        }
-        return photoUri;
+        if (!isPhotoDownloadCompleted)
+            throw new NoSuchElementException("Photo needs to be loaded before getting or the file doesn't exist!");
+        else
+            return photoUri;
     }
 
     public void uploadPhotoFile(Date date, FirebaseUser user, File filePassed) {
@@ -327,10 +309,12 @@ public class Database {
                                 story = new Story(date, document.getString("storyContent"), (long) document.get("mood"));
 
                             }
+                            isStoryDownloadCompleted = true;
                             synchronized (LOCK_FOR_STORY) {
                                 LOCK_FOR_STORY.notify();
                             }
                         } else {
+                            isStoryDownloadCompleted = false;
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
@@ -338,10 +322,10 @@ public class Database {
     }
 
     public Story getStory() throws NoSuchElementException {
-        if (story == null) {
-            throw new NoSuchElementException("Story needs to be loaded before getting");
-        }
-        return story;
+        if (!isStoryDownloadCompleted)
+            throw new NoSuchElementException("Story needs to be loaded before getting or the story doesn't exist!");
+        else
+            return story;
     }
 
     /**

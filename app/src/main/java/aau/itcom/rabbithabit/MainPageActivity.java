@@ -79,13 +79,32 @@ public class MainPageActivity extends AppCompatActivity
 
             }
         });
+
         fabPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addPhoto(v);
+                viewBlurred.performClick();
             }
         });
 
+        fabStory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addStory(v);
+                viewBlurred.performClick();
+            }
+        });
+
+        fabHabit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addHabit(v);
+                viewBlurred.performClick();
+            }
+        });
+
+        viewBlurred.setSoundEffectsEnabled(false);
         viewBlurred.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("RestrictedApi")
             @Override
@@ -171,5 +190,9 @@ public class MainPageActivity extends AppCompatActivity
 
     public void addPhoto(View view){
         startActivity(AddPhotoActivity.createNewIntent(getApplicationContext()));
+    }
+
+    public void addStory(View view) {
+        // DO NOTHING FOR A WHILE
     }
 }
