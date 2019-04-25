@@ -12,8 +12,15 @@ import android.widget.CalendarView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,6 +43,7 @@ public class CalendarFragment extends Fragment {
     Story story;
     Photo photo;
     Database db;
+    private StorageReference mStorageRef;
 
     private static final String TAG = "CalendarFragment";
 
@@ -43,6 +51,7 @@ public class CalendarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mStorageRef = FirebaseStorage.getInstance().getReference();
         return inflater.inflate(R.layout.fragment_calendar,container,false);
     }
 
@@ -99,8 +108,26 @@ public class CalendarFragment extends Fragment {
     }
 
 
-    private void displayPhoto() {
+    private void displayPhoto() throws IOException {
         //photo = new Photo(db.getPhoto().getDate(),db.getPhoto().getPhotoURLinDB());
+        SimpleDateFormat spf = new SimpleDateFormat("dd-MM-yyyy");
+        String pictureFile = spf.format(new Date());
+        StorageReference dailyPhotosRef = mStorageRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString()+ "-" + pictureFile);
+        System.out.println(pictureFile);
+        File localFile = File.createTempFile(FirebaseAuth.getInstance().getCurrentUser().getUid().toString(), "jpg");
+        System.out.println(localFile);
+        dailyPhotosRef.getFile(localFile)
+                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        System.out.println("SUCCESS");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                System.out.println("FAILURE");
+            }
+        });
     }
 
     private void displayHabits(){
@@ -184,7 +211,11 @@ public class CalendarFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        displayPhoto();
+                        try {
+                            displayPhoto();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             } else {

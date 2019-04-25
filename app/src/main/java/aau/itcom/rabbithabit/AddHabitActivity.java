@@ -33,6 +33,8 @@ public class AddHabitActivity extends AppCompatActivity {
     Database db;
     LinearLayout.LayoutParams params;
 
+    public static final int OWN_HABIT = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +81,8 @@ public class AddHabitActivity extends AppCompatActivity {
     }
 
     public void addOwnHabit(View view) {
-        startActivity(HabitActivity.createNewIntent(getApplicationContext()));
+        Intent intent = new Intent(getApplicationContext(), HabitActivity.class);
+        startActivityForResult(intent, OWN_HABIT);
     }
 
     private void displayHabits() {
