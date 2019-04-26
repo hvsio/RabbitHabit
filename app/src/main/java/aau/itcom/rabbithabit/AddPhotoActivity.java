@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -32,7 +33,10 @@ public class AddPhotoActivity extends AppCompatActivity {
     static String currentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 1;
     private static final int MY_CAMERA_REQUEST_CODE = 100;
+    private static final int REQUEST_GET_PIC = 100;
     private ImageView imageView;
+    private FloatingActionButton takePhoto;
+    private FloatingActionButton pickFromGallery;
     Database db;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -41,15 +45,16 @@ public class AddPhotoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_photo);
         imageView = findViewById(R.id.imageViewDisplay);
+        takePhoto = findViewById(R.id.take_photo_button);
+        pickFromGallery = findViewById(R.id.pick_from_gallery);
         db = Database.getInstance();
 
-        if (checkSelfPermission(Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.CAMERA},
-                    MY_CAMERA_REQUEST_CODE);
-        }
+//        if (checkSelfPermission(Manifest.permission.CAMERA)
+//                != PackageManager.PERMISSION_GRANTED) {
+        requestPermissions(new String[]{Manifest.permission.CAMERA},
+                MY_CAMERA_REQUEST_CODE);
+//        }
     }
-
     public static String getCurrentPhotoPath() {
         return currentPhotoPath;
     }
@@ -61,6 +66,15 @@ public class AddPhotoActivity extends AppCompatActivity {
             imageView.setImageURI(Uri.fromFile(f));
             galleryAddPic();
             db.uploadPhotoFile(new Date(), FirebaseAuth.getInstance().getCurrentUser(), new File(getCurrentPhotoPath()));
+        }
+        if (requestCode == REQUEST_GET_PIC && resultCode == RESULT_OK) {
+            Uri selectedImageUri = data.getData();
+            final String path = selectedImageUri.getPath();
+            if (path != null) {
+                File f = new File(path);
+                selectedImageUri = Uri.fromFile(f);
+            }
+            imageView.setImageURI(selectedImageUri);
         }
     }
 
@@ -109,6 +123,13 @@ public class AddPhotoActivity extends AppCompatActivity {
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
+    }
+
+    public void pickFromGallery(View view) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"),REQUEST_GET_PIC);
     }
 
     static Intent createNewIntent(Context context) {
