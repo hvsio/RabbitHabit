@@ -50,7 +50,8 @@ public class MainPageFragment extends Fragment {
         habitsLayout = v.findViewById(R.id.habitLinearLayout);
         storyTextView = v.findViewById(R.id.textViewForStoryContent);
         photoView = v.findViewById(R.id.photoOfTheDay);
-        //loadDetails();
+        photoView.setVisibility(View.GONE);
+        loadDetails();
     }
 
     private void loadDetails(){
@@ -112,6 +113,7 @@ public class MainPageFragment extends Fragment {
     private void displayPhoto(){
         try{
             photoView.setImageURI(db.getPhoto());
+            photoView.setVisibility(View.VISIBLE);
         } catch(NoSuchElementException ex) {
             Log.w(TAG, "Error loading Photo. No photo to display!\n" + ex);
         }

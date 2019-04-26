@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import aau.itcom.rabbithabit.HabitDetailsActivity;
+import aau.itcom.rabbithabit.HabitActivity;
 import aau.itcom.rabbithabit.R;
 
 public class HabitPublished extends Habit {
@@ -33,7 +33,7 @@ public class HabitPublished extends Habit {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = HabitDetailsActivity.createNewIntent(context);
+                Intent intent = HabitActivity.createNewIntent(context);
                 intent.putExtra("habit", listener);
                 context.startActivity(intent);
             }
@@ -57,6 +57,11 @@ public class HabitPublished extends Habit {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    // ??
+    public void incrementNumberOfLikes(){
+        numberOfLikes++;
     }
 
 }

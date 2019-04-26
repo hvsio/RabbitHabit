@@ -14,10 +14,8 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Calendar;
-import java.util.Objects;
 
 import aau.itcom.rabbithabit.objects.Database;
-import aau.itcom.rabbithabit.objects.Habit;
 import aau.itcom.rabbithabit.objects.HabitPersonal;
 import aau.itcom.rabbithabit.objects.HabitPublished;
 
@@ -63,18 +61,17 @@ public class HabitActivity extends AppCompatActivity {
             habitName = retrievedBundle.getString(PASS_HABIT_NAME);
             habitDetails = retrievedBundle.getString(PASS_HABIT_DETAILS);
             habitDuration = retrievedBundle.getString(PASS_HABIT_DURATION);
-            nameTextView.setEnabled(false);
+            nameTextView.setEnabled(true);
             nameTextView.setText(habitName);
             nameTextView.setTextColor(Color.BLACK);
-            durationTextView.setEnabled(false);
+            durationTextView.setEnabled(true);
             durationTextView.setText(habitDuration);
-            durationTextView.setTextColor(Color.BLACK);;
-            detailsTextView.setEnabled(false);
+            durationTextView.setTextColor(Color.BLACK);
+            detailsTextView.setEnabled(true);
             detailsTextView.setText(habitDetails);
-            detailsTextView.setTextColor(Color.BLACK);;
+            detailsTextView.setTextColor(Color.BLACK);
             publishmentRadio.setVisibility(View.GONE);
             questionBar.setVisibility(View.GONE);
-
         }
     }
 
@@ -139,7 +136,7 @@ public class HabitActivity extends AppCompatActivity {
 
 
 
-    static Intent createNewIntent(Context context) {
+    public static Intent createNewIntent(Context context) {
         return new Intent(context, HabitActivity.class);
     }
 }

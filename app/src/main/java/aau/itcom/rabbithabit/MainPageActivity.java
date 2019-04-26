@@ -161,9 +161,9 @@ public class MainPageActivity extends AppCompatActivity
         } else if (id == R.id.nav_main) {
             getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new MainPageFragment()).commit();
         } else if (id == R.id.nav_profile) {
-            //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new MainPageFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
         } else if (id == R.id.nav_settings) {
-
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new SettingsFragment()).commit();
         } else if (id == R.id.nav_log_out) {
             logOutFromFirebase();
         }
