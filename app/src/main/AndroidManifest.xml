@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.STORAGE" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -38,7 +40,6 @@
         <activity android:name=".HabitDetailsActivity" />
         <activity android:name=".AddHabitActivity" />
         <activity android:name=".AddPhotoActivity" />
-        <activity android:name=".RegistrationActivity" />
         <activity android:name=".HabitActivity" />
         <activity android:name=".WelcomePage" />
 

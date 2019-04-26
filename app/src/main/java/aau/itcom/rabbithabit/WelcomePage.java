@@ -10,6 +10,10 @@ import android.transition.TransitionManager;
 import android.view.View;
 import android.widget.TextView;
 
+import com.tomer.fadingtextview.FadingTextView;
+
+import java.util.concurrent.TimeUnit;
+
 import aau.itcom.rabbithabit.MainPageActivity;
 import aau.itcom.rabbithabit.R;
 
@@ -22,7 +26,9 @@ public class WelcomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_page);
 
-        name = findViewById(R.id.textViewWelcomeName);
+       // name = findViewById(R.id.textViewWelcomeName);
+        FadingTextView fadingTextView = findViewById(R.id.textViewWelcomeName);
+        fadingTextView.setTimeout(2, TimeUnit.SECONDS);
         //  name.setText(getIntent().getStringExtra("Name"));
 
         new Handler().postDelayed(new Runnable() {

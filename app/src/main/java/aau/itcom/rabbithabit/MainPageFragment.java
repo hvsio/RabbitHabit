@@ -50,7 +50,7 @@ public class MainPageFragment extends Fragment {
         habitsLayout = v.findViewById(R.id.habitLinearLayout);
         storyTextView = v.findViewById(R.id.textViewForStoryContent);
         photoView = v.findViewById(R.id.photoOfTheDay);
-        loadDetails();
+        //loadDetails();
     }
 
     private void loadDetails(){

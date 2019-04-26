@@ -2,6 +2,7 @@ package aau.itcom.rabbithabit;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,35 +14,75 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 import aau.itcom.rabbithabit.objects.Database;
+import aau.itcom.rabbithabit.objects.Habit;
 import aau.itcom.rabbithabit.objects.HabitPersonal;
 import aau.itcom.rabbithabit.objects.HabitPublished;
+
+import static aau.itcom.rabbithabit.AddHabitActivity.OWN_HABIT;
+import static aau.itcom.rabbithabit.CustomAdapter.PASS_HABIT_DETAILS;
+import static aau.itcom.rabbithabit.CustomAdapter.PASS_HABIT_DURATION;
+import static aau.itcom.rabbithabit.CustomAdapter.PASS_HABIT_NAME;
+
 
 public class HabitActivity extends AppCompatActivity {
     TextView nameTextView;
     TextView durationTextView;
     TextView detailsTextView;
     RadioGroup publishmentRadio;
+    TextView questionBar;
     Database db;
+    private String habitName;
+    private String habitDetails;
+    private String habitDuration;
+    Intent intentFromSearching;
 
     private static final String TAG = "AddingHabitActivity";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addownhabit);
 
+        intentFromSearching = this.getIntent();
+
         nameTextView = findViewById(R.id.nameOfHabit);
         durationTextView = findViewById(R.id.durationOfHabit);
         detailsTextView = findViewById(R.id.detailsEditText);
         publishmentRadio = findViewById(R.id.radioGroupPublishment);
+        questionBar = findViewById(R.id.questionBar);
 
         db = Database.getInstance();
+
+        if(intentFromSearching.getExtras()!=null) {
+            Bundle retrievedBundle = getIntent().getExtras();
+            habitName = retrievedBundle.getString(PASS_HABIT_NAME);
+            habitDetails = retrievedBundle.getString(PASS_HABIT_DETAILS);
+            habitDuration = retrievedBundle.getString(PASS_HABIT_DURATION);
+            nameTextView.setEnabled(false);
+            nameTextView.setText(habitName);
+            nameTextView.setTextColor(Color.BLACK);
+            durationTextView.setEnabled(false);
+            durationTextView.setText(habitDuration);
+            durationTextView.setTextColor(Color.BLACK);;
+            detailsTextView.setEnabled(false);
+            detailsTextView.setText(habitDetails);
+            detailsTextView.setTextColor(Color.BLACK);;
+            publishmentRadio.setVisibility(View.GONE);
+            questionBar.setVisibility(View.GONE);
+
+        }
     }
 
+
     public void collectInformation(View view) {
-        if (checkInformation()) {
+        if(intentFromSearching.getExtras()!=null) {
+            saveHabitAsPersonal();
+        } else if (checkInformation()) {
             switch (publishmentRadio.getCheckedRadioButtonId()) {
                 case R.id.yesButton:
                     blockEdition(true);
@@ -95,6 +136,8 @@ public class HabitActivity extends AppCompatActivity {
     private void displayToast(String text) {
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
+
+
 
     static Intent createNewIntent(Context context) {
         return new Intent(context, HabitActivity.class);
