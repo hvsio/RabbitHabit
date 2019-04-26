@@ -1,5 +1,6 @@
 package aau.itcom.rabbithabit;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
@@ -32,6 +33,8 @@ public class WelcomePage extends AppCompatActivity {
         }, 4*1000);
     }
 
-
+    static Intent createNewIntent(Context context) {
+        return new Intent(context, WelcomePage.class);
+    }
 
 }
