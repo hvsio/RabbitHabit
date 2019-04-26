@@ -49,11 +49,11 @@ public class AddPhotoActivity extends AppCompatActivity {
         pickFromGallery = findViewById(R.id.pick_from_gallery);
         db = Database.getInstance();
 
-//        if (checkSelfPermission(Manifest.permission.CAMERA)
-//                != PackageManager.PERMISSION_GRANTED) {
+        if (checkSelfPermission(Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
         requestPermissions(new String[]{Manifest.permission.CAMERA},
                 MY_CAMERA_REQUEST_CODE);
-//        }
+        }
     }
     public static String getCurrentPhotoPath() {
         return currentPhotoPath;
