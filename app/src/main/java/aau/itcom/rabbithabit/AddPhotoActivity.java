@@ -5,6 +5,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -39,6 +40,7 @@ public class AddPhotoActivity extends AppCompatActivity {
     private FloatingActionButton pickFromGallery;
     Database db;
 
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +71,25 @@ public class AddPhotoActivity extends AppCompatActivity {
         }
         if (requestCode == REQUEST_GET_PIC && resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
-            final String path = selectedImageUri.getPath();
+            final String path = getPathFromURI(selectedImageUri);
             if (path != null) {
                 File f = new File(path);
                 selectedImageUri = Uri.fromFile(f);
             }
             imageView.setImageURI(selectedImageUri);
         }
+    }
+
+    public String getPathFromURI(Uri contentUri) {
+        String res = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        if (cursor.moveToFirst()) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+        return res;
     }
 
     public void dispatchTakePictureIntent(View view) {
@@ -104,8 +118,8 @@ public class AddPhotoActivity extends AppCompatActivity {
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        String imageFileName = "JPEG_" + timeStamp + "_";
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */

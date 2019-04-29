@@ -269,6 +269,28 @@ public class Database {
                 });
     }
 
+    public void uploadProfilePic(FirebaseUser user, File filePassed) {
+        Uri file = Uri.fromFile(filePassed);
+        StorageReference profilesRef = mStorageRef.child(user.getUid() + "/current_profile_pic.jpg");
+
+        profilesRef.putFile(file)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+                        Uri downloadUrl = taskSnapshot.getUploadSessionUri();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        Log.d(TAG, "Cannot upload the photo. Check your internet connection!");
+                        exception.printStackTrace();
+                    }
+                });
+    }
+
     public void addStory(Story story, FirebaseUser user) {
         Map<String, Object> map = new HashMap<>();
         map.put("storyContent", story.getTextContent());
