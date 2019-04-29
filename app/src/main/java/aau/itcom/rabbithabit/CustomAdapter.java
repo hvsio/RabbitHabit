@@ -22,12 +22,7 @@ import java.util.ArrayList;
 
 import aau.itcom.rabbithabit.objects.Habit;
 
-import static android.app.Activity.RESULT_OK;
-import static android.support.v4.app.ActivityCompat.startActivityForResult;
-import static android.support.v4.content.ContextCompat.startActivity;
-import static java.security.AccessController.getContext;
-
-public class CustomAdapter extends ArrayAdapter<Habit> implements  View.OnClickListener{
+public class CustomAdapter extends ArrayAdapter<Habit> implements View.OnClickListener {
 
     private ArrayList<Habit> habitArrayList;
     Context mContext;
@@ -35,7 +30,6 @@ public class CustomAdapter extends ArrayAdapter<Habit> implements  View.OnClickL
     public static final String PASS_HABIT_DURATION = "HABIT_DURATION";
     public static final String PASS_HABIT_DETAILS = "HABIT_DETAILS";
     public static final int OPEN_ACTIVITY = 1;
-    HabitActivity habitActivity = new HabitActivity();
 
     private static class ViewHolder {
         TextView nameOfHabit;
@@ -47,23 +41,22 @@ public class CustomAdapter extends ArrayAdapter<Habit> implements  View.OnClickL
     public CustomAdapter(ArrayList<Habit> habitArrayList, Context context) {
         super(context, R.layout.custom_list_row, habitArrayList);
         this.habitArrayList = habitArrayList;
-        this.mContext=context;
+        this.mContext = context;
 
     }
 
     @Override
     public void onClick(View v) {
-        int position=(Integer) v.getTag();
-        Object object= getItem(position);
-        Habit habit=(Habit)object;
+        int position = (Integer) v.getTag();
+        Object object = getItem(position);
+        Habit habit = (Habit) object;
         assert habit != null;
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.item_info:
-                Snackbar.make(v, "Details " +habit.getDetails(), Snackbar.LENGTH_LONG)
+                Snackbar.make(v, "Details " + habit.getDetails(), Snackbar.LENGTH_LONG)
                         .setAction("No action", null).show();
                 break;
-            case R.id.addBtn:
+            case R.id.addButton:
                 Intent intent = new Intent(mContext, HabitActivity.class);
                 Bundle extras = new Bundle();
                 extras.putString(PASS_HABIT_NAME, habit.getName());
@@ -72,9 +65,8 @@ public class CustomAdapter extends ArrayAdapter<Habit> implements  View.OnClickL
                 intent.putExtras(extras);
                 mContext.startActivity(intent);
 
+        }
     }
-    }
-
 
 
     private int lastPosition = -1;
@@ -96,16 +88,16 @@ public class CustomAdapter extends ArrayAdapter<Habit> implements  View.OnClickL
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.custom_list_row, parent, false);
-            viewHolder.nameOfHabit = (TextView) convertView.findViewById(R.id.name);
-            viewHolder.addButton = (Button) convertView.findViewById(R.id.addBtn);
-            viewHolder.info = (ImageView) convertView.findViewById(R.id.item_info);
+            viewHolder.nameOfHabit = convertView.findViewById(R.id.name);
+            viewHolder.addButton = convertView.findViewById(R.id.addButton);
+            viewHolder.info = convertView.findViewById(R.id.item_info);
 
-            result=convertView;
+            result = convertView;
 
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
-            result=convertView;
+            result = convertView;
         }
 
         Animation animation = AnimationUtils.loadAnimation(mContext, (position > lastPosition) ? R.anim.top_from_bottom : R.anim.down_from_top);
@@ -114,7 +106,6 @@ public class CustomAdapter extends ArrayAdapter<Habit> implements  View.OnClickL
 
         assert habit != null;
         viewHolder.nameOfHabit.setText(habit.getName());
-       // viewHolder.info.setOnClickListener(this);
         viewHolder.info.setTag(position);
         viewHolder.addButton.setTag(position);
         viewHolder.addButton.setOnClickListener(this);
@@ -122,7 +113,5 @@ public class CustomAdapter extends ArrayAdapter<Habit> implements  View.OnClickL
 
         return convertView;
     }
-
-
 
 }

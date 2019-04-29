@@ -207,8 +207,8 @@ public class Database {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         final File finalOutputFile = outputFile;
+
         mStorageRef.child(user.getUid() + "/" + dateFormat.format(date) + ".jpg")
                 .getFile(outputFile)
                 .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {

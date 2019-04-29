@@ -169,7 +169,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser currentUser) {
         if (currentUser != null)
-            startActivity(MainPageActivity.createNewIntent(getApplicationContext()));
+            startActivity(WelcomePage.createNewIntent(getApplicationContext()));
     }
 
     private void signInGoogle() {

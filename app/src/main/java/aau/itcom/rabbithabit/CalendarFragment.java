@@ -30,7 +30,6 @@ import java.util.concurrent.Executors;
 
 import aau.itcom.rabbithabit.objects.Database;
 import aau.itcom.rabbithabit.objects.HabitPersonal;
-import aau.itcom.rabbithabit.objects.Photo;
 import aau.itcom.rabbithabit.objects.Story;
 
 public class CalendarFragment extends Fragment {
@@ -41,7 +40,6 @@ public class CalendarFragment extends Fragment {
     LinearLayout.LayoutParams params;
     ArrayList<HabitPersonal> habitArray;
     Story story;
-    Photo photo;
     Database db;
     private StorageReference mStorageRef;
 
