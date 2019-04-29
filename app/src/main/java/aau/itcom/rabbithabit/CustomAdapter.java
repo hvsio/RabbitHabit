@@ -89,7 +89,7 @@ public class CustomAdapter extends ArrayAdapter<Habit> implements View.OnClickLi
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.custom_list_row, parent, false);
             viewHolder.nameOfHabit = convertView.findViewById(R.id.name);
-            viewHolder.addButton = convertView.findViewById(R.id.addButton);
+            viewHolder.addButton = convertView.findViewById(R.id.addBtn);
             viewHolder.info = convertView.findViewById(R.id.item_info);
 
             result = convertView;

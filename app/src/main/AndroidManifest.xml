@@ -42,6 +42,7 @@
         <activity android:name=".AddPhotoActivity" />
         <activity android:name=".HabitActivity" />
         <activity android:name=".WelcomePage" />
+        <activity android:name=".RegistrationActivity" />
 
         <activity
             android:name="aau.itcom.rabbithabit.LoginActivity"
