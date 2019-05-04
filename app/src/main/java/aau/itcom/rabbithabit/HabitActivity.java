@@ -11,7 +11,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.timessquare.CalendarPickerView;
 
 import java.util.Calendar;

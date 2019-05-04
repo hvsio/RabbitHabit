@@ -36,6 +36,8 @@
     <string name="story_title">Story of the day</string>
     <string name="welcome_name">Hello Brian</string>
     <string name="dauration">Set the duration:</string>
+    <string name="total_number_of_habits">No. of habits</string>
+    <string name="total_number_of_photos">No. of photos</string>
     <string-array name="welcome">
         <item>Hello Brian</item>
         <item>Enjoy our app</item>

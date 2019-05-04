@@ -47,6 +47,7 @@ dependencies {
     implementation 'com.tomer:fadingtextview:2.5'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'com.squareup:android-times-square:1.6.5@aar'
 
 }
 apply plugin: 'com.google.gms.google-services'
