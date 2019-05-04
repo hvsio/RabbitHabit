@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="@drawable/another_gradient"
     tools:context=".CalendarActivity">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="683dp"
+        android:layout_height="643dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -61,49 +61,53 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.124" />
 
-                <TextView
-                    android:id="@+id/textViewStory"
-                    android:layout_width="375dp"
-                    android:layout_height="17dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="TextView"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/calendarViewDaily"
-                    app:layout_constraintVertical_bias="0.024" />
-
                 <View
                     android:id="@+id/view3"
                     android:layout_width="377dp"
                     android:layout_height="180dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/my_button_white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.555"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewStory"
+                    app:layout_constraintTop_toBottomOf="@+id/calendarViewDaily"
                     app:layout_constraintVertical_bias="0.033" />
+
+                <TextView
+                    android:id="@+id/textViewStory"
+                    android:layout_width="273dp"
+                    android:layout_height="31dp"
+                    android:text="Story:"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/view3"
+                    app:layout_constraintEnd_toEndOf="@+id/view3"
+                    app:layout_constraintHorizontal_bias="0.115"
+                    app:layout_constraintStart_toStartOf="@+id/view3"
+                    app:layout_constraintTop_toTopOf="@+id/view3"
+                    app:layout_constraintVertical_bias="0.046" />
 
                 <ImageView
                     android:id="@+id/imageView3"
-                    android:layout_width="369dp"
-                    android:layout_height="584dp"
+                    android:layout_width="300dp"
+                    android:layout_height="396dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="30dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="1dp"
+                    android:background="@drawable/my_button_white"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintCircleRadius="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view3"
-                    tools:src="@tools:sample/avatars" />
+                    tools:src="@drawable/no_picture" />
 
             </android.support.constraint.ConstraintLayout>
 

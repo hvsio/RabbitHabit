@@ -1,5 +1,6 @@
 package aau.itcom.rabbithabit;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -39,6 +41,7 @@ public class CalendarFragment extends Fragment {
     TextView storyTextView;
     LinearLayout.LayoutParams params;
     ArrayList<HabitPersonal> habitArray;
+    ImageView imageView;
     Story story;
     Database db;
     private StorageReference mStorageRef;
@@ -67,6 +70,7 @@ public class CalendarFragment extends Fragment {
         storyTextView = v.findViewById(R.id.textViewStory);
         layout = v.findViewById(R.id.linearLayoutOfDay);
         calendar = v.findViewById(R.id.calendarViewDaily);
+        imageView = v.findViewById(R.id.imageView3);
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
@@ -89,12 +93,12 @@ public class CalendarFragment extends Fragment {
         ExecutorService service = Executors.newCachedThreadPool();
         service.submit(new LoadHabitsTask());
         service.submit(new LoadStoryTask());
-        //service.submit(new LoadPhotoTask());
+        service.submit(new LoadPhotoTask());
         service.shutdown();
 
         Log.d(TAG, "I am inside changeCurrentDay(), and I am loading info");
         db.loadSetOfHabitsOnDate(date, FirebaseAuth.getInstance().getCurrentUser());
-        //db.loadPhotoOnDate(date, FirebaseAuth.getInstance().getCurrentUser());
+        db.loadPhotoOnDate(date, FirebaseAuth.getInstance().getCurrentUser(), getContext());
         db.loadStoryOnDate(date, FirebaseAuth.getInstance().getCurrentUser());
 
     }
@@ -126,6 +130,7 @@ public class CalendarFragment extends Fragment {
                 System.out.println("FAILURE");
             }
         });
+        imageView.setImageURI(Uri.fromFile(localFile));
     }
 
     private void displayHabits(){

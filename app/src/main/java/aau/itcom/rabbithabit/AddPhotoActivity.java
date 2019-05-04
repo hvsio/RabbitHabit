@@ -66,8 +66,6 @@ public class AddPhotoActivity extends AppCompatActivity {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             File f = new File(currentPhotoPath);
             imageView.setImageURI(Uri.fromFile(f));
-            galleryAddPic();
-            db.uploadPhotoFile(new Date(), FirebaseAuth.getInstance().getCurrentUser(), new File(getCurrentPhotoPath()));
         }
         if (requestCode == REQUEST_GET_PIC && resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
@@ -76,7 +74,9 @@ public class AddPhotoActivity extends AppCompatActivity {
                 File f = new File(path);
                 selectedImageUri = Uri.fromFile(f);
             }
+            currentPhotoPath = selectedImageUri.getPath();
             imageView.setImageURI(selectedImageUri);
+
         }
     }
 
@@ -144,6 +144,13 @@ public class AddPhotoActivity extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Select Picture"),REQUEST_GET_PIC);
+    }
+
+    public void addAsDailyPic(View view) {
+        galleryAddPic();
+        db.uploadPhotoFile(new Date(), FirebaseAuth.getInstance().getCurrentUser(), new File(currentPhotoPath));
+        Intent intent = new Intent(getApplicationContext(), MainPageActivity.class);
+        startActivity(intent);
     }
 
     static Intent createNewIntent(Context context) {

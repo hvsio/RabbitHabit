@@ -4,23 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/colorBackground"
+    android:background="@drawable/another_gradient"
     tools:context=".AddPhotoActivity">
 
     <ImageView
         android:id="@+id/imageViewDisplay"
-        android:layout_width="327dp"
-        android:layout_height="532dp"
+        android:layout_width="800px"
+        android:layout_height="421dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@drawable/my_button_white"
+        android:elevation="30dp"
+        android:fadingEdgeLength="@dimen/activity_horizontal_margin"
         app:layout_constraintBottom_toBottomOf="@+id/take_photo_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.326"
-        app:srcCompat="@drawable/com_facebook_profile_picture_blank_portrait" />
+        app:srcCompat="@drawable/add_picture" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/take_photo_button"
@@ -34,10 +37,10 @@
         android:onClick="dispatchTakePictureIntent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.713"
+        app:layout_constraintHorizontal_bias="0.7"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.878"
+        app:layout_constraintVertical_bias="0.846"
         app:srcCompat="@drawable/ic_menu_camera" />
 
     <android.support.design.widget.FloatingActionButton
@@ -52,10 +55,28 @@
         android:onClick="pickFromGallery"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.289"
+        app:layout_constraintHorizontal_bias="0.303"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.878"
+        app:layout_constraintVertical_bias="0.846"
         app:srcCompat="@drawable/ic_menu_gallery" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="181dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/my_button3"
+        android:onClick="addAsDailyPic"
+        android:shadowColor="@android:color/background_dark"
+        android:text="Add as my daily picture"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.959" />
 
 </android.support.constraint.ConstraintLayout>

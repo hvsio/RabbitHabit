@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -17,6 +18,7 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.protobuf.StringValue;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,6 +56,7 @@ public class Database {
     public static final Object LOCK_FOR_HABITS_PUBLISHED = new Object();
     public static final Object LOCK_FOR_STORY = new Object();
     public static final Object LOCK_FOR_PHOTO = new Object();
+    public static final Object LOCK_FOR_PROFILE_PIC = new Object();
 
     private Database() {
         db = FirebaseFirestore.getInstance();
@@ -91,6 +94,11 @@ public class Database {
                 });
     }
 
+
+    public String countHabits() {
+        String number = String.valueOf(getArrayListOfHabitsPersonal().size());
+        return number;
+        };
 
     public void loadSetOfHabitsOnDate(Date date, FirebaseUser user) {
 
@@ -239,9 +247,10 @@ public class Database {
 
     public Uri getPhoto() throws NoSuchElementException {
         if (!isPhotoDownloadCompleted)
-            throw new NoSuchElementException("Photo needs to be loaded before getting or the file doesn't exist!");
+            Log.i("PROFILE_PIC", "No profile picture detected");
         else
             return photoUri;
+        return photoUri;
     }
 
     public void uploadPhotoFile(Date date, FirebaseUser user, File filePassed) {
@@ -374,4 +383,43 @@ public class Database {
                     }
                 });
     }
+
+    public void loadProfilePicture(FirebaseUser user, Context context) {
+        File directory = context.getCacheDir();
+        File outputFile = null;
+        try {
+            outputFile = File.createTempFile("profile_picture", "jpg", directory);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        final File finalOutputFile = outputFile;
+
+        mStorageRef.child(user.getUid() + "/profile_picture.jpg")
+                .getFile(outputFile)
+                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        // Successfully downloaded data to local file
+                        photoUri = Uri.fromFile(finalOutputFile);
+
+                        isPhotoDownloadCompleted = true;
+                        synchronized (LOCK_FOR_PROFILE_PIC) {
+                            LOCK_FOR_PROFILE_PIC.notify();
+                            Log.d(TAG, "NOTIFIED!");
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle failed download
+                isPhotoDownloadCompleted = false;
+                Log.d(TAG, "Cannot download the photo. The photo may not exist!");
+                synchronized (LOCK_FOR_PROFILE_PIC) {
+                    LOCK_FOR_PROFILE_PIC.notify();
+                    Log.d(TAG, "NOTIFIED!");
+                }
+            }
+        });
+    }
+
 }

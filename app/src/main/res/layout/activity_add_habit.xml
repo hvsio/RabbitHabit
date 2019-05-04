@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0091EA"
+    android:background="@drawable/another_gradient"
     tools:context=".AddHabitActivity">
 
     <SearchView
@@ -32,7 +32,7 @@
         android:layout_marginEnd="8dp"
         android:background="@drawable/my_button3"
         android:shadowColor="@color/common_google_signin_btn_text_dark_focused"
-        android:text="@string/addownhabit"
+        android:text="@string/showtrendinghabits"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchView" />

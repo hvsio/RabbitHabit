@@ -25,6 +25,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,6 +38,8 @@ public class MainPageActivity extends AppCompatActivity
     CoordinatorLayout transitionsContainer;
     View viewBlurred;
     boolean isButtonAddClicked;
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -56,6 +60,8 @@ public class MainPageActivity extends AppCompatActivity
         fabHabit = transitionsContainer.findViewById(R.id.fabHabit);
         fabStory = transitionsContainer.findViewById(R.id.fabStory);
         fabPhoto = transitionsContainer.findViewById(R.id.fabPhoto);
+
+
 
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("RestrictedApi")

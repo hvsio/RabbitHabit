@@ -4,7 +4,7 @@
     <string name="facebook_app_id">2153253404721031</string>
     <string name="fb_login_protocol_scheme">fb2153253404721031</string>
     <string name="how_should_we_call_you">HOW SHOULD WE CALL YOU?</string>
-    <string name="email_input">Email</string>
+    <string name="email_input">Email:</string>
     <string name="name_input">Name</string>
     <string name="password_input">Password</string>
     <string name="confirm_password_input">Confirm password</string>
@@ -36,11 +36,13 @@
     <string name="story_title">Story of the day</string>
     <string name="welcome_name">Hello Brian</string>
     <string name="dauration">Set the duration:</string>
+    <string name="total_number_of_habits">No. of habits</string>
+    <string name="total_number_of_photos">No. of photos</string>
     <string-array name="welcome">
         <item>Hello Brian</item>
         <item>Enjoy our app</item>
     </string-array>
-    <string name="story_content">Today\'s classes were interesting, but my mom called my in a middle of them to tell me that my do died. It really hurt me.</string>
+    <string name="story_content">Today\'s classes were interesting, but my mom called my in a middle of them to tell me that my dog died. It really hurt me.</string>
 
 
     <!-- Strings related to Settings -->

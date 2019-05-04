@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import java.util.concurrent.Executors;
 
 import aau.itcom.rabbithabit.objects.Database;
 import aau.itcom.rabbithabit.objects.HabitPersonal;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainPageFragment extends Fragment {
 
@@ -32,6 +34,10 @@ public class MainPageFragment extends Fragment {
     private LinearLayout habitsLayout;
     private TextView storyTextView;
     private ImageView photoView;
+    private CircleImageView profilePic;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @Nullable
     @Override
@@ -50,6 +56,7 @@ public class MainPageFragment extends Fragment {
         habitsLayout = v.findViewById(R.id.habitLinearLayout);
         storyTextView = v.findViewById(R.id.textViewForStoryContent);
         photoView = v.findViewById(R.id.photoOfTheDay);
+        profilePic = v.findViewById(R.id.profile_image);
         photoView.setVisibility(View.GONE);
         loadDetails();
     }
@@ -60,12 +67,14 @@ public class MainPageFragment extends Fragment {
         service.submit(new LoadHabitsTask());
         service.submit(new LoadStoryTask());
         service.submit(new LoadPhotoTask());
+        service.submit(new LoadProfilePictureTask());
         service.shutdown();
 
         Log.d(TAG, "I am inside loadDetails(), and I am loading info");
         db.loadSetOfHabitsOnDate(Calendar.getInstance().getTime(), FirebaseAuth.getInstance().getCurrentUser());
         db.loadPhotoOnDate(Calendar.getInstance().getTime(), FirebaseAuth.getInstance().getCurrentUser(), getContext());
         db.loadStoryOnDate(Calendar.getInstance().getTime(), FirebaseAuth.getInstance().getCurrentUser());
+        db.loadProfilePicture(FirebaseAuth.getInstance().getCurrentUser(), getContext());
 
     }
 
@@ -77,6 +86,7 @@ public class MainPageFragment extends Fragment {
                 TextView textView = new TextView(getContext());
                 textView.setText(db.getArrayListOfHabitsPersonal().get(i).getName());
                 textView.setTextSize(18);
+                habitsLayout.addView(textView);
 
                 final HabitPersonal habitPersonal = db.getArrayListOfHabitsPersonal().get(i);
                 textView.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +99,7 @@ public class MainPageFragment extends Fragment {
                 });
                 textView.setLayoutParams(params);
                 textView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.my_button_white));
-                habitsLayout.addView(textView);
+
             }
         } catch (NoSuchElementException ex){
             Log.w(TAG, "Error loading Habits. No habits to display!\n" + ex);
@@ -102,7 +112,8 @@ public class MainPageFragment extends Fragment {
 
         try{
             db.getStory();
-            storyTextView.setText(db.getStory().getTextContent());
+           // storyTextView.setText(db.getStory().getTextContent());
+            storyTextView.setText(R.string.story_content);
         } catch (NoSuchElementException | NullPointerException ex) {
             Log.w(TAG, "Error loading Story. No story to display!\n" + ex);
             storyTextView.setText(text);
@@ -117,6 +128,10 @@ public class MainPageFragment extends Fragment {
         } catch(NoSuchElementException ex) {
             Log.w(TAG, "Error loading Photo. No photo to display!\n" + ex);
         }
+    }
+
+    private void displayProfilePicture() {
+        profilePic.setImageURI(db.getPhoto());
     }
 
     private class LoadHabitsTask implements Runnable{
@@ -199,6 +214,34 @@ public class MainPageFragment extends Fragment {
                 });
             } else {
                 Log.w(THREAD_STORY_TAG, "Fragment is no longer attached to its activity");
+            }
+        }
+    }
+
+    private class LoadProfilePictureTask implements Runnable{
+
+        private static final String THREAD_PHOTO_TAG = "LoadProfilePictureTask";
+
+        @Override
+        public void run() {
+            try {
+                synchronized (Database.LOCK_FOR_PROFILE_PIC) {
+                    Database.LOCK_FOR_PROFILE_PIC.wait();
+                }
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (isAdded()){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        displayProfilePicture();
+                    }
+                });
+            } else {
+                Log.w(THREAD_PHOTO_TAG, "Fragment is no longer attached to its activity");
             }
         }
     }

@@ -30,6 +30,7 @@ public class HabitPersonal extends Habit implements Serializable {
     private Map<String, Boolean> complexion;
 
 
+
     public HabitPersonal(String name, long duration, String details, Date startDate) {
         super(name, duration, details);
         this.startDate = startDate;

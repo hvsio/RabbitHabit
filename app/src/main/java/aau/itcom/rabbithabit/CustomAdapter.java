@@ -50,13 +50,12 @@ public class CustomAdapter extends ArrayAdapter<Habit> implements View.OnClickLi
         int position = (Integer) v.getTag();
         Object object = getItem(position);
         Habit habit = (Habit) object;
-        assert habit != null;
         switch (v.getId()) {
             case R.id.item_info:
-                Snackbar.make(v, "Details " + habit.getDetails(), Snackbar.LENGTH_LONG)
+                Snackbar.make(v, "Details: " + habit.getDetails(), Snackbar.LENGTH_LONG)
                         .setAction("No action", null).show();
                 break;
-            case R.id.addButton:
+            case R.id.addBtn:
                 Intent intent = new Intent(mContext, HabitActivity.class);
                 Bundle extras = new Bundle();
                 extras.putString(PASS_HABIT_NAME, habit.getName());
@@ -103,10 +102,9 @@ public class CustomAdapter extends ArrayAdapter<Habit> implements View.OnClickLi
         Animation animation = AnimationUtils.loadAnimation(mContext, (position > lastPosition) ? R.anim.top_from_bottom : R.anim.down_from_top);
         result.startAnimation(animation);
         lastPosition = position;
-
-        assert habit != null;
         viewHolder.nameOfHabit.setText(habit.getName());
         viewHolder.info.setTag(position);
+        viewHolder.info.setOnClickListener(this);
         viewHolder.addButton.setTag(position);
         viewHolder.addButton.setOnClickListener(this);
         // Return the completed view to render on screen

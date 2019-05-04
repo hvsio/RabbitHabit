@@ -10,6 +10,7 @@ import android.transition.TransitionManager;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.tomer.fadingtextview.FadingTextView;
 
 import java.util.concurrent.TimeUnit;
@@ -28,7 +29,8 @@ public class WelcomePage extends AppCompatActivity {
 
        // name = findViewById(R.id.textViewWelcomeName);
         FadingTextView fadingTextView = findViewById(R.id.textViewWelcomeName);
-        fadingTextView.setTimeout(2, TimeUnit.SECONDS);
+        fadingTextView.setTexts(new String[]{"Welcome!", "It's good to see you again " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName() + "!"});
+        fadingTextView.setTimeout(4, TimeUnit.SECONDS);
         //  name.setText(getIntent().getStringExtra("Name"));
 
         new Handler().postDelayed(new Runnable() {

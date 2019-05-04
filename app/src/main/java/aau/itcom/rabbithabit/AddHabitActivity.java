@@ -25,7 +25,7 @@ import static java.security.AccessController.getContext;
 public class AddHabitActivity extends AppCompatActivity {
 
     private static final String TAG = "AddHabitActivity";
-    ArrayList<Habit> habits;
+    static ArrayList<Habit> habits;
     ArrayList<HabitPublished> habitsToDisplay;
     ListView listView;
     private static CustomAdapter adapter;
@@ -51,26 +51,16 @@ public class AddHabitActivity extends AppCompatActivity {
         habits = new ArrayList<>();
         habits.add(new Habit("Smoke less", 30, "Smoke less than usual"));
         habits.add(new Habit("Walk for at least 15 min", 30, "Walkie walkie"));
-        habits.add(new Habit("Shut the fuck up", 30, "STFU"));
-        habits.add(new Habit("Shut the fuck up", 30, "STFU"));
-        habits.add(new Habit("Shut the fuck up", 30, "STFU"));
-        habits.add(new Habit("Shut the fuck up", 30, "STFU"));
-        habits.add(new Habit("Shut the fuck up", 30, "STFU"));
-        habits.add(new Habit("Shut the fuck up", 30, "STFU"));
+        habits.add(new Habit("Be nicer", 30, "Some random details"));
+        habits.add(new Habit("Drink more water", 30, "Some random details"));
+        habits.add(new Habit("Do not procastinate", 30, "Some random details"));
+        habits.add(new Habit("Meditate", 30, "Some random details"));
+        habits.add(new Habit("Read for half an hour a day", 30, "Some random details"));
+        habits.add(new Habit("Walk instead of taking a bus", 30, "Some random details"));
 
         adapter = new CustomAdapter(habits, getApplicationContext());
 
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Habit habit = habits.get(position);
-
-                Snackbar.make(view, habit.getDetails(), Snackbar.LENGTH_LONG)
-                        .setAction("No action", null).show();
-            }
-        });
     }
 
     private void loadTrendingHabits() {
