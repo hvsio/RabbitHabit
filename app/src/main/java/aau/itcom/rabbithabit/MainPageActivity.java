@@ -1,6 +1,8 @@
 package aau.itcom.rabbithabit;
 
 import android.annotation.SuppressLint;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,6 +12,8 @@ import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -28,6 +32,8 @@ import android.view.MenuItem;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+
+import aau.itcom.rabbithabit.objects.Story;
 
 public class MainPageActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -118,6 +124,8 @@ public class MainPageActivity extends AppCompatActivity
             }
         });
 
+
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -149,7 +157,17 @@ public class MainPageActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
+    public static class PrefsFragment extends PreferenceFragment {
 
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            // Load the preferences from an XML resource
+            addPreferencesFromResource(R.xml.settings_screen);
+        }
+    }
+
+    @SuppressLint("ResourceType")
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -163,7 +181,7 @@ public class MainPageActivity extends AppCompatActivity
         } else if (id == R.id.nav_profile) {
            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
         } else if (id == R.id.nav_settings) {
-
+            getSupportFragmentManager().beginTransaction().replace(R.xml.settings_screen, new SettingsFragment()).commit();
         } else if (id == R.id.nav_log_out) {
             logOutFromFirebase();
         }
@@ -187,12 +205,12 @@ public class MainPageActivity extends AppCompatActivity
         Intent intent = new Intent(getApplicationContext(), AddHabitActivity.class);
         startActivity(intent);
     }
+    public void addStory(View view) {
+        Intent intent = new Intent(getApplicationContext(), AddStoryActivity.class);
+        startActivity(intent);    }
 
     public void addPhoto(View view){
         startActivity(AddPhotoActivity.createNewIntent(getApplicationContext()));
     }
 
-    public void addStory(View view) {
-        // DO NOTHING FOR A WHILE
-    }
 }

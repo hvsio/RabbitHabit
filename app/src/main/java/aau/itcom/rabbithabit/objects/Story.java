@@ -2,7 +2,9 @@ package aau.itcom.rabbithabit.objects;
 
 import java.util.Date;
 
+
 public class Story {
+
     private Date date;
     private String textContent;
     private long mood;
@@ -36,4 +38,5 @@ public class Story {
     public void setMood(long mood) {
         this.mood = mood;
     }
+
 }

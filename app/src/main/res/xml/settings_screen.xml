@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fragment="aau.itcom.rabbithabit.SettingsFragment"
+    android:background="@color/colorBackground">
+
+    <EditTextPreference
+        android:title="Username"
+        android:key="user_name"
+        android:summary="set you username" />
+
+    <SwitchPreference
+        android:title="Insert mood with text"
+        android:key="switch"
+        android:summary="Default mood insertion with emoticons" />
+
+    <SwitchPreference
+        android:title="Download photo only when connected to wifi"
+        android:key="switch_active"
+        android:summary="Switch active"
+        android:defaultValue="true" />
+
+    <ListPreference
+        android:title="Frequency of notifications"
+        android:key="list_preference"
+        android:summary="Select how often would you like to be notified to complete your habits"
+        android:entries="@array/notifications"
+        android:entryValues="@array/notifications"
+        android:defaultValue="Once a day"/>
+
+    <ListPreference
+        android:title="Reminder snooze length"
+        android:key="list_preference"
+        android:summary="Select a time for a snooze after getting a notification to complete your habit"
+        android:entries="@array/snooze"
+        android:entryValues="@array/snooze"
+        android:defaultValue="5 minutes"/>
+
+    <Preference
+        android:key="feedback"
+        android:title="Send feedback"
+        android:summary="Report technical issues or suggest new features" />
+
+</PreferenceScreen>
