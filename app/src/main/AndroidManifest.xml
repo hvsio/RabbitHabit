@@ -40,6 +40,7 @@
         <activity android:name=".HabitDetailsActivity" />
         <activity android:name=".AddHabitActivity" />
         <activity android:name=".AddPhotoActivity" />
+        <activity android:name=".AddStoryActivity" />
         <activity android:name=".HabitActivity" />
         <activity android:name=".WelcomePage" />
         <activity android:name=".RegistrationActivity" />
