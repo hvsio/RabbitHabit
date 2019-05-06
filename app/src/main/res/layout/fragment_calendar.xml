@@ -2,16 +2,13 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layoutMaster"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/another_gradient"
-    tools:context=".CalendarActivity">
+    android:background="@color/colorBackground">
 
     <ScrollView
-        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="683dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,13 +19,13 @@
         <LinearLayout
             android:id="@+id/linearLayoutOfDay"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <android.support.constraint.ConstraintLayout
-                android:id="@+id/layout"
+                android:id="@+id/ConstraintLayoutOfDayCalendar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/textViewSelectDate"
@@ -64,78 +61,55 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.124" />
 
-                <View
-                    android:id="@+id/view3"
-                    android:layout_width="377dp"
-                    android:layout_height="181dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/my_button_white"
-                    app:layout_constraintBottom_toTopOf="@+id/imageView3"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/calendarViewDaily" />
-
                 <TextView
-                    android:id="@+id/textViewStory"
-                    android:layout_width="273dp"
-                    android:layout_height="31dp"
-                    android:text="Story:"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
+                    android:id="@+id/textViewStoryTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Your Story"
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/view3"
-                    app:layout_constraintEnd_toEndOf="@+id/view3"
-                    app:layout_constraintHorizontal_bias="0.115"
-                    app:layout_constraintStart_toStartOf="@+id/view3"
-                    app:layout_constraintTop_toTopOf="@+id/view3"
-                    app:layout_constraintVertical_bias="0.046" />
-
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="300dp"
-                    android:layout_height="396dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/my_button_white"
-                    app:layout_constraintBottom_toTopOf="@+id/nestedScrollView2"
-                    app:layout_constraintCircleRadius="5dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view3"
-                    tools:src="@drawable/no_picture" />
-
-                <android.support.v4.widget.NestedScrollView
-                    android:id="@+id/nestedScrollView2"
-                    android:layout_width="377dp"
-                    android:layout_height="200dp"
-                    android:layout_above="@+id/view3"
-                    android:layout_below="@+id/imageView3"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/my_button_white"
-                    android:fillViewport="true"
-                    android:isScrollContainer="true"
-                    android:scrollbars="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView3">
+                    app:layout_constraintTop_toBottomOf="@+id/calendarViewDaily"
+                    app:layout_constraintVertical_bias="0.024" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                <TextView
+                    android:id="@+id/textViewStoryContent"
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="786dp"
+                    android:background="@drawable/my_button_white"
+                    android:text="TextView"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="italic"
+                    app:layout_constraintBottom_toBottomOf="@+id/ConstraintLayoutOfDayCalendar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewStoryTitle"
+                    app:layout_constraintVertical_bias="1.0" />
 
-                        <ListView
-                            android:id="@+id/habits_from_the_day"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:divider="@color/calendar_divider"
-                            android:dividerHeight="2dp"
-                            tools:layout_editor_absoluteY="1126dp" />
-                    </LinearLayout>
-                </android.support.v4.widget.NestedScrollView>
+                <ImageView
+                    android:id="@+id/photoOfTheDayCalendar"
+                    android:layout_width="369dp"
+                    android:layout_height="584dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="1dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewStoryContent"
+                    tools:src="@tools:sample/avatars" />
 
             </android.support.constraint.ConstraintLayout>
 
