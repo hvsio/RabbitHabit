@@ -2,12 +2,10 @@ package aau.itcom.rabbithabit;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,15 +18,13 @@ import aau.itcom.rabbithabit.objects.Database;
 import aau.itcom.rabbithabit.objects.Habit;
 import aau.itcom.rabbithabit.objects.HabitPublished;
 
-import static java.security.AccessController.getContext;
-
 public class AddHabitActivity extends AppCompatActivity {
 
     private static final String TAG = "AddHabitActivity";
     static ArrayList<Habit> habits;
     ArrayList<HabitPublished> habitsToDisplay;
     ListView listView;
-    private static CustomAdapter adapter;
+    private static CustomAdapterSearchingHabits adapter;
     LinearLayout displayTrendingLayout;
     Database db;
     LinearLayout.LayoutParams params;
@@ -58,7 +54,7 @@ public class AddHabitActivity extends AppCompatActivity {
         habits.add(new Habit("Read for half an hour a day", 30, "Some random details"));
         habits.add(new Habit("Walk instead of taking a bus", 30, "Some random details"));
 
-        adapter = new CustomAdapter(habits, getApplicationContext());
+        adapter = new CustomAdapterSearchingHabits(habits, getApplicationContext());
 
         listView.setAdapter(adapter);
     }

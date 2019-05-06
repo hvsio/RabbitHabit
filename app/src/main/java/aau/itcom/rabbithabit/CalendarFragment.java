@@ -9,11 +9,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.util.Strings;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,10 +41,13 @@ public class CalendarFragment extends Fragment {
 
     CalendarView calendar;
     LinearLayout layout;
+    LinearLayout layoutHabits;
     TextView storyTextView;
     LinearLayout.LayoutParams params;
     ArrayList<HabitPersonal> habitArray;
     ImageView imageView;
+    ListView listView;
+    CustomAdapterDayHabit adapter;
     Story story;
     Database db;
     private StorageReference mStorageRef;
@@ -68,6 +74,7 @@ public class CalendarFragment extends Fragment {
                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
         storyTextView = v.findViewById(R.id.textViewStory);
+        listView = v.findViewById(R.id.habits_from_the_day);
         layout = v.findViewById(R.id.linearLayoutOfDay);
         calendar = v.findViewById(R.id.calendarViewDaily);
         imageView = v.findViewById(R.id.imageView3);
@@ -111,37 +118,48 @@ public class CalendarFragment extends Fragment {
 
 
     private void displayPhoto() throws IOException {
-        //photo = new Photo(db.getPhoto().getDate(),db.getPhoto().getPhotoURLinDB());
-        SimpleDateFormat spf = new SimpleDateFormat("dd-MM-yyyy");
-        String pictureFile = spf.format(new Date());
-        StorageReference dailyPhotosRef = mStorageRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString()+ "-" + pictureFile);
-        System.out.println(pictureFile);
-        File localFile = File.createTempFile(FirebaseAuth.getInstance().getCurrentUser().getUid().toString(), "jpg");
-        System.out.println(localFile);
-        dailyPhotosRef.getFile(localFile)
-                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        System.out.println("SUCCESS");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                System.out.println("FAILURE");
-            }
-        });
-        imageView.setImageURI(Uri.fromFile(localFile));
+//        //photo = new Photo(db.getPhoto().getDate(),db.getPhoto().getPhotoURLinDB());
+//        SimpleDateFormat spf = new SimpleDateFormat("dd-MM-yyyy");
+//        String pictureFile = spf.format(new Date());
+//        StorageReference dailyPhotosRef = mStorageRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString()+ "-" + pictureFile);
+//        System.out.println(pictureFile);
+//        File localFile = File.createTempFile(FirebaseAuth.getInstance().getCurrentUser().getUid().toString() + "/" + pictureFile, ".jpg");
+//
+//        System.out.println(localFile);
+//        dailyPhotosRef.getFile(localFile)
+//                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+//                        System.out.println("SUCCESS");
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception exception) {
+//                System.out.println("FAILURE");
+//            }
+//        });
+
+        if (db.getPhoto() == null) {
+            imageView.setImageResource(R.drawable.no_picture);
+        }
+        else {
+            imageView.setImageURI(db.getPhoto());
+        }
     }
 
     private void displayHabits(){
+        //ArrayList<TextView> textViews = new ArrayList<>(createTextFieldsForHabits());
+        listView.setAdapter(null);
         Log.d(TAG, "Inside displayHabits()");
         habitArray.addAll(db.getArrayListOfHabitsPersonal());
-
         Log.d(TAG, "Inside displayHabits() and habit array size is: " + habitArray.size());
-        ArrayList<TextView> textViews = new ArrayList<>(createTextFieldsForHabits());
-        for(int i = 0;i<textViews.size();i++){
-            layout.addView(textViews.get(i));
-        }
+        adapter = new CustomAdapterDayHabit(getContext(), habitArray);
+        listView.setAdapter(adapter);
+
+//        for(int i = 0;i<textViews.size();i++){
+//            layoutHabits.addView(textViews.get(i));
+//        }
+
     }
 
     public ArrayList<TextView> createTextFieldsForHabits(){

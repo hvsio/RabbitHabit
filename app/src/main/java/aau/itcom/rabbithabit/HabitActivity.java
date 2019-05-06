@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -17,13 +16,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 import aau.itcom.rabbithabit.objects.Database;
-import aau.itcom.rabbithabit.objects.HabitPersonal;
-import aau.itcom.rabbithabit.objects.HabitPublished;
 
-import static aau.itcom.rabbithabit.AddHabitActivity.OWN_HABIT;
-import static aau.itcom.rabbithabit.CustomAdapter.PASS_HABIT_DETAILS;
-import static aau.itcom.rabbithabit.CustomAdapter.PASS_HABIT_DURATION;
-import static aau.itcom.rabbithabit.CustomAdapter.PASS_HABIT_NAME;
+import static aau.itcom.rabbithabit.CustomAdapterSearchingHabits.PASS_HABIT_DETAILS;
+import static aau.itcom.rabbithabit.CustomAdapterSearchingHabits.PASS_HABIT_DURATION;
+import static aau.itcom.rabbithabit.CustomAdapterSearchingHabits.PASS_HABIT_NAME;
 import static com.squareup.timessquare.CalendarPickerView.SelectionMode.RANGE;
 
 

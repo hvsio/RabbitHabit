@@ -72,6 +72,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_story"
                 android:layout_width="match_parent"
                 android:layout_height="122dp"
                 android:background="@drawable/my_button3"
@@ -98,20 +99,38 @@
                     android:textSize="18sp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/layout"
+                android:layout_width="377dp"
+                android:layout_height="match_parent">
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="334dp"
+                    android:layout_height="419dp"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/my_button_white"
+                    app:layout_constraintBottom_toBottomOf="@id/layout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.488"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/layout"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <ImageView
                     android:id="@+id/photoOfTheDay"
-                    android:layout_width="match_parent"
-                    android:layout_height="462dp"
+                    android:layout_width="255dp"
+                    android:layout_height="366dp"
+                    android:layout_margin="30dp"
+                    android:background="@drawable/no_picture"
                     android:padding="15dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:srcCompat="@drawable/com_facebook_profile_picture_blank_portrait" />
-            </LinearLayout>
+                    app:layout_constraintBottom_toBottomOf="@+id/view2"
+                    app:layout_constraintEnd_toEndOf="@+id/view2"
+                    app:layout_constraintHorizontal_bias="0.506"
+                    app:layout_constraintStart_toStartOf="@+id/view2"
+                    app:layout_constraintTop_toTopOf="@+id/view2"
+                    app:layout_constraintVertical_bias="1.0" />
+            </android.support.constraint.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
 

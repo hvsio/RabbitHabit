@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 import aau.itcom.rabbithabit.objects.Habit;
 
-public class CustomAdapter extends ArrayAdapter<Habit> implements View.OnClickListener {
+public class CustomAdapterSearchingHabits extends ArrayAdapter<Habit> implements View.OnClickListener {
 
     private ArrayList<Habit> habitArrayList;
     Context mContext;
@@ -38,7 +38,7 @@ public class CustomAdapter extends ArrayAdapter<Habit> implements View.OnClickLi
     }
 
 
-    public CustomAdapter(ArrayList<Habit> habitArrayList, Context context) {
+    public CustomAdapterSearchingHabits(ArrayList<Habit> habitArrayList, Context context) {
         super(context, R.layout.custom_list_row, habitArrayList);
         this.habitArrayList = habitArrayList;
         this.mContext = context;
