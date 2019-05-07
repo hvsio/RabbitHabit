@@ -30,6 +30,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <View
+                    android:id="@+id/view4"
+                    android:layout_width="344dp"
+                    android:layout_height="434dp"
+                    android:layout_marginTop="32dp"
+                    android:background="@drawable/my_button_white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.432"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view3" />
+
                 <TextView
                     android:id="@+id/textViewSelectDate"
                     android:layout_width="match_parent"
@@ -69,9 +80,7 @@
                     android:layout_width="377dp"
                     android:layout_height="181dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
                     android:background="@drawable/my_button_white"
-                    app:layout_constraintBottom_toTopOf="@+id/imageView3"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/calendarViewDaily" />
@@ -93,16 +102,13 @@
 
                 <ImageView
                     android:id="@+id/imageView3"
-                    android:layout_width="300dp"
-                    android:layout_height="396dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/my_button_white"
-                    app:layout_constraintBottom_toTopOf="@+id/nestedScrollView2"
+                    android:layout_width="269dp"
+                    android:layout_height="376dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/view4"
                     app:layout_constraintCircleRadius="5dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view3"
+                    app:layout_constraintEnd_toEndOf="@+id/view4"
+                    app:layout_constraintStart_toStartOf="@+id/view4"
+                    app:layout_constraintTop_toTopOf="@+id/view4"
                     tools:src="@drawable/no_picture" />
 
                 <android.support.v4.widget.NestedScrollView
@@ -111,7 +117,7 @@
                     android:layout_height="200dp"
                     android:layout_above="@+id/view3"
                     android:layout_below="@+id/imageView3"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="32dp"
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/my_button_white"
                     android:fillViewport="true"
@@ -120,7 +126,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView3">
+                    app:layout_constraintTop_toBottomOf="@+id/view4">
 
                     <LinearLayout
                         android:layout_width="match_parent"
