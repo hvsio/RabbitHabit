@@ -33,11 +33,13 @@
     <string name="button_habit3">Read book 30 minutes a day</string>
     <string name="button_habit4">Wake up at 6 am every day</string>
     <string name="button_habit5">Bike to school instead of taking the bus</string>
+    <string name="daily_story">Daily story</string>
     <string name="story_title">Story of the day</string>
     <string name="welcome_name">Hello Brian</string>
     <string name="dauration">Set the duration:</string>
     <string name="total_number_of_habits">No. of habits</string>
     <string name="total_number_of_photos">No. of photos</string>
+    <string name="mood_title">How would you describe your day?</string>
     <string-array name="welcome">
         <item>Hello Brian</item>
         <item>Enjoy our app</item>

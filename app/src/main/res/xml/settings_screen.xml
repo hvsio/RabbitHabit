@@ -3,6 +3,10 @@
     android:fragment="aau.itcom.rabbithabit.SettingsFragment"
     android:background="@color/colorBackground">
 
+    <PreferenceCategory
+        android:key="general_category"
+        android:title="GENERAL"/>
+
     <EditTextPreference
         android:title="Username"
         android:key="user_name"

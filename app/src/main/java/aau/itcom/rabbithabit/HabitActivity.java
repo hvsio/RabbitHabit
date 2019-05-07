@@ -3,28 +3,24 @@ package aau.itcom.rabbithabit;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.timessquare.CalendarPickerView;
+//import com.squareup.timessquare.CalendarPickerView;
 
 import java.util.Calendar;
 import java.util.Date;
 
 import aau.itcom.rabbithabit.objects.Database;
-import aau.itcom.rabbithabit.objects.HabitPersonal;
-import aau.itcom.rabbithabit.objects.HabitPublished;
 
-import static aau.itcom.rabbithabit.AddHabitActivity.OWN_HABIT;
 import static aau.itcom.rabbithabit.CustomAdapter.PASS_HABIT_DETAILS;
 import static aau.itcom.rabbithabit.CustomAdapter.PASS_HABIT_DURATION;
 import static aau.itcom.rabbithabit.CustomAdapter.PASS_HABIT_NAME;
-import static com.squareup.timessquare.CalendarPickerView.SelectionMode.RANGE;
+import static com.google.common.net.HttpHeaders.RANGE;
 
 
 public class HabitActivity extends AppCompatActivity {
@@ -59,13 +55,13 @@ public class HabitActivity extends AppCompatActivity {
         Calendar nextYear = Calendar.getInstance();
         nextYear.add(Calendar.YEAR, 1);
 
-        CalendarPickerView calendar = (CalendarPickerView) findViewById(R.id.calendar_view);
-        Date today = new Date();
-        calendar.init(today, nextYear.getTime())
-                .withSelectedDate(today);
-
-        calendar.init(today, nextYear.getTime())
-                .inMode(RANGE);
+//        CalendarPickerView calendar = (CalendarPickerView) findViewById(R.id.calendar_view);
+//        Date today = new Date();
+//        calendar.init(today, nextYear.getTime())
+//                .withSelectedDate(today);
+//
+//        calendar.init(today, nextYear.getTime())
+//                .inMode(RANGE);
 
         if(intentFromSearching.getExtras()!=null) {
             Bundle retrievedBundle = getIntent().getExtras();
