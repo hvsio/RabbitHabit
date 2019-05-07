@@ -302,11 +302,14 @@ public class Database {
 //    }
 
     public void addStory(Story story, FirebaseUser user) {
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
+
         Map<String, Object> map = new HashMap<>();
+        map.put("date", dateFormat.format(story.getDate()));
         map.put("storyContent", story.getTextContent());
         map.put("mood", story.getMood());
 
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
         db.collection("Users").document(user.getUid()).collection("Story").document(dateFormat.format(story.getDate()))
                 .set(map)

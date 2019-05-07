@@ -17,6 +17,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.hsalf.smilerating.SmileRating;
 
 import java.util.Calendar;
 import java.util.NoSuchElementException;
@@ -31,7 +32,7 @@ public class MainPageFragment extends Fragment {
 
     Database db;
     private static final String TAG = "MainPageFragment";
-    private RatingBar ratingBar;
+    private SmileRating ratingBar;
     private LinearLayout.LayoutParams params;
     private LinearLayout habitsLayout;
     private TextView storyTextView;
@@ -40,6 +41,7 @@ public class MainPageFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
 
     @Nullable
     @Override
@@ -58,12 +60,13 @@ public class MainPageFragment extends Fragment {
         View v = getView();
         params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        ratingBar = v.findViewById(R.id.ratingBar);
+        ratingBar = v.findViewById(R.id.ratingBar2);
         habitsLayout = v.findViewById(R.id.habitLinearLayout);
         storyTextView = v.findViewById(R.id.textViewForStoryContent);
         photoView = v.findViewById(R.id.photoOfTheDay);
         profilePic = v.findViewById(R.id.profile_image);
         photoView.setVisibility(View.GONE);
+
 
 
         loadDetails();
@@ -117,23 +120,18 @@ public class MainPageFragment extends Fragment {
         }
     }
 
-    private void displayMood() {
-
-        //ratingBar.setRating(getIntent().getStringExtra("Rating"));
-    }
 
     private void displayStory(){
         String text = "You have no story to display.";
 
         try{
-            db.getStory();
-         //   storyTextView.setText(getIn);
-            //storyTextView.setText(db.getStory().getTextContent());
-           // storyTextView.setText(R.string.story_content);
+            storyTextView.setText(db.getStory().getTextContent());
+            //storyTextView.setText(R.string.story_content);
         } catch (NoSuchElementException | NullPointerException ex) {
             Log.w(TAG, "Error loading Story. No story to display!\n" + ex);
             storyTextView.setText(text);
         }
+        ratingBar.setSelectedSmile(((int) db.getStory().getMood()));
 
     }
 
