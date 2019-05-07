@@ -134,7 +134,7 @@
                 <ImageView
                     android:id="@+id/photoOfTheDay"
                     android:layout_width="255dp"
-                    android:layout_height="366dp"
+                    android:layout_height="336dp"
                     android:layout_margin="30dp"
                     android:background="@drawable/no_picture"
                     android:padding="15dp"
