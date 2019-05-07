@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +31,7 @@ public class MainPageFragment extends Fragment {
 
     Database db;
     private static final String TAG = "MainPageFragment";
+    private RatingBar ratingBar;
     private LinearLayout.LayoutParams params;
     private LinearLayout habitsLayout;
     private TextView storyTextView;
@@ -43,6 +45,9 @@ public class MainPageFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_to_mainpage, container, false);
+
+
+
     }
 
     @Override
@@ -53,11 +58,14 @@ public class MainPageFragment extends Fragment {
         View v = getView();
         params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
+        ratingBar = v.findViewById(R.id.ratingBar);
         habitsLayout = v.findViewById(R.id.habitLinearLayout);
         storyTextView = v.findViewById(R.id.textViewForStoryContent);
         photoView = v.findViewById(R.id.photoOfTheDay);
         profilePic = v.findViewById(R.id.profile_image);
         photoView.setVisibility(View.GONE);
+
+
         loadDetails();
     }
 
@@ -75,6 +83,8 @@ public class MainPageFragment extends Fragment {
         db.loadPhotoOnDate(Calendar.getInstance().getTime(), FirebaseAuth.getInstance().getCurrentUser(), getContext());
         db.loadStoryOnDate(Calendar.getInstance().getTime(), FirebaseAuth.getInstance().getCurrentUser());
         db.loadProfilePicture(FirebaseAuth.getInstance().getCurrentUser(), getContext());
+
+
 
     }
 
@@ -107,13 +117,19 @@ public class MainPageFragment extends Fragment {
         }
     }
 
+    private void displayMood() {
+
+        //ratingBar.setRating(getIntent().getStringExtra("Rating"));
+    }
+
     private void displayStory(){
         String text = "You have no story to display.";
 
         try{
             db.getStory();
-           // storyTextView.setText(db.getStory().getTextContent());
-            storyTextView.setText(R.string.story_content);
+         //   storyTextView.setText(getIn);
+            //storyTextView.setText(db.getStory().getTextContent());
+           // storyTextView.setText(R.string.story_content);
         } catch (NoSuchElementException | NullPointerException ex) {
             Log.w(TAG, "Error loading Story. No story to display!\n" + ex);
             storyTextView.setText(text);

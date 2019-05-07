@@ -3,6 +3,9 @@ package aau.itcom.rabbithabit;
 import android.annotation.SuppressLint;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,6 +22,8 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.transition.TransitionManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -35,7 +40,11 @@ import android.widget.TextView;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Collections;
+
 import aau.itcom.rabbithabit.objects.Story;
+
+import static aau.itcom.rabbithabit.Notifications.CHANNEL_1_ID;
 
 public class MainPageActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -44,6 +53,7 @@ public class MainPageActivity extends AppCompatActivity
     CoordinatorLayout transitionsContainer;
     View viewBlurred;
     boolean isButtonAddClicked;
+    private NotificationManagerCompat notificationManager;
 
 
 
@@ -54,6 +64,8 @@ public class MainPageActivity extends AppCompatActivity
         setContentView(R.layout.activity_mainpage);
 
         isButtonAddClicked = false;
+
+        notificationManager = NotificationManagerCompat.from(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -146,6 +158,13 @@ public class MainPageActivity extends AppCompatActivity
 
     }
 
+    public void sendOnChannel1(View v) {
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID).setSmallIcon(R.drawable.notifications_on).setContentTitle("Title").setContentText("Message").build();
+
+        notificationManager.notify(1, notification);
+
+    }
+
     public boolean isButtonAddClicked() {
         return isButtonAddClicked;
     }
@@ -153,6 +172,7 @@ public class MainPageActivity extends AppCompatActivity
     public void setButtonAddClicked(boolean buttonAddClicked) {
         isButtonAddClicked = buttonAddClicked;
     }
+
 
     @Override
     public void onBackPressed() {
@@ -187,7 +207,13 @@ public class MainPageActivity extends AppCompatActivity
         } else if (id == R.id.nav_profile) {
            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
         } else if (id == R.id.nav_settings) {
-            getSupportFragmentManager().beginTransaction().replace(R.xml.settings_screen, new SettingsFragment()).commit();
+            FragmentManager mFragmentManager = getFragmentManager();
+            FragmentTransaction mFragmentTransaction = mFragmentManager
+                    .beginTransaction();
+            SettingsFragment
+                    mPrefsFragment = new SettingsFragment();
+            mFragmentTransaction.replace(android.R.id.content, mPrefsFragment);
+            mFragmentTransaction.commit();
         } else if (id == R.id.nav_log_out) {
             logOutFromFirebase();
         }
