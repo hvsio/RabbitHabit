@@ -113,6 +113,8 @@ public class MainPageFragment extends Fragment {
                 textView.setLayoutParams(params);
                 textView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.my_button_white));
 
+
+
             }
         } catch (NoSuchElementException ex){
             Log.w(TAG, "Error loading Habits. No habits to display!\n" + ex);
@@ -138,6 +140,7 @@ public class MainPageFragment extends Fragment {
     private void displayPhoto(){
         try{
             photoView.setImageURI(db.getPhoto());
+            photoView.setRotation(90);
             photoView.setVisibility(View.VISIBLE);
         } catch(NoSuchElementException ex) {
             Log.w(TAG, "Error loading Photo. No photo to display!\n" + ex);
