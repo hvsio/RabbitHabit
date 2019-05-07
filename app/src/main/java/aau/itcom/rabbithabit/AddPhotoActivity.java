@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -56,6 +57,7 @@ public class AddPhotoActivity extends AppCompatActivity {
         requestPermissions(new String[]{Manifest.permission.CAMERA},
                 MY_CAMERA_REQUEST_CODE);
         }
+
     }
     public static String getCurrentPhotoPath() {
         return currentPhotoPath;
@@ -66,6 +68,7 @@ public class AddPhotoActivity extends AppCompatActivity {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             File f = new File(currentPhotoPath);
             imageView.setImageURI(Uri.fromFile(f));
+            imageView.setRotation(90);
         }
         if (requestCode == REQUEST_GET_PIC && resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
@@ -76,6 +79,7 @@ public class AddPhotoActivity extends AppCompatActivity {
             }
             currentPhotoPath = selectedImageUri.getPath();
             imageView.setImageURI(selectedImageUri);
+            imageView.setRotation(90);
 
         }
     }

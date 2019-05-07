@@ -142,6 +142,7 @@ public class MainPageFragment extends Fragment {
     private void displayPhoto(){
         try{
             photoView.setImageURI(db.getPhoto());
+            photoView.setRotation(90);
             photoView.setVisibility(View.VISIBLE);
         } catch(NoSuchElementException ex) {
             Log.w(TAG, "Error loading Photo. No photo to display!\n" + ex);

@@ -148,6 +148,7 @@ public class CalendarFragment extends Fragment {
         }
         else {
             imageView.setImageURI(db.getPhoto());
+            imageView.setRotation(90);
         }
     }
 
