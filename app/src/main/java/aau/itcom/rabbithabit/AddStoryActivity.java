@@ -56,6 +56,8 @@ public class AddStoryActivity extends AppCompatActivity {
         });
 
 
+
+
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
