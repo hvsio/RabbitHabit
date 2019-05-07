@@ -56,11 +56,9 @@
             <LinearLayout
                 android:id="@+id/habitLinearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingTop="@dimen/activity_horizontal_margin"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                android:paddingTop="@dimen/activity_horizontal_margin">
 
                 <TextView
                     android:id="@+id/textView4"
@@ -134,7 +132,7 @@
                 <ImageView
                     android:id="@+id/photoOfTheDay"
                     android:layout_width="255dp"
-                    android:layout_height="366dp"
+                    android:layout_height="336dp"
                     android:layout_margin="30dp"
                     android:background="@drawable/no_picture"
                     android:padding="15dp"

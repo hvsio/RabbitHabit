@@ -10,68 +10,86 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.hsalf.smilerating.BaseRating;
 import com.hsalf.smilerating.SmileRating;
+
+import java.util.Calendar;
+
+import aau.itcom.rabbithabit.objects.Database;
+import aau.itcom.rabbithabit.objects.Story;
 
 public class AddStoryActivity extends AppCompatActivity {
 
     String TAG = "AddStoryActivity";
     private EditText story;
     private Button add;
+    Database db;
+    long getRating;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
 
-        SmileRating smileRating = findViewById(R.id.ratingBar);
+        db = Database.getInstance();
+        final SmileRating smileRating = findViewById(R.id.ratingBar);
         story = findViewById(R.id.storyInput);
         add = findViewById(R.id.buttonAdd);
-        final float getRating = smileRating.getRating();
 
-        smileRating.setOnSmileySelectionListener(new SmileRating.OnSmileySelectionListener() {
-            @Override
-            public void onSmileySelected(@BaseRating.Smiley int smiley, boolean reselected) {
-                // reselected is false when user selects different smiley that previously selected one
-                // true when the same smiley is selected.
-                // Except if it first time, then the value will be false.
-                switch (smiley) {
-                    case SmileRating.BAD:
-                        Log.i(TAG, "Bad");
-                        break;
-                    case SmileRating.GOOD:
-                        Log.i(TAG, "Good");
-                        break;
-                    case SmileRating.GREAT:
-                        Log.i(TAG, "Great");
-                        break;
-                    case SmileRating.OKAY:
-                        Log.i(TAG, "Okay");
-                        break;
-                    case SmileRating.TERRIBLE:
-                        Log.i(TAG, "Terrible");
-                        break;
-                }
-            }
-        });
+        //final long getRating = smileRating.getRating();
+
+//        smileRating.setOnSmileySelectionListener(new SmileRating.OnSmileySelectionListener() {
+//            @Override
+//            public void onSmileySelected(@BaseRating.Smiley int smiley, boolean reselected) {
+//                // reselected is false when user selects different smiley that previously selected one
+//                // true when the same smiley is selected.
+//                // Except if it first time, then the value will be false.
+//                switch (smiley) {
+//                    case SmileRating.BAD:
+//                        Log.i(TAG, "Bad");
+//                        break;
+//                    case SmileRating.GOOD:
+//                        Log.i(TAG, "Good");
+//                        break;
+//                    case SmileRating.GREAT:
+//                        Log.i(TAG, "Great");
+//                        break;
+//                    case SmileRating.OKAY:
+//                        Log.i(TAG, "Okay");
+//                        break;
+//                    case SmileRating.TERRIBLE:
+//                        Log.i(TAG, "Terrible");
+//                        break;
+//                }
+//            }
+//        });
+
+
+
+
 
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(AddStoryActivity.this, MainPageFragment.class);
-                i.putExtra("Rating", getRating);
-                i.putExtra("Story", story.getText().toString());
+                Intent i = new Intent(getApplicationContext(), MainPageActivity.class);
+                Log.i(TAG, "*****************************************************************************************************mood is: " + getRating);
+                db.addStory(new Story(Calendar.getInstance().getTime(), story.getText().toString(), getRating-1 ), FirebaseAuth.getInstance().getCurrentUser());
+                startActivity(i);
+
             }
         });
 
         smileRating.setOnRatingSelectedListener(new SmileRating.OnRatingSelectedListener() {
             @Override
-            public void onRatingSelected(int level, boolean reselected) {
+            public void onRatingSelected(int dua, boolean reselected) {
                 // level is from 1 to 5 (0 when none selected)
                 // reselected is false when user selects different smiley that previously selected one
                 // true when the same smiley is selected.
                 // Except if it first time, then the value will be false.
+                int level = smileRating.getRating();
+                getRating = level;
             }
         });
     }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.hsalf.smilerating.SmileRating;
 
 import java.util.Calendar;
 import java.util.NoSuchElementException;
@@ -31,15 +33,17 @@ public class MainPageFragment extends Fragment {
 
     Database db;
     private static final String TAG = "MainPageFragment";
-    private RatingBar ratingBar;
+    private SmileRating ratingBar;
     private LinearLayout.LayoutParams params;
     private LinearLayout habitsLayout;
+    private ConstraintLayout habits;
     private TextView storyTextView;
     private ImageView photoView;
     private CircleImageView profilePic;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
 
     @Nullable
     @Override
@@ -58,12 +62,14 @@ public class MainPageFragment extends Fragment {
         View v = getView();
         params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        ratingBar = v.findViewById(R.id.ratingBar);
+        habits = v.findViewById(R.id.layout);
+        ratingBar = habits.findViewById(R.id.ratingBar2);
         habitsLayout = v.findViewById(R.id.habitLinearLayout);
         storyTextView = v.findViewById(R.id.textViewForStoryContent);
         photoView = v.findViewById(R.id.photoOfTheDay);
         profilePic = v.findViewById(R.id.profile_image);
         photoView.setVisibility(View.GONE);
+
 
 
         loadDetails();
@@ -110,6 +116,8 @@ public class MainPageFragment extends Fragment {
                 textView.setLayoutParams(params);
                 textView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.my_button_white));
 
+
+
             }
         } catch (NoSuchElementException ex){
             Log.w(TAG, "Error loading Habits. No habits to display!\n" + ex);
@@ -117,29 +125,30 @@ public class MainPageFragment extends Fragment {
         }
     }
 
-    private void displayMood() {
-
-        //ratingBar.setRating(getIntent().getStringExtra("Rating"));
-    }
 
     private void displayStory(){
         String text = "You have no story to display.";
 
         try{
-            db.getStory();
-         //   storyTextView.setText(getIn);
-            //storyTextView.setText(db.getStory().getTextContent());
-           // storyTextView.setText(R.string.story_content);
+            storyTextView.setText(db.getStory().getTextContent());
+            //storyTextView.setText(R.string.story_content);
         } catch (NoSuchElementException | NullPointerException ex) {
             Log.w(TAG, "Error loading Story. No story to display!\n" + ex);
             storyTextView.setText(text);
         }
+        ratingBar.setSelectedSmile(((int) db.getStory().getMood()));
 
     }
 
     private void displayPhoto(){
         try{
+
+            if (db.getPhoto() == null) {
+                photoView.setImageResource(R.drawable.no_picture);
+                photoView.setRotation(0);
+            }
             photoView.setImageURI(db.getPhoto());
+            photoView.setRotation(90);
             photoView.setVisibility(View.VISIBLE);
         } catch(NoSuchElementException ex) {
             Log.w(TAG, "Error loading Photo. No photo to display!\n" + ex);

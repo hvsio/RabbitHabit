@@ -1,5 +1,6 @@
 package aau.itcom.rabbithabit;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.ImageView;
@@ -73,7 +75,7 @@ public class CalendarFragment extends Fragment {
         params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        storyTextView = v.findViewById(R.id.textViewStory);
+        storyTextView = v.findViewById(R.id.textViewForStory);
         listView = v.findViewById(R.id.habits_from_the_day);
         layout = v.findViewById(R.id.linearLayoutOfDay);
         calendar = v.findViewById(R.id.calendarViewDaily);
@@ -85,6 +87,8 @@ public class CalendarFragment extends Fragment {
                 changeCurrentDay(collectDate);
             }
         });
+
+
     }
 
     private void changeCurrentDay(String dateInString) {
@@ -141,9 +145,11 @@ public class CalendarFragment extends Fragment {
 
         if (db.getPhoto() == null) {
             imageView.setImageResource(R.drawable.no_picture);
+            imageView.setRotation(0);
         }
         else {
             imageView.setImageURI(db.getPhoto());
+            imageView.setRotation(90);
         }
     }
 
@@ -155,6 +161,17 @@ public class CalendarFragment extends Fragment {
         Log.d(TAG, "Inside displayHabits() and habit array size is: " + habitArray.size());
         adapter = new CustomAdapterDayHabit(getContext(), habitArray);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                HabitPersonal habitPersonal = habitArray.get(position);
+                Intent intent = HabitDetailsActivity.createNewIntent(getContext());
+                intent.putExtra("habitPersonal", habitPersonal);
+                getContext().startActivity(intent);
+            }
+        });
+
 
 //        for(int i = 0;i<textViews.size();i++){
 //            layoutHabits.addView(textViews.get(i));
