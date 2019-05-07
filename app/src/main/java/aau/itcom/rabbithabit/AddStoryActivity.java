@@ -68,6 +68,8 @@ public class AddStoryActivity extends AppCompatActivity {
 
 
 
+
+
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +77,7 @@ public class AddStoryActivity extends AppCompatActivity {
                 Log.i(TAG, "*****************************************************************************************************mood is: " + getRating);
                 db.addStory(new Story(Calendar.getInstance().getTime(), story.getText().toString(),getRating ), FirebaseAuth.getInstance().getCurrentUser());
                 startActivity(i);
+
             }
         });
 
