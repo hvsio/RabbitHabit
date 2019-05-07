@@ -62,6 +62,7 @@ public class AddStoryActivity extends AppCompatActivity {
                 Intent i = new Intent(AddStoryActivity.this, MainPageFragment.class);
                 i.putExtra("Rating", getRating);
                 i.putExtra("Story", story.getText().toString());
+
             }
         });
 

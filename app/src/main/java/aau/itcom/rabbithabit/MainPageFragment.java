@@ -110,6 +110,8 @@ public class MainPageFragment extends Fragment {
                 textView.setLayoutParams(params);
                 textView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.my_button_white));
 
+
+
             }
         } catch (NoSuchElementException ex){
             Log.w(TAG, "Error loading Habits. No habits to display!\n" + ex);
