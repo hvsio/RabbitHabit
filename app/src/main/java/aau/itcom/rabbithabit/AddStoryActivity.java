@@ -75,7 +75,7 @@ public class AddStoryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), MainPageActivity.class);
                 Log.i(TAG, "*****************************************************************************************************mood is: " + getRating);
-                db.addStory(new Story(Calendar.getInstance().getTime(), story.getText().toString(),getRating ), FirebaseAuth.getInstance().getCurrentUser());
+                db.addStory(new Story(Calendar.getInstance().getTime(), story.getText().toString(), getRating-1 ), FirebaseAuth.getInstance().getCurrentUser());
                 startActivity(i);
 
             }

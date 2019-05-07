@@ -100,6 +100,17 @@
                     app:layout_constraintTop_toTopOf="@+id/view3"
                     app:layout_constraintVertical_bias="0.046" />
 
+                <TextView
+                    android:id="@+id/textViewForStory"
+                    android:layout_width="351dp"
+                    android:layout_height="126dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/view3"
+                    app:layout_constraintEnd_toEndOf="@+id/view3"
+                    app:layout_constraintStart_toStartOf="@+id/view3"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewStory" />
+
                 <ImageView
                     android:id="@+id/imageView3"
                     android:layout_width="269dp"
@@ -121,8 +132,7 @@
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/my_button_white"
                     android:fillViewport="true"
-                    android:isScrollContainer="true"
-                    android:scrollbars="vertical"
+                    android:isScrollContainer="false"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -139,6 +149,7 @@
                             android:layout_height="match_parent"
                             android:divider="@color/calendar_divider"
                             android:dividerHeight="2dp"
+                            android:scrollbars="vertical"
                             tools:layout_editor_absoluteY="1126dp" />
                     </LinearLayout>
                 </android.support.v4.widget.NestedScrollView>

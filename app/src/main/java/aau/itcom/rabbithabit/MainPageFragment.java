@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +36,7 @@ public class MainPageFragment extends Fragment {
     private SmileRating ratingBar;
     private LinearLayout.LayoutParams params;
     private LinearLayout habitsLayout;
+    private ConstraintLayout habits;
     private TextView storyTextView;
     private ImageView photoView;
     private CircleImageView profilePic;
@@ -60,7 +62,8 @@ public class MainPageFragment extends Fragment {
         View v = getView();
         params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        ratingBar = v.findViewById(R.id.ratingBar2);
+        habits = v.findViewById(R.id.layout);
+        ratingBar = habits.findViewById(R.id.ratingBar2);
         habitsLayout = v.findViewById(R.id.habitLinearLayout);
         storyTextView = v.findViewById(R.id.textViewForStoryContent);
         photoView = v.findViewById(R.id.photoOfTheDay);
@@ -139,6 +142,11 @@ public class MainPageFragment extends Fragment {
 
     private void displayPhoto(){
         try{
+
+            if (db.getPhoto() == null) {
+                photoView.setImageResource(R.drawable.no_picture);
+                photoView.setRotation(0);
+            }
             photoView.setImageURI(db.getPhoto());
             photoView.setRotation(90);
             photoView.setVisibility(View.VISIBLE);
