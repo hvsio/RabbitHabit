@@ -129,7 +129,7 @@ public class MainPageFragment extends Fragment {
             Log.w(TAG, "Error loading Story. No story to display!\n" + ex);
             storyTextView.setText(text);
         }
-//        ratingBar.setSelectedSmile(((int) db.getStory().getMood()));
+        ratingBar.setSelectedSmile(((int) db.getStory().getMood()));
 
     }
 
