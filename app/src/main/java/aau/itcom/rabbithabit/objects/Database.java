@@ -92,17 +92,15 @@ public class Database {
                 });
     }
 
-
     public String countHabits() {
         String number = String.valueOf(getArrayListOfHabitsPersonal().size());
         return number;
     }
 
-    ;
-
     public void loadSetOfHabitsOnDate(Date date, FirebaseUser user) {
 
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        habitPersonals = null;
         habitPersonals = new ArrayList<>();
 
         db.collection("Users").document(user.getUid()).collection("Habits")
@@ -165,6 +163,7 @@ public class Database {
     }
 
     public void loadSetOfTrendingHabits() {
+        habitsPublished = null;
         habitsPublished = new ArrayList<>();
 
         db.collection("HabitsPublished")
@@ -398,6 +397,7 @@ public class Database {
     }
 
     public void loadProfilePicture(FirebaseUser user, Context context) {
+        profilePhotoUri = null;
 
         File directory = context.getCacheDir();
         File outputFile = null;
