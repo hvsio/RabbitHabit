@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.hsalf.smilerating.SmileRating;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutorService;
@@ -88,6 +90,7 @@ public class MainPageFragment extends Fragment {
 
     private void displayHabits(){
 
+/*
         try {
             for (int i = 0; i < db.getArrayListOfHabitsPersonal().size(); i++) {
                 Log.d(TAG, "Inside loop for textfields - createTextFieldsForHabits()");
@@ -113,6 +116,23 @@ public class MainPageFragment extends Fragment {
             Log.w(TAG, "Error loading Habits. No habits to display!\n" + ex);
             // make textfield NO HABITS TO DISPLAY!
         }
+*/
+        ArrayList<TextView> textViews = new ArrayList<>(createTextFieldsForHabits());
+
+        for(int i = 0;i<textViews.size();i++){
+            habitsLayout.addView(textViews.get(i));
+        }
+    }
+
+    public ArrayList<TextView> createTextFieldsForHabits() {
+        Log.d(TAG, "Inside createTextFieldsForHabits()");
+        ArrayList<TextView> arrayOfTextViews = new ArrayList<>();
+
+        for (int i = 0; i < db.getArrayListOfHabitsPersonal().size(); i++) {
+            Log.d(TAG, "Inside loop for textfields - createTextFieldsForHabits()");
+            arrayOfTextViews.add(db.getArrayListOfHabitsPersonal().get(i).display(getContext(), 18, params, db.getArrayListOfHabitsPersonal().get(i)));
+        }
+        return arrayOfTextViews;
     }
 
 

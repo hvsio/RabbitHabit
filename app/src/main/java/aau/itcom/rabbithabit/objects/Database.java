@@ -176,7 +176,7 @@ public class Database {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                habitsPublished.add(new HabitPublished(document.getId(), document.getLong("duration"), document.getString("details"), document.getString("showCreator"), document.getString("creator"), document.getLong("numberOfLikes")));
+//                                habitsPublished.add(new HabitPublished(document.getId(), document.getLong("duration"), document.getString("details"), document.getString("showCreator"), document.getString("creator"), document.getLong("numberOfLikes")));
                             }
                             Log.d(TAG, "Habits are now loaded!");
                             isHabitsPublishedDownloadCompleted = true;

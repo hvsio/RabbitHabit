@@ -2,11 +2,15 @@ package aau.itcom.rabbithabit.objects;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Vibrator;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -28,6 +32,8 @@ public class HabitPersonal extends Habit implements Serializable {
     private Date startDate;
     private String[] arrayOfDates;
     private Map<String, Boolean> complexion;
+    Database db;
+    HabitPersonal reference = this;
 
 
 
@@ -35,6 +41,7 @@ public class HabitPersonal extends Habit implements Serializable {
         super(name, duration, details);
         this.startDate = startDate;
         initializeComplexionAndArrayOfDates(startDate, duration);
+        db = Database.getInstance();
     }
 
     private void initializeComplexionAndArrayOfDates(Date startDate, long duration) {
@@ -54,9 +61,17 @@ public class HabitPersonal extends Habit implements Serializable {
     @Override
     public TextView display(final Context context, int textSize, LinearLayout.LayoutParams params, final Habit listener) {
         Log.d("display() in hPersonal", " am inside");
-        TextView textView = new TextView(context);
+        final TextView textView = new TextView(context);
         textView.setText(listener.getName());
         textView.setTextSize(textSize);
+
+        if (listener instanceof HabitPersonal){
+            HabitPersonal habit = (HabitPersonal) listener;
+            if (habit.isCompletedOn(Calendar.getInstance().getTime())) {
+                textView.setBackground(context.getResources().getDrawable(R.drawable.my_button));
+                textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.facebook, 0);
+            }
+        }
 
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +81,25 @@ public class HabitPersonal extends Habit implements Serializable {
                 context.startActivity(intent);
             }
         });
+        textView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (!isCompletedOn(Calendar.getInstance().getTime())) {
+                    DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+                    complexion.put(dateFormat.format(Calendar.getInstance().getTime()), true);
+                    db.addHabitPersonal(reference, FirebaseAuth.getInstance().getCurrentUser());
+                    // Get instance of Vibrator from current Context
+                    Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                    // Vibrate for 300 milliseconds
+                    vibrator.vibrate(300);
+
+                    textView.setBackgroundResource(R.drawable.my_button);
+                    textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.facebook, 0);
+                }
+                return true;
+            }
+        });
+
         textView.setLayoutParams(params);
         textView.setBackground(ContextCompat.getDrawable(context, R.drawable.my_button_white));
         return textView;
