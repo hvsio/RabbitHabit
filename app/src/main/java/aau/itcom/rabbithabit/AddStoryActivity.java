@@ -34,7 +34,7 @@ public class AddStoryActivity extends AppCompatActivity {
 
         db = Database.getInstance();
         final SmileRating smileRating = findViewById(R.id.ratingBar);
-        story = findViewById(R.id.storyInput);
+        story = findViewById(R.id.editTextStory);
         add = findViewById(R.id.buttonAdd);
 
         //final long getRating = smileRating.getRating();
