@@ -1,6 +1,7 @@
 package aau.itcom.rabbithabit;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -48,9 +49,6 @@ public class MainPageFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_to_mainpage, container, false);
-
-
-
     }
 
     @Override
@@ -68,7 +66,6 @@ public class MainPageFragment extends Fragment {
         photoView = v.findViewById(R.id.photoOfTheDay);
         profilePic = v.findViewById(R.id.profile_image);
         photoView.setVisibility(View.GONE);
-
 
         loadDetails();
     }
@@ -135,12 +132,13 @@ public class MainPageFragment extends Fragment {
 
     private void displayPhoto(){
         try{
+            Uri photo = db.getPhoto();
 
-            if (db.getPhoto() == null) {
+            if (photo == null) {
                 photoView.setImageResource(R.drawable.no_picture);
-                photoView.setRotation(0);
+                photoView.setRotation(90);
             }
-            photoView.setImageURI(db.getPhoto());
+            photoView.setImageURI(photo);
             photoView.setRotation(90);
             photoView.setVisibility(View.VISIBLE);
         } catch(NoSuchElementException ex) {
@@ -149,7 +147,7 @@ public class MainPageFragment extends Fragment {
     }
 
     private void displayProfilePicture() {
-        profilePic.setImageURI(db.getPhoto());
+        profilePic.setImageURI(db.getProfilePhoto());
     }
 
     private class LoadHabitsTask implements Runnable{

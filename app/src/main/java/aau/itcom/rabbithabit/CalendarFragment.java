@@ -11,27 +11,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.common.util.Strings;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -61,7 +55,7 @@ public class CalendarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mStorageRef = FirebaseStorage.getInstance().getReference();
-        return inflater.inflate(R.layout.fragment_calendar,container,false);
+        return inflater.inflate(R.layout.fragment_calendar, container, false);
     }
 
     @Override
@@ -83,7 +77,7 @@ public class CalendarFragment extends Fragment {
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                String collectDate = dayOfMonth + "." + (month+1) + "." + year;
+                String collectDate = dayOfMonth + "." + (month + 1) + "." + year;
                 changeCurrentDay(collectDate);
             }
         });
@@ -114,23 +108,29 @@ public class CalendarFragment extends Fragment {
 
     private void displayStory() {
         Log.d(TAG, "Inside displayStory()");
-        story = new Story(db.getStory().getDate(),db.getStory().getTextContent(), db.getStory().getMood());
-        storyTextView.setText(story.getTextContent());
+        try {
+            story = db.getStory();
+        } catch (NoSuchElementException ex) {
+            Log.w(TAG, "Error loading Photo. No photo to display!\n" + ex);
+        }
+
+        if (story != null)
+            storyTextView.setText(story.getTextContent());
     }
 
 
     private void displayPhoto() {
-        if (db.getPhoto() == null) {
+        Uri photo = db.getPhoto();
+        if (photo == null) {
             imageView.setImageResource(R.drawable.no_picture);
             imageView.setRotation(0);
-        }
-        else {
-            imageView.setImageURI(db.getPhoto());
+        } else {
+            imageView.setImageURI(photo);
             imageView.setRotation(90);
         }
     }
 
-    private void displayHabits(){
+    private void displayHabits() {
         //ArrayList<TextView> textViews = new ArrayList<>(createTextFieldsForHabits());
         listView.setAdapter(null);
         Log.d(TAG, "Inside displayHabits()");
@@ -156,11 +156,11 @@ public class CalendarFragment extends Fragment {
 
     }
 
-    public ArrayList<TextView> createTextFieldsForHabits(){
+    public ArrayList<TextView> createTextFieldsForHabits() {
         Log.d(TAG, "Inside createTextFieldsForHabits()");
         ArrayList<TextView> arrayOfTextViews = new ArrayList<>();
 
-        for (int i =0; i<habitArray.size(); i++){
+        for (int i = 0; i < habitArray.size(); i++) {
             Log.d(TAG, "Inside loop for textfields - createTextFieldsForHabits()");
             arrayOfTextViews.add(habitArray.get(i).display(getContext(), 18, params, habitArray.get(i)));
         }
@@ -168,8 +168,7 @@ public class CalendarFragment extends Fragment {
     }
 
 
-
-    private class LoadHabitsTask implements Runnable{
+    private class LoadHabitsTask implements Runnable {
 
         private static final String THREAD_HABIT_TAG = "LoadHabitsTask";
 
@@ -189,7 +188,7 @@ public class CalendarFragment extends Fragment {
 
             Log.d(THREAD_HABIT_TAG, "First element of array is: " + db.getArrayListOfHabitsPersonal().get(0).toString());
 
-            if(isAdded()){
+            if (isAdded()) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -202,7 +201,7 @@ public class CalendarFragment extends Fragment {
         }
     }
 
-    private class LoadPhotoTask implements Runnable{
+    private class LoadPhotoTask implements Runnable {
 
         private static final String THREAD_PHOTO_TAG = "LoadPhotoTask";
 
@@ -211,7 +210,7 @@ public class CalendarFragment extends Fragment {
             Log.d(THREAD_PHOTO_TAG, "is running");
             try {
                 synchronized (Database.LOCK_FOR_PHOTO) {
-                    Log.d("THREAD !", "I am waiting");
+                    Log.d(THREAD_PHOTO_TAG, "I am waiting");
                     Database.LOCK_FOR_PHOTO.wait();
                 }
 
@@ -220,9 +219,8 @@ public class CalendarFragment extends Fragment {
             }
             Log.d(THREAD_PHOTO_TAG, "After try-catch statement");
 
-            Log.d(THREAD_PHOTO_TAG, "First element of array is: " + db.getArrayListOfHabitsPersonal().get(0).toString());
 
-            if (isAdded()){
+            if (isAdded()) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -235,7 +233,7 @@ public class CalendarFragment extends Fragment {
         }
     }
 
-    private class LoadStoryTask implements Runnable{
+    private class LoadStoryTask implements Runnable {
 
         private static final String THREAD_STORY_TAG = "LoadStoryTask";
 
@@ -252,8 +250,7 @@ public class CalendarFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            Log.d(THREAD_STORY_TAG, "Story is: " + db.getStory().getTextContent());
-            if (isAdded()){
+            if (isAdded()) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

@@ -9,9 +9,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
@@ -27,16 +25,11 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -148,26 +141,24 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         Uri imageUri;
         String path;
         File f ;
-        super.onActivityResult(requestCode, resultCode, data);
+
         if(requestCode == REQUEST_CAMERA  && resultCode == RESULT_OK){
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
             profilePic.setImageBitmap(imageBitmap);
-            saveImage(imageBitmap);
+            saveImageAndUpload(imageBitmap);
         }else if ( requestCode == SELECT_FILE && resultCode == RESULT_OK ){
             imageUri = data.getData();
             path = getPathFromURI(imageUri);
             if (path != null) {
                 f = new File(path);
                 profilePic.setImageURI(Uri.fromFile(f));
-                db.uploadPhotoFile(new Date(), FirebaseAuth.getInstance().getCurrentUser(), f);
+                db.uploadProfilePic(FirebaseAuth.getInstance().getCurrentUser(), f);
             }
-
         }
-
     }
 
     private void loadProfilePic() {
@@ -178,8 +169,34 @@ public class ProfileFragment extends Fragment {
     }
 
     private void displayProfilePicture() {
-        profilePic.setImageURI(db.getPhoto());
+        profilePic.setImageURI(db.getProfilePhoto());
     }
+
+    public String getPathFromURI(Uri contentUri) {
+        String res = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContext().getContentResolver().query(contentUri, proj, null, null, null);
+        if (cursor.moveToFirst()) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+        return res;
+    }
+
+
+    private void saveImageAndUpload(Bitmap finalBitmap) {
+        try (FileOutputStream outputStream = new FileOutputStream(new File(getCacheDir(), "profile_pic.jpeg"))){
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            db.uploadProfilePic(FirebaseAuth.getInstance().getCurrentUser(), new File(getCacheDir(), "profile_pic.jpeg"));
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private class LoadProfilePicture implements Runnable{
 
@@ -208,35 +225,4 @@ public class ProfileFragment extends Fragment {
             }
         }
     }
-
-    public String getPathFromURI(Uri contentUri) {
-        String res = null;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContext().getContentResolver().query(contentUri, proj, null, null, null);
-        if (cursor.moveToFirst()) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            res = cursor.getString(column_index);
-        }
-        cursor.close();
-        return res;
-    }
-
-
-    private void saveImage(Bitmap finalBitmap) {
-        FileOutputStream outStream = null;
-        try {
-            outStream = new FileOutputStream(new File(getCacheDir(), "profile_pic.jpeg"));
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-            outStream.close();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] data = baos.toByteArray();
-            UploadTask uploadTask = userRefProfilePic.putBytes(data);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 }
