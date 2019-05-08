@@ -16,6 +16,7 @@ public class HabitDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.habitdetails);
+
         GraphView graph = (GraphView) findViewById(R.id.graph);
         PointsGraphSeries<DataPoint> series = new PointsGraphSeries<>(new DataPoint[] {
                 new DataPoint(0, 1),

@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -20,6 +21,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -445,5 +447,10 @@ public class Database {
             isProfilePhotoDownloadCompleted = false;
             return uri;
         }
+    }
+
+    public static void updateComplexion(HabitPersonal habitPersonal){
+        Database db = Database.getInstance();
+        db.addHabitPersonal(habitPersonal, FirebaseAuth.getInstance().getCurrentUser());
     }
 }
