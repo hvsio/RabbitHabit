@@ -44,7 +44,6 @@ public class MainPageFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -71,7 +70,6 @@ public class MainPageFragment extends Fragment {
         photoView.setVisibility(View.GONE);
 
 
-
         loadDetails();
     }
 
@@ -89,9 +87,6 @@ public class MainPageFragment extends Fragment {
         db.loadPhotoOnDate(Calendar.getInstance().getTime(), FirebaseAuth.getInstance().getCurrentUser(), getContext());
         db.loadStoryOnDate(Calendar.getInstance().getTime(), FirebaseAuth.getInstance().getCurrentUser());
         db.loadProfilePicture(FirebaseAuth.getInstance().getCurrentUser(), getContext());
-
-
-
     }
 
     private void displayHabits(){
@@ -116,8 +111,6 @@ public class MainPageFragment extends Fragment {
                 textView.setLayoutParams(params);
                 textView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.my_button_white));
 
-
-
             }
         } catch (NoSuchElementException ex){
             Log.w(TAG, "Error loading Habits. No habits to display!\n" + ex);
@@ -136,7 +129,7 @@ public class MainPageFragment extends Fragment {
             Log.w(TAG, "Error loading Story. No story to display!\n" + ex);
             storyTextView.setText(text);
         }
-        ratingBar.setSelectedSmile(((int) db.getStory().getMood()));
+//        ratingBar.setSelectedSmile(((int) db.getStory().getMood()));
 
     }
 

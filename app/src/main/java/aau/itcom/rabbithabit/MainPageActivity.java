@@ -15,6 +15,7 @@ import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.annotation.RequiresApi;
@@ -36,6 +37,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -174,15 +176,32 @@ public class MainPageActivity extends AppCompatActivity
     }
 
 
+    boolean doubleBackToExitPressedOnce = false;
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        //Checking for fragment count on backstack
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+
+            // TODO : FIX IT
+
+        } else if (!doubleBackToExitPressedOnce/* && getSupportFragmentManager().findFragmentById(R.id.frameLayout) instanceof MainPageFragment*/) {
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this,"Please click BACK again to exit.", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
         } else {
-            super.onBackPressed();
+            this.finishAffinity();
         }
     }
+
+    // TODO : What is that doing here?
     public static class PrefsFragment extends PreferenceFragment {
 
         @Override
@@ -207,13 +226,7 @@ public class MainPageActivity extends AppCompatActivity
         } else if (id == R.id.nav_profile) {
            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
         } else if (id == R.id.nav_settings) {
-            FragmentManager mFragmentManager = getFragmentManager();
-            FragmentTransaction mFragmentTransaction = mFragmentManager
-                    .beginTransaction();
-            SettingsFragment
-                    mPrefsFragment = new SettingsFragment();
-            mFragmentTransaction.replace(android.R.id.content, mPrefsFragment);
-            mFragmentTransaction.commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new SettingsFragment()).commit();
         } else if (id == R.id.nav_log_out) {
             logOutFromFirebase();
         }

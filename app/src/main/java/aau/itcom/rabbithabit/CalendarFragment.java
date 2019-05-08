@@ -75,7 +75,7 @@ public class CalendarFragment extends Fragment {
         params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        storyTextView = v.findViewById(R.id.textViewForStory);
+        storyTextView = v.findViewById(R.id.textViewStory);
         listView = v.findViewById(R.id.habits_from_the_day);
         layout = v.findViewById(R.id.linearLayoutOfDay);
         calendar = v.findViewById(R.id.calendarViewDaily);
@@ -87,8 +87,6 @@ public class CalendarFragment extends Fragment {
                 changeCurrentDay(collectDate);
             }
         });
-
-
     }
 
     private void changeCurrentDay(String dateInString) {
@@ -121,28 +119,7 @@ public class CalendarFragment extends Fragment {
     }
 
 
-    private void displayPhoto() throws IOException {
-//        //photo = new Photo(db.getPhoto().getDate(),db.getPhoto().getPhotoURLinDB());
-//        SimpleDateFormat spf = new SimpleDateFormat("dd-MM-yyyy");
-//        String pictureFile = spf.format(new Date());
-//        StorageReference dailyPhotosRef = mStorageRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString()+ "-" + pictureFile);
-//        System.out.println(pictureFile);
-//        File localFile = File.createTempFile(FirebaseAuth.getInstance().getCurrentUser().getUid().toString() + "/" + pictureFile, ".jpg");
-//
-//        System.out.println(localFile);
-//        dailyPhotosRef.getFile(localFile)
-//                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//                        System.out.println("SUCCESS");
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception exception) {
-//                System.out.println("FAILURE");
-//            }
-//        });
-
+    private void displayPhoto() {
         if (db.getPhoto() == null) {
             imageView.setImageResource(R.drawable.no_picture);
             imageView.setRotation(0);
@@ -249,11 +226,7 @@ public class CalendarFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        try {
-                            displayPhoto();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        displayPhoto();
                     }
                 });
             } else {
