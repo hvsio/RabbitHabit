@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +46,7 @@ public class Database {
     private Story story;
     private ArrayList<HabitPersonal> habitPersonals;
     private ArrayList<HabitPublished> habitsPublished;
+    public ArrayList<Story> stories;
 
     private boolean isStoryDownloadCompleted = false;
     private boolean isPhotoDownloadCompleted = false;
@@ -57,6 +59,7 @@ public class Database {
     public static final Object LOCK_FOR_STORY = new Object();
     public static final Object LOCK_FOR_PHOTO = new Object();
     public static final Object LOCK_FOR_PROFILE_PIC = new Object();
+    public static final Object LOCK_FOR_LIST_OF_STORIES = new Object();
 
     private Database() {
         db = FirebaseFirestore.getInstance();
@@ -97,6 +100,32 @@ public class Database {
     public String countHabits() {
         String number = String.valueOf(getArrayListOfHabitsPersonal().size());
         return number;
+    }
+
+    public void addStoriesToList() {
+        final DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
+        stories = new ArrayList<>();
+        db.collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).collection("Story")
+                .whereLessThan("mood", 6)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document: task.getResult()) {
+                                try {
+                                    stories.add(new Story(dateFormat.parse(document.getString("date")), document.getString("storyContent"), document.getLong("mood")));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            synchronized (LOCK_FOR_LIST_OF_STORIES) {
+                                LOCK_FOR_LIST_OF_STORIES.notify();
+                            }
+                        }
+                    }
+                });
     }
 
     public void loadSetOfHabitsOnDate(Date date, FirebaseUser user) {
@@ -337,6 +366,7 @@ public class Database {
 
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         Log.d(TAG, "I am inside loadStoryOnDate() and date is: " + dateFormat.format(date));
+        final String dateString = dateFormat.format(date).toString();
 
         db.collection("Users").document(user.getUid()).collection("Story")
                 .whereEqualTo("date", dateFormat.format(date))
@@ -404,7 +434,7 @@ public class Database {
         File directory = context.getCacheDir();
         File outputFile = null;
         try {
-            outputFile = File.createTempFile("profile_picture", "jpg", directory);
+            outputFile = File.createTempFile("profile_picture", ".jpg", directory);
         } catch (IOException e) {
             e.printStackTrace();
         }
