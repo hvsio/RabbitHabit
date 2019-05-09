@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.hsalf.smilerating.SmileRating;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,6 +45,7 @@ public class CalendarFragment extends Fragment {
     ImageView imageView;
     ListView listView;
     CustomAdapterDayHabit adapter;
+    SmileRating ratingBar;
     Story story;
     Database db;
     private StorageReference mStorageRef;
@@ -68,7 +70,7 @@ public class CalendarFragment extends Fragment {
         db = Database.getInstance();
         params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-
+        ratingBar = v.findViewById(R.id.ratingBar);
         storyTextView = v.findViewById(R.id.textViewStory);
         listView = v.findViewById(R.id.habits_from_the_day);
         layout = v.findViewById(R.id.linearLayoutOfDay);
@@ -108,6 +110,9 @@ public class CalendarFragment extends Fragment {
 
     private void displayStory() {
         Log.d(TAG, "Inside displayStory()");
+        story = new Story(db.getStory().getDate(),db.getStory().getTextContent(), db.getStory().getMood());
+        storyTextView.setText(story.getTextContent());
+        ratingBar.setSelectedSmile(((int) db.getStory().getMood()));
         try {
             story = db.getStory();
         } catch (NoSuchElementException ex) {

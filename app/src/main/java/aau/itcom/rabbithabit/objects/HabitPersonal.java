@@ -28,10 +28,11 @@ import java.util.Set;
 import aau.itcom.rabbithabit.HabitDetailsActivity;
 import aau.itcom.rabbithabit.R;
 
-public class HabitPersonal extends Habit/* implements Serializable*/ {
+public class HabitPersonal extends Habit implements Serializable {
     private Date startDate;
     private String[] arrayOfDates;
     private Map<String, Boolean> complexion;
+    Database db;
     HabitPersonal reference = this;
 
 
@@ -40,6 +41,7 @@ public class HabitPersonal extends Habit/* implements Serializable*/ {
         super(name, duration, details);
         this.startDate = startDate;
         initializeComplexionAndArrayOfDates(startDate, duration);
+        db = Database.getInstance();
     }
 
     private void initializeComplexionAndArrayOfDates(Date startDate, long duration) {
@@ -85,8 +87,7 @@ public class HabitPersonal extends Habit/* implements Serializable*/ {
                 if (!isCompletedOn(Calendar.getInstance().getTime())) {
                     DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
                     complexion.put(dateFormat.format(Calendar.getInstance().getTime()), true);
-                    //db.addHabitPersonal(reference, FirebaseAuth.getInstance().getCurrentUser());
-                    Database.updateComplexion(reference);
+                    db.addHabitPersonal(reference, FirebaseAuth.getInstance().getCurrentUser());
                     // Get instance of Vibrator from current Context
                     Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
                     // Vibrate for 300 milliseconds
