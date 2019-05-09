@@ -1,6 +1,7 @@
 package aau.itcom.rabbithabit;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.hsalf.smilerating.SmileRating;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutorService;
@@ -48,9 +51,6 @@ public class MainPageFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_to_mainpage, container, false);
-
-
-
     }
 
     @Override
@@ -68,7 +68,6 @@ public class MainPageFragment extends Fragment {
         photoView = v.findViewById(R.id.photoOfTheDay);
         profilePic = v.findViewById(R.id.profile_image);
         photoView.setVisibility(View.GONE);
-
 
         loadDetails();
     }
@@ -91,6 +90,7 @@ public class MainPageFragment extends Fragment {
 
     private void displayHabits(){
 
+/*
         try {
             for (int i = 0; i < db.getArrayListOfHabitsPersonal().size(); i++) {
                 Log.d(TAG, "Inside loop for textfields - createTextFieldsForHabits()");
@@ -116,6 +116,23 @@ public class MainPageFragment extends Fragment {
             Log.w(TAG, "Error loading Habits. No habits to display!\n" + ex);
             // make textfield NO HABITS TO DISPLAY!
         }
+*/
+        ArrayList<TextView> textViews = new ArrayList<>(createTextFieldsForHabits());
+
+        for(int i = 0;i<textViews.size();i++){
+            habitsLayout.addView(textViews.get(i));
+        }
+    }
+
+    public ArrayList<TextView> createTextFieldsForHabits() {
+        Log.d(TAG, "Inside createTextFieldsForHabits()");
+        ArrayList<TextView> arrayOfTextViews = new ArrayList<>();
+
+        for (int i = 0; i < db.getArrayListOfHabitsPersonal().size(); i++) {
+            Log.d(TAG, "Inside loop for textfields - createTextFieldsForHabits()");
+            arrayOfTextViews.add(db.getArrayListOfHabitsPersonal().get(i).display(getContext(), 18, params, db.getArrayListOfHabitsPersonal().get(i)));
+        }
+        return arrayOfTextViews;
     }
 
 
@@ -135,12 +152,13 @@ public class MainPageFragment extends Fragment {
 
     private void displayPhoto(){
         try{
+            Uri photo = db.getPhoto();
 
-            if (db.getPhoto() == null) {
+            if (photo == null) {
                 photoView.setImageResource(R.drawable.no_picture);
-                photoView.setRotation(0);
+                photoView.setRotation(90);
             }
-            photoView.setImageURI(db.getPhoto());
+            photoView.setImageURI(photo);
             photoView.setRotation(90);
             photoView.setVisibility(View.VISIBLE);
         } catch(NoSuchElementException ex) {
@@ -149,7 +167,7 @@ public class MainPageFragment extends Fragment {
     }
 
     private void displayProfilePicture() {
-        profilePic.setImageURI(db.getPhoto());
+        profilePic.setImageURI(db.getProfilePhoto());
     }
 
     private class LoadHabitsTask implements Runnable{
