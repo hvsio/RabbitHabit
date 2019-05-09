@@ -27,6 +27,7 @@ public class WelcomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_page);
 
+
        // name = findViewById(R.id.textViewWelcomeName);
         FadingTextView fadingTextView = findViewById(R.id.textViewWelcomeName);
         fadingTextView.setTexts(new String[]{"Welcome!", "It's good to see you again " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName() + "!"});
