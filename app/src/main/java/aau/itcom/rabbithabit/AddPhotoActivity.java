@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,7 +22,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -54,13 +51,10 @@ public class AddPhotoActivity extends AppCompatActivity {
 
         if (checkSelfPermission(Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
-        requestPermissions(new String[]{Manifest.permission.CAMERA},
-                MY_CAMERA_REQUEST_CODE);
+            requestPermissions(new String[]{Manifest.permission.CAMERA},
+                    MY_CAMERA_REQUEST_CODE);
         }
 
-    }
-    public static String getCurrentPhotoPath() {
-        return currentPhotoPath;
     }
 
     @Override
@@ -161,4 +155,3 @@ public class AddPhotoActivity extends AppCompatActivity {
         return new Intent(context, AddPhotoActivity.class);
     }
 }
-
