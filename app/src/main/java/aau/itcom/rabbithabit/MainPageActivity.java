@@ -179,13 +179,40 @@ public class MainPageActivity extends AppCompatActivity
     boolean doubleBackToExitPressedOnce = false;
     @Override
     public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else if (getSupportFragmentManager().findFragmentById(R.id.frameLayout) instanceof MainPageFragment){
+            //Checking for fragment count on backstack
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                getSupportFragmentManager().popBackStack();
+
+            } else if (!doubleBackToExitPressedOnce) {
+                this.doubleBackToExitPressedOnce = true;
+                Toast.makeText(this,"Please click BACK again to exit.", Toast.LENGTH_SHORT).show();
+
+                new Handler().postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        doubleBackToExitPressedOnce = false;
+                    }
+                }, 2000);
+            } else {
+                this.finishAffinity();
+            }
+        } else {
+            super.onBackPressed();
+        }
+/*
+
         //Checking for fragment count on backstack
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
 
             // TODO : FIX IT
 
-        } else if (!doubleBackToExitPressedOnce/* && getSupportFragmentManager().findFragmentById(R.id.frameLayout) instanceof MainPageFragment*/) {
+        } else if (!doubleBackToExitPressedOnce) {
             this.doubleBackToExitPressedOnce = true;
             Toast.makeText(this,"Please click BACK again to exit.", Toast.LENGTH_SHORT).show();
 
@@ -199,6 +226,8 @@ public class MainPageActivity extends AppCompatActivity
         } else {
             this.finishAffinity();
         }
+
+*/
     }
 
     // TODO : What is that doing here?
@@ -220,13 +249,13 @@ public class MainPageActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_calendar) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new CalendarFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new CalendarFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_main) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new MainPageFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new MainPageFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_profile) {
-           getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
+           getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_settings) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new SettingsFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new SettingsFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_log_out) {
             logOutFromFirebase();
         }
