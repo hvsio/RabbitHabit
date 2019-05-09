@@ -8,26 +8,33 @@
         android:title="GENERAL" />
 
     <EditTextPreference
-        android:key="user_name"
-        android:summary="set you username"
+        android:key="username"
+        android:summary="Set you username"
         android:title="Username" />
 
     <SwitchPreference
-        android:key="switch"
-        android:summary="Default mood insertion with emoticons"
-        android:title="Insert mood with text" />
+        android:key="welcome_screen"
+        android:defaultValue="true"
+        android:summary="Welcome screen is viewed on application start"
+        android:title="Enable Welcome screen" />
 
     <SwitchPreference
         android:defaultValue="true"
-        android:key="switch_active"
+        android:key="download_photo"
         android:summary="Switch active"
         android:title="Download photo only when connected to wifi" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="take_photo"
+        android:summary="Enable taking photos, when under 10% of battery"
+        android:title="Enable taking photos, when under 10% of battery" />
 
     <ListPreference
         android:defaultValue="Once a day"
         android:entries="@array/notifications"
         android:entryValues="@array/notifications"
-        android:key="list_preference"
+        android:key="frequency_of_notifications"
         android:summary="Select how often would you like to be notified to complete your habits"
         android:title="Frequency of notifications" />
 
@@ -35,7 +42,7 @@
         android:defaultValue="5 minutes"
         android:entries="@array/snooze"
         android:entryValues="@array/snooze"
-        android:key="list_preference"
+        android:key="snooze_time"
         android:summary="Select a time for a snooze after getting a notification to complete your habit"
         android:title="Reminder snooze length" />
 

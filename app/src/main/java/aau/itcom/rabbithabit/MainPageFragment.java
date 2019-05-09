@@ -30,6 +30,7 @@ import java.util.concurrent.Executors;
 
 import aau.itcom.rabbithabit.objects.Database;
 import aau.itcom.rabbithabit.objects.HabitPersonal;
+import aau.itcom.rabbithabit.objects.Story;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainPageFragment extends Fragment {
@@ -139,14 +140,16 @@ public class MainPageFragment extends Fragment {
     private void displayStory(){
         String text = "You have no story to display.";
 
+        Story story = db.getStory();
+
         try{
-            storyTextView.setText(db.getStory().getTextContent());
+            storyTextView.setText(story.getTextContent());
             //storyTextView.setText(R.string.story_content);
         } catch (NoSuchElementException | NullPointerException ex) {
             Log.w(TAG, "Error loading Story. No story to display!\n" + ex);
             storyTextView.setText(text);
         }
-        ratingBar.setSelectedSmile(((int) db.getStory().getMood()));
+//        ratingBar.setSelectedSmile(((int) story.getMood()));
 
     }
 

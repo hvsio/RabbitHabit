@@ -7,15 +7,20 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
+import android.preference.SwitchPreference;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.Objects;
 
@@ -42,21 +47,69 @@ public class SettingsFragment extends Fragment {
 
         SharedPreferences.OnSharedPreferenceChangeListener listener;
 
+        EditTextPreference username;
+        SwitchPreference welcomeScreen;
+        SwitchPreference photoDownload;
+        SwitchPreference photoTake;
+        ListPreference frequencyOfNotifications;
+        ListPreference snooze;
+        Preference feedback;
+        private FirebaseAuth mAuth;
+
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.settings_screen);
 
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String username = sharedPref.getString("username", Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
+            mAuth = FirebaseAuth.getInstance();
+            username = (EditTextPreference) findPreference("username");
+            welcomeScreen = (SwitchPreference) findPreference("welcome_screen");
+            photoDownload = (SwitchPreference) findPreference("download_photo");
+            photoTake = (SwitchPreference) findPreference("take_photo");
+            frequencyOfNotifications = (ListPreference) findPreference("frequency_of_notifications");
+            snooze = (ListPreference) findPreference("snooze_time");
+            feedback = findPreference("feedback");
+
+
+            username.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
+
+        //    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+       //     String username = sharedPref.getString("username", Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
+
+            photoTake.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    if (photoTake.isChecked()) {
+
+                    }else {
+
+                    }
+
+                    return false;
+                }
+            });
+
 
         }
+
+
+
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (key.equals("username")) {
-                Preference pref = findPreference(key);
-                pref.setSummary(sharedPreferences.getString(key, ""));
+                username.getText();
+               // Preference pref = findPreference(key);
+//                FirebaseUser user = mAuth.getCurrentUser();
+//                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+//                        .setDisplayName(String.valueOf(username)).build();
+//                if (user != null) {
+//                    user.updateProfile(profileUpdates);
+//                }
+                username.setText(String.valueOf(username));
+               // pref.setSummary(sharedPreferences.getString(key, String.valueOf(username)));
+
             }
         }
 
