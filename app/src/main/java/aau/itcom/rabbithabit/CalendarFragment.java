@@ -1,6 +1,8 @@
 package aau.itcom.rabbithabit;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +27,7 @@ import com.hsalf.smilerating.SmileRating;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutorService;
@@ -32,6 +35,7 @@ import java.util.concurrent.Executors;
 
 import aau.itcom.rabbithabit.objects.Database;
 import aau.itcom.rabbithabit.objects.HabitPersonal;
+import aau.itcom.rabbithabit.objects.PhoneState;
 import aau.itcom.rabbithabit.objects.Story;
 
 public class CalendarFragment extends Fragment {
@@ -87,6 +91,7 @@ public class CalendarFragment extends Fragment {
 
     private void changeCurrentDay(String dateInString) {
         Date date = null;
+        SharedPreferences pref = getContext().getSharedPreferences(SettingsFragment.SETTINGS, Context.MODE_PRIVATE);
 
         try {
             date = new SimpleDateFormat("dd.MM.yyyy").parse(dateInString);
@@ -98,13 +103,20 @@ public class CalendarFragment extends Fragment {
         ExecutorService service = Executors.newCachedThreadPool();
         service.submit(new LoadHabitsTask());
         service.submit(new LoadStoryTask());
-        service.submit(new LoadPhotoTask());
+        //service.submit(new LoadPhotoTask());
         service.shutdown();
 
         Log.d(TAG, "I am inside changeCurrentDay(), and I am loading info");
         db.loadSetOfHabitsOnDate(date, FirebaseAuth.getInstance().getCurrentUser());
-        db.loadPhotoOnDate(date, FirebaseAuth.getInstance().getCurrentUser(), getContext());
+        //db.loadPhotoOnDate(date, FirebaseAuth.getInstance().getCurrentUser(), getContext());
         db.loadStoryOnDate(date, FirebaseAuth.getInstance().getCurrentUser());
+
+        if (PhoneState.getConnectionType(getActivity()).equals("WIFI") && pref.getBoolean(SettingsFragment.DOWNLOAD_PHOTO, false)){
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.submit(new LoadPhotoTask());
+            executorService.shutdown();
+            db.loadPhotoOnDate(date, FirebaseAuth.getInstance().getCurrentUser(), getContext());
+        }
 
     }
 
