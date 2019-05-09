@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
@@ -111,28 +112,31 @@ public class CalendarFragment extends Fragment {
         //db.loadPhotoOnDate(date, FirebaseAuth.getInstance().getCurrentUser(), getContext());
         db.loadStoryOnDate(date, FirebaseAuth.getInstance().getCurrentUser());
 
-        if (PhoneState.getConnectionType(getActivity()).equals("WIFI") && pref.getBoolean(SettingsFragment.DOWNLOAD_PHOTO, false)){
+        if (PhoneState.getConnectionType(getActivity()).equals("WIFI") || !pref.getBoolean(SettingsFragment.DOWNLOAD_PHOTO, true)){
             ExecutorService executorService = Executors.newSingleThreadExecutor();
             executorService.submit(new LoadPhotoTask());
             executorService.shutdown();
             db.loadPhotoOnDate(date, FirebaseAuth.getInstance().getCurrentUser(), getContext());
+        } else {
+            Toast.makeText(getActivity(),"Connect to WIFI or change setting to download photos", Toast.LENGTH_LONG).show();
         }
 
     }
 
     private void displayStory() {
         Log.d(TAG, "Inside displayStory()");
-        story = new Story(db.getStory().getDate(),db.getStory().getTextContent(), db.getStory().getMood());
-        storyTextView.setText(story.getTextContent());
-        ratingBar.setSelectedSmile(((int) db.getStory().getMood()));
+
         try {
             story = db.getStory();
         } catch (NoSuchElementException ex) {
             Log.w(TAG, "Error loading Photo. No photo to display!\n" + ex);
         }
 
-        if (story != null)
-            storyTextView.setText(story.getTextContent());
+        if (story != null) {
+            ratingBar.setSelectedSmile(((int) story.getMood()));
+            if (story.getTextContent() != null)
+                storyTextView.setText(story.getTextContent());
+        }
     }
 
 

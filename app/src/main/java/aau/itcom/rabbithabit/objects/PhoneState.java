@@ -10,6 +10,7 @@ import android.os.BatteryManager;
 
 public class PhoneState {
     private static final String TAG = "PhoneStateClass";
+    public static float BATTERY_LIMIT = 10;
     /*private static PhoneState instance = null;
 
     private PhoneState() {

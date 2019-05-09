@@ -87,13 +87,14 @@ public class MainPageFragment extends Fragment {
         db.loadStoryOnDate(Calendar.getInstance().getTime(), FirebaseAuth.getInstance().getCurrentUser());
         db.loadProfilePicture(FirebaseAuth.getInstance().getCurrentUser(), getContext());
 
-        if (PhoneState.getConnectionType(getActivity()).equals("WIFI") && pref.getBoolean(SettingsFragment.DOWNLOAD_PHOTO, false)){
+        if (PhoneState.getConnectionType(getActivity()).equals("WIFI") || !pref.getBoolean(SettingsFragment.DOWNLOAD_PHOTO, true)){
             ExecutorService executorService = Executors.newSingleThreadExecutor();
             executorService.submit(new LoadPhotoTask());
             executorService.shutdown();
             db.loadPhotoOnDate(Calendar.getInstance().getTime(), FirebaseAuth.getInstance().getCurrentUser(), getContext());
             Toast.makeText(getActivity(),"I am displaying coz wifi is on", Toast.LENGTH_LONG).show();
-        }
+        } else
+            Toast.makeText(getActivity(),"Connect to WIFI or change setting to download photos", Toast.LENGTH_LONG).show();
 
     }
 
@@ -173,7 +174,7 @@ public class MainPageFragment extends Fragment {
             } else {
                 photoView.setImageURI(photo);
                 photoView.setRotation(90);
-                //photoView.setVisibility(View.VISIBLE);
+                photoView.setVisibility(View.VISIBLE);
             }
         } catch(NoSuchElementException ex) {
             Log.w(TAG, "Error loading Photo. No photo to display!\n" + ex);
