@@ -18,10 +18,10 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.google.protobuf.StringValue;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,15 +40,15 @@ public class Database {
     private static Database instance = null;
     private StorageReference mStorageRef;
 
-    private HabitPersonal habitPersonal;
-    private HabitPublished habitPublished;
     private Uri photoUri;
+    private Uri profilePhotoUri;
     private Story story;
     private ArrayList<HabitPersonal> habitPersonals;
     private ArrayList<HabitPublished> habitsPublished;
 
     private boolean isStoryDownloadCompleted = false;
     private boolean isPhotoDownloadCompleted = false;
+    private boolean isProfilePhotoDownloadCompleted = false;
     private boolean isHabitsPersonalDownloadCompleted = false;
     private boolean isHabitsPublishedDownloadCompleted = false;
 
@@ -94,15 +94,15 @@ public class Database {
                 });
     }
 
-
     public String countHabits() {
         String number = String.valueOf(getArrayListOfHabitsPersonal().size());
         return number;
-        };
+    }
 
     public void loadSetOfHabitsOnDate(Date date, FirebaseUser user) {
 
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        habitPersonals = null;
         habitPersonals = new ArrayList<>();
 
         db.collection("Users").document(user.getUid()).collection("Habits")
@@ -131,10 +131,10 @@ public class Database {
                 });
     }
 
-    public ArrayList<HabitPersonal> getArrayListOfHabitsPersonal() throws NoSuchElementException{
+    public ArrayList<HabitPersonal> getArrayListOfHabitsPersonal() throws NoSuchElementException {
         Log.d(TAG, "HabitsPersonal consists: " + habitPersonals);
 
-        if (isHabitsPersonalDownloadCompleted){
+        if (isHabitsPersonalDownloadCompleted) {
             return habitPersonals;
         } else {
             throw new NoSuchElementException("Unable to execute getArrayListOfHabitsPersonal(). Files doesn't exist or connection error occurred!");
@@ -165,6 +165,7 @@ public class Database {
     }
 
     public void loadSetOfTrendingHabits() {
+        habitsPublished = null;
         habitsPublished = new ArrayList<>();
 
         db.collection("HabitsPublished")
@@ -177,7 +178,7 @@ public class Database {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                habitsPublished.add(new HabitPublished(document.getId(), document.getLong("duration"), document.getString("details"), document.getString("showCreator"), document.getString("creator"), document.getLong("numberOfLikes")));
+//                                habitsPublished.add(new HabitPublished(document.getId(), document.getLong("duration"), document.getString("details"), document.getString("showCreator"), document.getString("creator"), document.getLong("numberOfLikes")));
                             }
                             Log.d(TAG, "Habits are now loaded!");
                             isHabitsPublishedDownloadCompleted = true;
@@ -194,10 +195,10 @@ public class Database {
                 });
     }
 
-    public ArrayList<HabitPublished> getArrayListOfHabitsPublished() throws NoSuchElementException{
+    public ArrayList<HabitPublished> getArrayListOfHabitsPublished() throws NoSuchElementException {
         Log.d(TAG, "HabitsPublished consists: " + habitsPublished);
 
-        if (isHabitsPublishedDownloadCompleted){
+        if (isHabitsPublishedDownloadCompleted) {
             return habitsPublished;
         } else {
             throw new NoSuchElementException("Unable to execute getArrayListOfHabitsPublished(). Files doesn't exist or connection error occurred!");
@@ -206,7 +207,7 @@ public class Database {
 
     public void loadPhotoOnDate(final Date date, FirebaseUser user, Context context) {
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-
+        photoUri = null;
 
         File directory = context.getCacheDir();
         File outputFile = null;
@@ -230,6 +231,7 @@ public class Database {
                             LOCK_FOR_PHOTO.notify();
                             Log.d(TAG, "NOTIFIED!");
                         }
+                        //Log.i(TAG, "Image URI: " + photoUri);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -247,21 +249,24 @@ public class Database {
 
     public Uri getPhoto() throws NoSuchElementException {
         if (!isPhotoDownloadCompleted) {
-            Log.i("PROFILE_PIC", "No profile picture detected");
+            Log.i(TAG, "No picture ON DATE detected");
             return null;
         } else {
-            return photoUri;
+            Uri uri = photoUri;
+            photoUri = null;
+            isPhotoDownloadCompleted = false;
+            return uri;
         }
     }
 
     public void uploadPhotoFile(Date date, FirebaseUser user, File filePassed) {
 
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        //Uri file = Uri.fromFile(new File(AddPhotoActivity.getCurrentPhotoPath()));
-        Uri file = Uri.fromFile(filePassed);
+//        Uri file = Uri.fromFile(new File(AddPhotoActivity.getCurrentPhotoPath()));
+//        Uri file = Uri.fromFile(filePassed);
         StorageReference riversRef = mStorageRef.child(user.getUid() + "/" + dateFormat.format(date) + ".jpg");
 
-        riversRef.putFile(file)
+        riversRef.putFile(Uri.fromFile(filePassed))
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -279,27 +284,27 @@ public class Database {
                 });
     }
 
-//    public void uploadProfilePic(FirebaseUser user, File filePassed) {
-//        Uri file = Uri.fromFile(filePassed);
-//        StorageReference profilesRef = mStorageRef.child(user.getUid() + "/current_profile_pic.jpg");
-//
-//        profilesRef.putFile(file)
-//                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                        // Get a URL to the uploaded content
-//                        Uri downloadUrl = taskSnapshot.getUploadSessionUri();
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception exception) {
-//                        // Handle unsuccessful uploads
-//                        Log.d(TAG, "Cannot upload the photo. Check your internet connection!");
-//                        exception.printStackTrace();
-//                    }
-//                });
-//    }
+    public void uploadProfilePic(FirebaseUser user, File filePassed) {
+        Uri file = Uri.fromFile(filePassed);
+        StorageReference profilesRef = mStorageRef.child(user.getUid() + "/profile_picture.jpg");
+
+        profilesRef.putFile(file)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+                        Uri downloadUrl = taskSnapshot.getUploadSessionUri();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        Log.d(TAG, "Cannot upload the photo. Check your internet connection!");
+                        exception.printStackTrace();
+                    }
+                });
+    }
 
     public void addStory(Story story, FirebaseUser user) {
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -328,6 +333,7 @@ public class Database {
     }
 
     public void loadStoryOnDate(final Date date, FirebaseUser user) {
+        story = null;
 
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         Log.d(TAG, "I am inside loadStoryOnDate() and date is: " + dateFormat.format(date));
@@ -359,8 +365,12 @@ public class Database {
     public Story getStory() throws NoSuchElementException {
         if (!isStoryDownloadCompleted)
             throw new NoSuchElementException("Story needs to be loaded before getting or the story doesn't exist!");
-        else
-            return story;
+        else {
+            Story toReturn = story;
+            story = null;
+            isStoryDownloadCompleted = false;
+            return toReturn;
+        }
     }
 
     /**
@@ -389,6 +399,8 @@ public class Database {
     }
 
     public void loadProfilePicture(FirebaseUser user, Context context) {
+        profilePhotoUri = null;
+
         File directory = context.getCacheDir();
         File outputFile = null;
         try {
@@ -404,9 +416,8 @@ public class Database {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                         // Successfully downloaded data to local file
-                        photoUri = Uri.fromFile(finalOutputFile);
-
-                        isPhotoDownloadCompleted = true;
+                        profilePhotoUri = Uri.fromFile(finalOutputFile);
+                        isProfilePhotoDownloadCompleted = true;
                         synchronized (LOCK_FOR_PROFILE_PIC) {
                             LOCK_FOR_PROFILE_PIC.notify();
                             Log.d(TAG, "NOTIFIED!");
@@ -416,7 +427,7 @@ public class Database {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle failed download
-                isPhotoDownloadCompleted = false;
+                isProfilePhotoDownloadCompleted = false;
                 Log.d(TAG, "Cannot download the photo. The photo may not exist!");
                 synchronized (LOCK_FOR_PROFILE_PIC) {
                     LOCK_FOR_PROFILE_PIC.notify();
@@ -426,4 +437,20 @@ public class Database {
         });
     }
 
+    public Uri getProfilePhoto() throws NoSuchElementException {
+        if (!isProfilePhotoDownloadCompleted) {
+            Log.i("PROFILE_PIC", "No profile picture detected");
+            return null;
+        } else {
+            Uri uri = profilePhotoUri;
+            profilePhotoUri = null;
+            isProfilePhotoDownloadCompleted = false;
+            return uri;
+        }
+    }
+
+    public static void updateComplexion(HabitPersonal habitPersonal){
+        Database db = Database.getInstance();
+        db.addHabitPersonal(habitPersonal, FirebaseAuth.getInstance().getCurrentUser());
+    }
 }
