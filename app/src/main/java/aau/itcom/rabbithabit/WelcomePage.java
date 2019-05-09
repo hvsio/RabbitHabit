@@ -7,18 +7,12 @@ import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.transition.TransitionManager;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.tomer.fadingtextview.FadingTextView;
 
 import java.util.concurrent.TimeUnit;
 
-import aau.itcom.rabbithabit.MainPageActivity;
-import aau.itcom.rabbithabit.R;
 
 public class WelcomePage extends AppCompatActivity {
 

@@ -16,9 +16,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+
 import java.util.Objects;
+
+import aau.itcom.rabbithabit.objects.Database;
+
+import static android.content.Context.MODE_PRIVATE;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class SettingsFragment extends Fragment {
@@ -60,6 +69,7 @@ public class SettingsFragment extends Fragment {
         ListPreference snooze;
         Preference feedback;
         private FirebaseAuth mAuth;
+        private Database db;
 
 
         @Override
@@ -67,6 +77,7 @@ public class SettingsFragment extends Fragment {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.settings_screen);
 
+            db = Database.getInstance();
             mAuth = FirebaseAuth.getInstance();
             sharedPreferences = getActivity().getSharedPreferences(SETTINGS, Context.MODE_PRIVATE);
             final SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -80,7 +91,9 @@ public class SettingsFragment extends Fragment {
             feedback = findPreference(FEEDBACK);
 
 
-            username.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
+
+            username.setDefaultValue(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
+            changeUsername();
 
             photoDownload.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
@@ -130,23 +143,23 @@ public class SettingsFragment extends Fragment {
         }
 
 
+public void changeUsername() {
+    String newName = username.getText();
 
+    FirebaseUser user = mAuth.getCurrentUser();
+    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+            .setDisplayName(newName).build();
+    assert user != null;
+    user.updateProfile(profileUpdates);
+    db.createNewUser(mAuth.getCurrentUser());
+    username.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+    //Toast.makeText(getApplicationContext(), "It may take a while.", Toast.LENGTH_SHORT).show();
+}
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if (key.equals("username")) {
-                username.getText();
-               // Preference pref = findPreference(key);
-//                FirebaseUser user = mAuth.getCurrentUser();
-//                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-//                        .setDisplayName(String.valueOf(username)).build();
-//                if (user != null) {
-//                    user.updateProfile(profileUpdates);
-//                }
-                username.setText(String.valueOf(username));
-               // pref.setSummary(sharedPreferences.getString(key, String.valueOf(username)));
 
-            }
+
         }
 
         @Override
@@ -184,6 +197,5 @@ public class SettingsFragment extends Fragment {
             context.startActivity(Intent.createChooser(intent, context.getString(R.string.email_input)));
         }
     }
-
 }
 
