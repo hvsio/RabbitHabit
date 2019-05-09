@@ -68,7 +68,6 @@ public class MainPageFragment extends Fragment {
         storyTextView = v.findViewById(R.id.textViewForStoryContent);
         photoView = v.findViewById(R.id.photoOfTheDay);
         profilePic = v.findViewById(R.id.profile_image);
-        photoView.setVisibility(View.GONE);
 
         loadDetails();
     }
@@ -159,18 +158,19 @@ public class MainPageFragment extends Fragment {
 
             if (photo == null) {
                 photoView.setImageResource(R.drawable.no_picture);
+                photoView.setRotation(0);
+            } else {
+                photoView.setImageURI(photo);
                 photoView.setRotation(90);
             }
-            photoView.setImageURI(photo);
-            photoView.setRotation(90);
-            photoView.setVisibility(View.VISIBLE);
         } catch(NoSuchElementException ex) {
             Log.w(TAG, "Error loading Photo. No photo to display!\n" + ex);
         }
     }
 
     private void displayProfilePicture() {
-        profilePic.setImageURI(db.getProfilePhoto());
+            profilePic.setImageURI(db.getProfilePhoto());
+
     }
 
     private class LoadHabitsTask implements Runnable{

@@ -25,7 +25,9 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -58,7 +60,8 @@ public class ProfileFragment extends Fragment {
     StorageReference userRefPictures = mStorageRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
     StorageReference userRefProfilePic = mStorageRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid() + "/profile_picture.jpg");
     TextView noOfHabits;
-    TextView noOfPhotos;
+    TextView noOfStories;
+    private static int numberOfStories;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,18 +80,18 @@ public class ProfileFragment extends Fragment {
         name = getView().findViewById(R.id.textView12);
         email = getView().findViewById(R.id.textView15);
         noOfHabits = getView().findViewById(R.id.textViewNoHabits);
-        noOfPhotos = getView().findViewById(R.id.textViewNoPhotos);
+        noOfStories = getView().findViewById(R.id.textViewNoStories);
 
         name.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         noOfHabits.setText(db.countHabits());
         profilePic.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        profilePicSelection();
-                    }
-                });
-        loadProfilePic();
+            @Override
+            public void onClick(View v) {
+                profilePicSelection();
+            }
+        });
+        load();
     }
 
     private void profilePicSelection() {
@@ -141,13 +144,13 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         Uri imageUri;
         String path;
         File f ;
-
+        super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CAMERA  && resultCode == RESULT_OK){
-            Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
             profilePic.setImageBitmap(imageBitmap);
             saveImageAndUpload(imageBitmap);
         }else if ( requestCode == SELECT_FILE && resultCode == RESULT_OK ){
@@ -158,45 +161,24 @@ public class ProfileFragment extends Fragment {
                 profilePic.setImageURI(Uri.fromFile(f));
                 db.uploadProfilePic(FirebaseAuth.getInstance().getCurrentUser(), f);
             }
+
         }
+
     }
 
-    private void loadProfilePic() {
+    private void load() {
         ExecutorService executorService = Executors.newCachedThreadPool();
         executorService.submit(new LoadProfilePicture());
+        executorService.submit(new LoadStories());
         executorService.shutdown();
         db.loadProfilePicture(FirebaseAuth.getInstance().getCurrentUser(), getContext());
+        db.addStoriesToList();
+
     }
 
     private void displayProfilePicture() {
-        profilePic.setImageURI(db.getProfilePhoto());
+            profilePic.setImageURI(db.getProfilePhoto());
     }
-
-    public String getPathFromURI(Uri contentUri) {
-        String res = null;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContext().getContentResolver().query(contentUri, proj, null, null, null);
-        if (cursor.moveToFirst()) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            res = cursor.getString(column_index);
-        }
-        cursor.close();
-        return res;
-    }
-
-
-    private void saveImageAndUpload(Bitmap finalBitmap) {
-        try (FileOutputStream outputStream = new FileOutputStream(new File(getCacheDir(), "profile_pic.jpeg"))){
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-            db.uploadProfilePic(FirebaseAuth.getInstance().getCurrentUser(), new File(getCacheDir(), "profile_pic.jpeg"));
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     private class LoadProfilePicture implements Runnable{
 
@@ -225,4 +207,57 @@ public class ProfileFragment extends Fragment {
             }
         }
     }
+
+    public String getPathFromURI(Uri contentUri) {
+        String res = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContext().getContentResolver().query(contentUri, proj, null, null, null);
+        if (cursor.moveToFirst()) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+        return res;
+    }
+
+
+    private void saveImageAndUpload(Bitmap finalBitmap) {
+        try (FileOutputStream outputStream = new FileOutputStream(new File(getCacheDir(), "profile_pic.jpeg"))){
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            db.uploadProfilePic(FirebaseAuth.getInstance().getCurrentUser(), new File(getCacheDir(), "profile_pic.jpeg"));
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private class LoadStories implements Runnable{
+
+        @Override
+        public void run() {
+            try {
+                synchronized (Database.LOCK_FOR_LIST_OF_STORIES) {
+                    Database.LOCK_FOR_LIST_OF_STORIES.wait();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if(isAdded()){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        noOfStories.setText(String.valueOf(db.stories.size()));
+                    }
+                });
+            }
+        }
+
+
+    }
+
+
+
 }

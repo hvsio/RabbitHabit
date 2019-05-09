@@ -142,7 +142,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewHabits" />
 
         <TextView
-            android:id="@+id/textViewNoPhotos"
+            android:id="@+id/textViewNoStories"
             android:layout_width="123dp"
             android:layout_height="43dp"
             android:layout_marginStart="8dp"

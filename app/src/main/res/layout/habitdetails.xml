@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detailsLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/another_gradient">
@@ -25,26 +26,45 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="422dp"
-        android:layout_height="459dp"
+        android:layout_width="wrap_content"
+        android:layout_height="507dp"
         android:layout_marginBottom="96dp"
+        android:isScrollContainer="false"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHabitsName">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <CalendarView
-                android:id="@+id/calendarView2"
-                android:layout_width="match_parent"
-                android:layout_height="315dp" />
+            <LinearLayout
+                android:layout_width="347dp"
+                android:layout_height="128dp"
+                android:layout_margin="30dp"
+                android:background="@drawable/my_button_white"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="20dp" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/textViewHabitsDuration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textViewStatistics"
                 android:layout_width="match_parent"
                 android:layout_height="39dp"
                 android:background="@color/colorAccent"
@@ -67,11 +87,11 @@
     </ScrollView>
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="0dp"
+        android:id="@+id/textViewHabitsName"
+        android:layout_width="411dp"
         android:layout_height="43dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
         android:background="@color/colorAccent"
         android:text="@string/habitsname"
         android:textAlignment="center"
@@ -80,23 +100,7 @@
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar2"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar2"
-        android:layout_width="0dp"
-        android:layout_height="34dp"
-        android:layout_marginBottom="8dp"
-        android:background="@color/colorAccent"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
