@@ -67,8 +67,8 @@ public class RegistrationActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser currentUser) {
         if (currentUser != null) {
            // startActivity(MainPageActivity.createNewIntent(getApplicationContext()));
-            Intent i = new Intent(RegistrationActivity.this, WelcomePage.class);
-            i.putExtra("Name", nameText);
+            Intent i = new Intent(RegistrationActivity.this, IntroTutorialScreen.class);
+          //  i.putExtra("Name", nameText);
             startActivity(i);
         }
     }

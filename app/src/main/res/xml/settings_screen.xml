@@ -31,7 +31,7 @@
         android:title="Enable taking photos, when under 10% of battery" />
 
     <ListPreference
-        android:defaultValue="Once a day"
+        android:defaultValue="Evening"
         android:entries="@array/notifications"
         android:entryValues="@array/notifications"
         android:key="frequency_of_notifications"

@@ -37,7 +37,7 @@ public class AddStoryActivity extends AppCompatActivity {
         story = findViewById(R.id.editTextStory);
         add = findViewById(R.id.buttonAdd);
 
-        //final long getRating = smileRating.getRating();
+       // final long getRating = smileRating.getRating();
 
 //        smileRating.setOnSmileySelectionListener(new SmileRating.OnSmileySelectionListener() {
 //            @Override

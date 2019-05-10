@@ -45,9 +45,9 @@
         <item>Enjoy our app</item>
     </string-array>
     <string-array name="notifications">
-        <item>Once a day</item>
-        <item>2 times a day</item>
-        <item>3 times a day</item>
+        <item>Morning</item>
+        <item>Noon</item>
+        <item>Evening</item>
         <item>None</item>
     </string-array>
     <string-array name="snooze">
