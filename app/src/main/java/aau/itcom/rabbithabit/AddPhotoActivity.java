@@ -40,6 +40,8 @@ public class AddPhotoActivity extends AppCompatActivity {
     private FloatingActionButton takePhoto;
     private FloatingActionButton pickFromGallery;
     Database db;
+    String path;
+    File f;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -63,20 +65,20 @@ public class AddPhotoActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            File f = new File(currentPhotoPath);
+            f = new File(currentPhotoPath);
             imageView.setImageURI(Uri.fromFile(f));
             imageView.setRotation(90);
         }
         if (requestCode == REQUEST_GET_PIC && resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
-            final String path = getPathFromURI(selectedImageUri);
+            path = getPathFromURI(selectedImageUri);
             if (path != null) {
-                File f = new File(path);
-                selectedImageUri = Uri.fromFile(f);
+                f = new File(path);
+                imageView.setImageURI(Uri.fromFile(f));
+                imageView.setRotation(90);
             }
-            currentPhotoPath = selectedImageUri.getPath();
-            imageView.setImageURI(selectedImageUri);
-            imageView.setRotation(90);
+
+
 
         }
     }
@@ -84,7 +86,7 @@ public class AddPhotoActivity extends AppCompatActivity {
     public String getPathFromURI(Uri contentUri) {
         String res = null;
         String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        Cursor cursor = getApplicationContext().getContentResolver().query(contentUri, proj, null, null, null);
         if (cursor.moveToFirst()) {
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             res = cursor.getString(column_index);
@@ -139,24 +141,15 @@ public class AddPhotoActivity extends AppCompatActivity {
         return image;
     }
 
-    private void galleryAddPic() {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(currentPhotoPath);
-        Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
-        this.sendBroadcast(mediaScanIntent);
-    }
 
     public void pickFromGallery(View view) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"),REQUEST_GET_PIC);
+        startActivityForResult(intent, REQUEST_GET_PIC);
     }
 
     public void addAsDailyPic(View view) {
-        galleryAddPic();
-        db.uploadPhotoFile(new Date(), FirebaseAuth.getInstance().getCurrentUser(), new File(currentPhotoPath));
+        db.uploadPhotoFile(new Date(), FirebaseAuth.getInstance().getCurrentUser(), f);
         Intent intent = new Intent(getApplicationContext(), MainPageActivity.class);
         startActivity(intent);
     }

@@ -162,7 +162,6 @@
                             android:id="@+id/habits_from_the_day"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:divider="@color/calendar_divider"
                             android:dividerHeight="2dp"
                             android:scrollbars="vertical"
                             tools:layout_editor_absoluteY="1126dp" />

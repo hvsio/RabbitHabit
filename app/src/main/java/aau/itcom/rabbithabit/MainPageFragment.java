@@ -31,7 +31,6 @@ import aau.itcom.rabbithabit.objects.Database;
 import aau.itcom.rabbithabit.objects.PhoneState;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-
 public class MainPageFragment extends Fragment {
 
     Database db;
@@ -67,7 +66,6 @@ public class MainPageFragment extends Fragment {
         storyTextView = v.findViewById(R.id.textViewForStoryContent);
         photoView = v.findViewById(R.id.photoOfTheDay);
         profilePic = v.findViewById(R.id.profile_image);
-        photoView.setVisibility(View.GONE);
 
         loadDetails();
     }
@@ -151,16 +149,15 @@ public class MainPageFragment extends Fragment {
 
         try{
             storyTextView.setText(db.getStory().getTextContent());
-            //storyTextView.setText(R.string.story_content);
+            ratingBar.setSelectedSmile(((int) db.getStory().getMood()));
         } catch (NoSuchElementException | NullPointerException ex) {
             /*SharedPreferences pref = getContext().getSharedPreferences(SettingsFragment.SETTINGS, Context.MODE_PRIVATE);
             Log.i(TAG, "#################### " + Boolean.toString(pref.getBoolean(SettingsFragment.DOWNLOAD_PHOTO, true)));*/
 
             Log.w(TAG, "Error loading Story. No story to display!\n" + ex);
             storyTextView.setText(text);
-
         }
-//        ratingBar.setSelectedSmile(((int) db.getStory().getMood()));
+        ratingBar.setSelectedSmile(((int) db.getStory().getMood()));
 
     }
 
@@ -170,11 +167,10 @@ public class MainPageFragment extends Fragment {
 
             if (photo == null) {
                 photoView.setImageResource(R.drawable.no_picture);
-                //photoView.setRotation(90);
+                photoView.setRotation(0);
             } else {
                 photoView.setImageURI(photo);
                 photoView.setRotation(90);
-                photoView.setVisibility(View.VISIBLE);
             }
         } catch(NoSuchElementException ex) {
             Log.w(TAG, "Error loading Photo. No photo to display!\n" + ex);
@@ -182,7 +178,8 @@ public class MainPageFragment extends Fragment {
     }
 
     private void displayProfilePicture() {
-        profilePic.setImageURI(db.getProfilePhoto());
+            profilePic.setImageURI(db.getProfilePhoto());
+
     }
 
     private class LoadHabitsTask implements Runnable{

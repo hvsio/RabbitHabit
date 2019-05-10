@@ -395,10 +395,11 @@ public class Database {
         if (!isStoryDownloadCompleted)
             throw new NoSuchElementException("Story needs to be loaded before getting or the story doesn't exist!");
         else {
-            Story toReturn = story;
-            story = null;
-            isStoryDownloadCompleted = false;
-            return toReturn;
+//            Story toReturn = story;
+//            story = null;
+//            isStoryDownloadCompleted = false;
+//            return toReturn;
+            return story;
         }
     }
 
@@ -477,4 +478,10 @@ public class Database {
             return uri;
         }
     }
+
+    public static void updateComplexion(HabitPersonal habitPersonal){
+        Database db = Database.getInstance();
+        db.addHabitPersonal(habitPersonal, FirebaseAuth.getInstance().getCurrentUser());
+    }
+
 }
