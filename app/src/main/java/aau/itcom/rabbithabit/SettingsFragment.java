@@ -10,10 +10,9 @@ import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +31,15 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class SettingsFragment extends Fragment {
+    public static final String SETTINGS = "settings" ;
+
+    public static final String USERNAME = "username";
+    public static final String WELCOME_SCREEN = "welcome_screen" ;
+    public static final String DOWNLOAD_PHOTO = "download_photo" ;
+    public static final String TAKE_PHOTO = "take_photo" ;
+    public static final String NOTIFIXATION_FREQUENCY = "frequency_of_notifications" ;
+    public static final String SNOOZE_TIME = "snooze_time" ;
+    public static final String FEEDBACK = "feedback" ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +59,7 @@ public class SettingsFragment extends Fragment {
 
     public static class SettingsPreferenceFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener{
 
+        SharedPreferences sharedPreferences;
 
         EditTextPreference username;
         SwitchPreference welcomeScreen;
@@ -70,44 +79,63 @@ public class SettingsFragment extends Fragment {
 
             db = Database.getInstance();
             mAuth = FirebaseAuth.getInstance();
-            username = (EditTextPreference) findPreference("username");
-            welcomeScreen = (SwitchPreference) findPreference("welcome_screen");
-            photoDownload = (SwitchPreference) findPreference("download_photo");
-            photoTake = (SwitchPreference) findPreference("take_photo");
-            frequencyOfNotifications = (ListPreference) findPreference("frequency_of_notifications");
-            snooze = (ListPreference) findPreference("snooze_time");
-            feedback = findPreference("feedback");
+            sharedPreferences = getActivity().getSharedPreferences(SETTINGS, Context.MODE_PRIVATE);
+            final SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            username = (EditTextPreference) findPreference(USERNAME);
+            welcomeScreen = (SwitchPreference) findPreference(WELCOME_SCREEN);
+            photoDownload = (SwitchPreference) findPreference(DOWNLOAD_PHOTO);
+            photoTake = (SwitchPreference) findPreference(TAKE_PHOTO);
+            frequencyOfNotifications = (ListPreference) findPreference(NOTIFIXATION_FREQUENCY);
+            snooze = (ListPreference) findPreference(SNOOZE_TIME);
+            feedback = findPreference(FEEDBACK);
 
 
 
             username.setDefaultValue(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
             changeUsername();
 
-
-            welcomeScreen.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-
+            photoDownload.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-
+                    if (photoDownload.isChecked()) {
+                        editor.putBoolean(DOWNLOAD_PHOTO, true);
+                        Log.i(DOWNLOAD_PHOTO, "Switch is checked");
+                    } else {
+                        editor.putBoolean(DOWNLOAD_PHOTO, false);
+                        Log.i(DOWNLOAD_PHOTO, "Switch is NOT checked");
+                    }
+                    editor.apply();
                     return false;
                 }
             });
-
 
             photoTake.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-
-
+                    if (photoTake.isChecked()) {
+                        editor.putBoolean(TAKE_PHOTO, true);
+                        Log.i(TAKE_PHOTO, "Switch is checked");
+                    } else {
+                        editor.putBoolean(TAKE_PHOTO, false);
+                        Log.i(TAKE_PHOTO, "Switch is NOT checked");
+                    }
+                    editor.apply();
                     return false;
                 }
             });
 
-
-            feedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            welcomeScreen.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    sendFeedback(getActivity());
+                    if (welcomeScreen.isChecked()) {
+                        editor.putBoolean(WELCOME_SCREEN, true);
+                        Log.i(WELCOME_SCREEN, "Switch is checked");
+                    } else {
+                        editor.putBoolean(WELCOME_SCREEN, false);
+                        Log.i(WELCOME_SCREEN, "Switch is NOT checked");
+                    }
+                    editor.apply();
                     return false;
                 }
             });
@@ -168,8 +196,6 @@ public void changeUsername() {
             intent.putExtra(Intent.EXTRA_TEXT, body);
             context.startActivity(Intent.createChooser(intent, context.getString(R.string.email_input)));
         }
-
     }
-
 }
 

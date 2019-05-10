@@ -240,7 +240,7 @@ public class Database {
         File directory = context.getCacheDir();
         File outputFile = null;
         try {
-            outputFile = File.createTempFile(dateFormat.format(date), "jpg", directory);
+            outputFile = File.createTempFile(dateFormat.format(date), ".jpg", directory);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -257,9 +257,9 @@ public class Database {
                         isPhotoDownloadCompleted = true;
                         synchronized (LOCK_FOR_PHOTO) {
                             LOCK_FOR_PHOTO.notify();
-                            Log.d(TAG, "NOTIFIED!");
+                            Log.d(TAG, "PHOTO - NOTIFIED!");
                         }
-                        //Log.i(TAG, "Image URI: " + photoUri);
+                        Log.i(TAG, "Image URI: " + photoUri);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override

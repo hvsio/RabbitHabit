@@ -2,8 +2,10 @@ package aau.itcom.rabbithabit;
 
 import android.Manifest;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,10 +39,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import aau.itcom.rabbithabit.objects.Database;
+import aau.itcom.rabbithabit.objects.PhoneState;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
+import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.facebook.FacebookSdk.getCacheDir;
 
 
@@ -138,8 +143,14 @@ public class ProfileFragment extends Fragment {
     }
 
     private void cameraIntent() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, REQUEST_CAMERA);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(SettingsFragment.SETTINGS, Context.MODE_PRIVATE);
+
+        if (PhoneState.getBatteryLevelInPrc(getApplicationContext()) >= PhoneState.BATTERY_LIMIT || pref.getBoolean(SettingsFragment.TAKE_PHOTO, false)) {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, REQUEST_CAMERA);
+        } else {
+            Toast.makeText(getApplicationContext(),"The battery level is too low", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
