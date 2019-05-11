@@ -395,11 +395,10 @@ public class Database {
         if (!isStoryDownloadCompleted)
             throw new NoSuchElementException("Story needs to be loaded before getting or the story doesn't exist!");
         else {
-//            Story toReturn = story;
-//            story = null;
-//            isStoryDownloadCompleted = false;
-//            return toReturn;
-            return story;
+            Story toReturn = story;
+            story = null;
+            isStoryDownloadCompleted = false;
+            return toReturn;
         }
     }
 

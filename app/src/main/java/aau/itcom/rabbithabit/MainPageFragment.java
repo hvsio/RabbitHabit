@@ -18,7 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.hsalf.smilerating.SmileRating;
 
 import java.util.ArrayList;
@@ -98,33 +102,6 @@ public class MainPageFragment extends Fragment {
 
     private void displayHabits(){
 
-/*
-        try {
-            for (int i = 0; i < db.getArrayListOfHabitsPersonal().size(); i++) {
-                Log.d(TAG, "Inside loop for textfields - createTextFieldsForHabits()");
-                TextView textView = new TextView(getContext());
-                textView.setText(db.getArrayListOfHabitsPersonal().get(i).getName());
-                textView.setTextSize(18);
-                habitsLayout.addView(textView);
-
-                final HabitPersonal habitPersonal = db.getArrayListOfHabitsPersonal().get(i);
-                textView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = HabitDetailsActivity.createNewIntent(getContext());
-                        intent.putExtra("habitPersonal", habitPersonal);
-                        getContext().startActivity(intent);
-                    }
-                });
-                textView.setLayoutParams(params);
-                textView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.my_button_white));
-
-            }
-        } catch (NoSuchElementException ex){
-            Log.w(TAG, "Error loading Habits. No habits to display!\n" + ex);
-            // make textfield NO HABITS TO DISPLAY!
-        }
-*/
         ArrayList<TextView> textViews = new ArrayList<>(createTextFieldsForHabits());
 
         for(int i = 0;i<textViews.size();i++){

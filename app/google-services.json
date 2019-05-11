@@ -13,7 +13,28 @@
           "package_name": "aau.itcom.rabbithabit"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "558572922532-ekj2thfadtdck0v9ibcnrmtmf9rd83u1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "aau.itcom.rabbithabit",
+            "certificate_hash": "ffb603db36e74f3c583835a9bf2a810e7a4e0e0f"
+          }
+        },
+        {
+          "client_id": "558572922532-5jqi9354742vl77irhf99vlho6qk3rup.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "aau.itcom.rabbithabit",
+            "certificate_hash": "e458628c75ad1d01deea8d81c811e87154062eb9"
+          }
+        },
+        {
+          "client_id": "558572922532-oviri9ic9qt47rnvrvmuptflkeb3kq6m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCZZiTJFF_Lid3jFN5OcwbBDqEur-Z1B9w"
