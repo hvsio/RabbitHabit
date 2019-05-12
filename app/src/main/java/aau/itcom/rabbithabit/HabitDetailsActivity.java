@@ -7,11 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
+import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -21,9 +23,11 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,10 +59,8 @@ public class HabitDetailsActivity extends AppCompatActivity {
         habitPersonal = (HabitPersonal) receivedIntent.getSerializableExtra("habit");
         dates = habitPersonal.getArrayOfDates();
         String firstDay = dates[0];
-        String lastDay = dates[dates.length-1];
+        String lastDay = dates[dates.length - 1];
         String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-
-
 
 
         super.onCreate(savedInstanceState);
@@ -72,99 +74,106 @@ public class HabitDetailsActivity extends AppCompatActivity {
 
         habitsName.setText(habitPersonal.getName());
         habitsDetails.setText(habitPersonal.getDetails());
-        habitsDuration.setText("Duration: "+ firstDay + " - " + lastDay);
+        habitsDuration.setText("Duration: " + firstDay + " - " + lastDay);
 
         transformDates();
         statsSettings();
         LineDataSet lineDataSet = new LineDataSet(dataValues, "DataSet");
-//        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-//        dataSets.add(lineDataSet);
-        LineData data= new LineData(lineDataSet);
-        data.setValueFormatter(new MyValueFormatter());
+        lineDataSet.setCircleColor(R.color.colorChart);
+        lineDataSet.setDrawValues(true);
+        lineDataSet.setColor(R.color.colorChart1);
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();dataSets.add(lineDataSet);
+        LineData data = new LineData(lineDataSet);
         chart.setData(data);
-        chart.invalidate();
-
+        chart.animateX(2500, Easing.EaseInBounce );
 
 
 
 
     }
 
+    private int convertBooleanValue(HabitPersonal habit, String date) {
+        boolean ifDone = habit.getComplexionMap().get(date);
+        System.out.println(date + ifDone);
+        if (ifDone) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     private void statsSettings() {
-        chart.setDrawBorders(true);
         description = new Description();
         description.setText("Habit fulfillment");
-        description.setTextSize(20);
+        description.setTextSize(15);
         chart.setDescription(description);
         legend = chart.getLegend();
         legend.setEnabled(true);
-        LegendEntry [] legendEntry = new LegendEntry[1];
+        LegendEntry[] legendEntry = new LegendEntry[1];
         LegendEntry entry = new LegendEntry();
         entry.label = habitPersonal.getName();
         legendEntry[0] = entry;
         legend.setCustom(legendEntry);
-        chart.setDrawGridBackground(false);
+        chart.setPinchZoom(true);
     }
 
     private void transformDates() {
         dataValues = new ArrayList<>();
 
-        for (String date: dates) {
+        for (String date : dates) {
             StringBuilder sb = new StringBuilder(date);
-            String day = sb.substring(0,2);
+            String day = sb.substring(0, 2);
             System.out.println(day);
-            dataValues.add(new Entry(Integer.valueOf(day), 1));
+            dataValues.add(new Entry(Integer.valueOf(day), convertBooleanValue(habitPersonal, date)));
         }
 
         xAxis = chart.getXAxis();
-       // xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+
+
+
         xAxis.setValueFormatter(new IndexAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 int valueInt = (int) value;
-                axis.setLabelCount(dataValues.size());
                 return String.valueOf(dataValues.get(valueInt));
             }
         });
+
+        xAxis.setGranularity(1f);
+        xAxis.setTextSize(10f);
+        xAxis.setDrawLabels(true);
+
+
         yAxis = chart.getAxisLeft() ;
+        yAxis.setDrawGridLines(false);
+
         yAxis.setValueFormatter(new IndexAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 int valueInt = (int) value;
                 axis.setLabelCount(2);
-                return String.valueOf(value);
+                return String.valueOf(valueInt);
             }
 
             });
 
-        yAxis2 = chart.getAxisRight() ;
-        yAxis2.setValueFormatter(new IndexAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                int valueInt = (int) value;
-                axis.setLabelCount(2);
-                return String.valueOf(value);
-            }
-
-        });
-
-
+        chart.getAxisRight().setEnabled(false);
 
     }
-
-    private class MyValueFormatter extends ValueFormatter {
-
-        @Override
-        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-            return String.valueOf(value);
-        }
-    }
-
-
 
     public static Intent createNewIntent(Context context) {
         return new Intent(context, HabitDetailsActivity.class);
     }
 
-}
+//    public class MyValueFormatter extends ValueFormatter implements IValueFormatter {
+//        @Override
+//        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+//            int valueInt = (int) value;
+//            return String.valueOf(dataValues.get(valueInt));
+//        }
+    }
+
+
+
 

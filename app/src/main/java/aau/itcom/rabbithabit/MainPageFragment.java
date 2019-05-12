@@ -27,11 +27,13 @@ import com.hsalf.smilerating.SmileRating;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import aau.itcom.rabbithabit.objects.Database;
+import aau.itcom.rabbithabit.objects.HabitPersonal;
 import aau.itcom.rabbithabit.objects.PhoneState;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -134,7 +136,7 @@ public class MainPageFragment extends Fragment {
             Log.w(TAG, "Error loading Story. No story to display!\n" + ex);
             storyTextView.setText(text);
         }
-        ratingBar.setSelectedSmile(((int) db.getStory().getMood()));
+
 
     }
 
