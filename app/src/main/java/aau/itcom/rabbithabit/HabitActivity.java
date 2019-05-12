@@ -12,10 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.squareup.timessquare.CalendarPickerView;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import aau.itcom.rabbithabit.objects.Database;
 import aau.itcom.rabbithabit.objects.HabitPersonal;
@@ -24,7 +22,6 @@ import aau.itcom.rabbithabit.objects.HabitPublished;
 import static aau.itcom.rabbithabit.CustomAdapterSearchingHabits.PASS_HABIT_DETAILS;
 import static aau.itcom.rabbithabit.CustomAdapterSearchingHabits.PASS_HABIT_DURATION;
 import static aau.itcom.rabbithabit.CustomAdapterSearchingHabits.PASS_HABIT_NAME;
-import static com.squareup.timessquare.CalendarPickerView.SelectionMode.RANGE;
 
 
 public class HabitActivity extends AppCompatActivity {
@@ -58,16 +55,6 @@ public class HabitActivity extends AppCompatActivity {
 
         db = Database.getInstance();
 
-//        Calendar nextYear = Calendar.getInstance();
-//        nextYear.add(Calendar.YEAR, 1);
-//
-//        CalendarPickerView calendar = (CalendarPickerView) findViewById(R.id.calendar_view);
-//        Date today = new Date();
-//        calendar.init(today, nextYear.getTime())
-//                .withSelectedDate(today);
-//
-//        calendar.init(today, nextYear.getTime())
-//                .inMode(RANGE);
 
         if(intentFromSearching.getExtras()!=null) {
             Bundle retrievedBundle = getIntent().getExtras();
@@ -134,12 +121,12 @@ public class HabitActivity extends AppCompatActivity {
     }
 
     private void saveHabitAsPublished() {
-        db.addHabitPersonal(new HabitPersonal(nameTextView.getText().toString(),Integer.parseInt(durationTextView.getText().toString()), detailsTextView.getText().toString(), Calendar.getInstance().getTime()), FirebaseAuth.getInstance().getCurrentUser());
+        db.addHabitPersonal(new HabitPersonal(nameTextView.getText().toString(),Integer.parseInt(durationTextView.getText().toString()), detailsTextView.getText().toString(), Calendar.getInstance().getTime(), null), FirebaseAuth.getInstance().getCurrentUser());
         db.addHabitPublished(new HabitPublished(nameTextView.getText().toString(),Integer.parseInt(durationTextView.getText().toString()), detailsTextView.getText().toString(), "true", FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), 0));
     }
 
     private void saveHabitAsPersonal() {
-        db.addHabitPersonal(new HabitPersonal(nameTextView.getText().toString(),Integer.parseInt(durationTextView.getText().toString()), detailsTextView.getText().toString(), Calendar.getInstance().getTime()), FirebaseAuth.getInstance().getCurrentUser());
+        db.addHabitPersonal(new HabitPersonal(nameTextView.getText().toString(),Integer.parseInt(durationTextView.getText().toString()), detailsTextView.getText().toString(), Calendar.getInstance().getTime(), null), FirebaseAuth.getInstance().getCurrentUser());
     }
 
 

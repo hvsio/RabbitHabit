@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/mainPageLayout"
-    >
+    tools:context=".MainPageActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -44,7 +43,7 @@
         android:focusable="true"
         android:onClick="addHabit"
         android:visibility="gone"
-        app:srcCompat="@android:drawable/ic_menu_search" />
+        app:srcCompat="@drawable/habit" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabStory"
@@ -56,7 +55,7 @@
         android:clickable="true"
         android:focusable="true"
         android:visibility="gone"
-        app:srcCompat="@android:drawable/btn_star" />
+        app:srcCompat="@drawable/story" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabPhoto"
@@ -67,8 +66,10 @@
         android:layout_marginBottom="206dp"
         android:clickable="true"
         android:focusable="true"
+        android:onClick="addPhoto"
         android:visibility="gone"
-        app:srcCompat="@android:drawable/ic_menu_camera" />
+        app:srcCompat="@drawable/photo"
+        />
 
     <View
         android:id="@+id/viewBlurred"
@@ -76,6 +77,5 @@
         android:layout_height="match_parent"
         android:background="#CFFF"
         android:visibility="gone" />
-
 
 </android.support.design.widget.CoordinatorLayout>

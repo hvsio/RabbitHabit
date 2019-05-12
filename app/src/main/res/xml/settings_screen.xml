@@ -30,13 +30,21 @@
         android:summary="Enable taking photos, when under 10% of battery"
         android:title="Enable taking photos, when under 10% of battery" />
 
-    <ListPreference
-        android:defaultValue="Evening"
+    <!--MultiSelectListPreference
+        android:defaultValue="@array/default_value_for_notifications"
         android:entries="@array/notifications"
         android:entryValues="@array/notifications"
         android:key="frequency_of_notifications"
         android:summary="Select how often would you like to be notified to complete your habits"
-        android:title="Frequency of notifications" />
+        android:dialogTitle="Frequency of notifications" /-->
+
+    <MultiSelectListPreference
+        android:defaultValue="@array/default_value_for_notifications"
+        android:entries="@array/notifications"
+        android:entryValues="@array/notifications"
+        android:key="@string/key_notification"
+        android:title="Frequency of notifications"
+        android:summary="Select how often would you like to be notified to complete your habits"/>
 
     <ListPreference
         android:defaultValue="5 minutes"
@@ -45,10 +53,5 @@
         android:key="snooze_time"
         android:summary="Select a time for a snooze after getting a notification to complete your habit"
         android:title="Reminder snooze length" />
-
-    <Preference
-        android:key="feedback"
-        android:summary="Report technical issues or suggest new features"
-        android:title="Send feedback" />
 
 </PreferenceScreen>

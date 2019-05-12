@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:addStatesFromChildren="false"
     android:background="@drawable/another_gradient">
 
     <ScrollView
         android:id="@+id/scrollView4"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/another_gradient"
         android:padding="@dimen/nav_header_vertical_spacing"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,11 +21,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
             android:orientation="vertical">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="243dp">
+                android:layout_height="146dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profile_image"
@@ -41,10 +44,9 @@
                     app:civ_border_width="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.497"
+                    app:layout_constraintHorizontal_bias="0.499"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintTop_toTopOf="parent" />
             </android.support.constraint.ConstraintLayout>
 
             <View
@@ -57,15 +59,23 @@
                 android:id="@+id/habitsLayoutMainPage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="@dimen/activity_horizontal_margin"
-                android:layout_margin="10dp">
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/activity_horizontal_margin">
 
                 <TextView
                     android:id="@+id/textView4"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="608dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
                     android:background="@drawable/my_button_white"
+                    android:padding="0dp"
                     android:text="TextView" />
             </LinearLayout>
 
@@ -74,13 +84,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="122dp"
                 android:layout_margin="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
                 android:background="@drawable/my_button3"
                 android:orientation="vertical"
                 android:padding="10dp">
 
                 <TextView
                     android:id="@+id/textView5"
-                    android:layout_width="wrap_content"
+                    android:layout_width="700dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/story_title"
@@ -91,7 +106,7 @@
 
                 <TextView
                     android:id="@+id/textViewForStoryContent"
-                    android:layout_width="wrap_content"
+                    android:layout_width="697dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="TextView"
@@ -102,40 +117,43 @@
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp">
+                android:layout_height="900dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="304dp">
 
                 <View
                     android:id="@+id/view2"
-                    android:layout_width="334dp"
-                    android:layout_height="404dp"
+                    android:layout_width="406dp"
+                    android:layout_height="454dp"
                     android:layout_margin="20dp"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/my_button_white"
                     app:layout_constraintBottom_toBottomOf="@id/layout"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.488"
+                    app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/layout"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintTop_toBottomOf="@+id/ratingBar2" />
 
                 <com.hsalf.smilerating.SmileRating
                     android:id="@+id/ratingBar2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
+                    android:layout_width="513dp"
+                    android:layout_height="103dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="18dp"
                     android:layout_weight="1"
-                    app:isIndicator="true"
                     app:layout_constraintBottom_toTopOf="@+id/view2"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/photoOfTheDay"
-                    android:layout_width="255dp"
-                    android:layout_height="336dp"
+                    android:layout_width="310dp"
+                    android:layout_height="379dp"
                     android:layout_margin="30dp"
                     android:padding="15dp"
                     app:layout_constraintBottom_toBottomOf="@+id/view2"

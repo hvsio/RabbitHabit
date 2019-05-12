@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Vibrator;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -28,20 +30,24 @@ import java.util.Set;
 import aau.itcom.rabbithabit.HabitDetailsActivity;
 import aau.itcom.rabbithabit.R;
 
-public class HabitPersonal extends Habit implements Serializable {
+public class HabitPersonal extends Habit/* implements Serializable*/ {
     private Date startDate;
     private String[] arrayOfDates;
     private Map<String, Boolean> complexion;
-    //Database db;
     HabitPersonal reference = this;
 
 
 
-    public HabitPersonal(String name, long duration, String details, Date startDate) {
+    public HabitPersonal(String name, long duration, String details, Date startDate, @Nullable Map<String, Boolean> complexion) {
         super(name, duration, details);
         this.startDate = startDate;
-        initializeComplexionAndArrayOfDates(startDate, duration);
-        //db = Database.getInstance();
+
+        if (complexion != null) {
+            this.complexion = new HashMap<>(complexion);
+            initializeCArrayOfDates(startDate, duration);
+        } else {
+            initializeComplexionAndArrayOfDates(startDate, duration);
+        }
     }
 
     private void initializeComplexionAndArrayOfDates(Date startDate, long duration) {
@@ -58,18 +64,37 @@ public class HabitPersonal extends Habit implements Serializable {
         }
     }
 
+    private void initializeCArrayOfDates(Date startDate, long duration) {
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);
+        arrayOfDates = new String[(int) duration];
+
+        for (int i = 0; i < duration; i++){
+            arrayOfDates[i] = dateFormat.format(calendar.getTime());
+            calendar.add(Calendar.DATE, 1);
+        }
+    }
+
     @Override
-    public TextView display(final Context context, int textSize, LinearLayout.LayoutParams params, final Habit listener) {
-        Log.d("display() in hPersonal", " am inside");
+    public TextView display(final Context context, int textSize, /*LinearLayout.LayoutParams params*/ViewGroup.LayoutParams params, final Habit listener) {
+        Log.d("DISPLAY IN HABIT PRS!", " am inside");
         final TextView textView = new TextView(context);
         textView.setText(listener.getName());
         textView.setTextSize(textSize);
+        textView.setLayoutParams(params);
+        textView.setVisibility(View.VISIBLE);
+        //textView.setPadding(10,10,10,10);
+        //textView.setBackground(ContextCompat.getDrawable(context, R.drawable.my_button_white));
 
         if (listener instanceof HabitPersonal){
             HabitPersonal habit = (HabitPersonal) listener;
             if (habit.isCompletedOn(Calendar.getInstance().getTime())) {
-                textView.setBackground(context.getResources().getDrawable(R.drawable.my_button));
-                textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.facebook, 0);
+                textView.setBackgroundResource(R.drawable.my_button);
+                textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_done_green, 0);
+            } else {
+                textView.setBackground(ContextCompat.getDrawable(context, R.drawable.my_button_white));
+                textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_not_done, 0);
             }
         }
 
@@ -88,20 +113,19 @@ public class HabitPersonal extends Habit implements Serializable {
                     DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
                     complexion.put(dateFormat.format(Calendar.getInstance().getTime()), true);
                     //db.addHabitPersonal(reference, FirebaseAuth.getInstance().getCurrentUser());
+                    Database.updateComplexion(reference);
                     // Get instance of Vibrator from current Context
                     Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
                     // Vibrate for 300 milliseconds
                     vibrator.vibrate(300);
 
                     textView.setBackgroundResource(R.drawable.my_button);
-                    textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.facebook, 0);
+                    textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_done_green, 0);
                 }
                 return true;
             }
         });
 
-        textView.setLayoutParams(params);
-        textView.setBackground(ContextCompat.getDrawable(context, R.drawable.my_button_white));
         return textView;
     }
 
@@ -114,7 +138,12 @@ public class HabitPersonal extends Habit implements Serializable {
     }
 
     public boolean isCompletedOn(Date date){
-        return true;
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
+        if (complexion.get(dateFormat.format(date)))
+            return true;
+        else
+            return false;
     }
 
     public void setCompletedOn(Date date){
@@ -123,6 +152,7 @@ public class HabitPersonal extends Habit implements Serializable {
 
     public String[] getArrayOfDates(){
         //return (String[]) complexion.keySet().toArray();
+        //return complexion.keySet().toArray(new String[0]);
         return arrayOfDates;
     }
 
