@@ -1,6 +1,7 @@
 package aau.itcom.rabbithabit;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -68,6 +70,16 @@ public class MainPageFragment extends Fragment {
         storyTextView = v.findViewById(R.id.textViewForStoryContent);
         photoView = v.findViewById(R.id.photoOfTheDay);
         profilePic = v.findViewById(R.id.profile_image);
+
+
+        Button button = v.findViewById(R.id.buttonTesting);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), IntroTutorialScreen.class);
+                startActivity(i);
+            }
+        });
 
         loadDetails();
     }

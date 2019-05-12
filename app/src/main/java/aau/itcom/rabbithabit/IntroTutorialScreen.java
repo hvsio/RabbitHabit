@@ -13,11 +13,11 @@ public class IntroTutorialScreen extends AppIntro {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_intro_tutorial_screen);
+        //setContentView(R.layout.activity_intro_tutorial_screen);
 
         addSlide(AppIntroFragment.newInstance("First screen", "First application introduction screen", R.drawable.first_screen, R.drawable.another_gradient));
         addSlide(AppIntroFragment.newInstance("Second screen", "Second application introduction screen", R.drawable.second_screen, R.drawable.another_gradient));
-        addSlide(AppIntroFragment.newInstance("Second screen", "Second application introduction screen", R.drawable.second_screen, R.drawable.another_gradient));
+        addSlide(AppIntroFragment.newInstance("Third screen", "Third application introduction screen", R.drawable.third_screen, R.drawable.another_gradient));
 
 
     }
