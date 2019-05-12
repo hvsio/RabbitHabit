@@ -144,12 +144,12 @@ public class Database {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 habitPersonals.add(new HabitPersonal(document.getId(), document.getLong("duration"), document.getString("details"), document.getTimestamp("startDate").toDate(), (Map<String, Boolean>) document.get("complexity")));
                             }
-                            Log.d(TAG, "Habits are now loaded!");
+
                             isHabitsPersonalDownloadCompleted = true;
                             synchronized (LOCK_FOR_HABITS) {
                                 Log.d(TAG, "I am about to notify about finishing loading habits");
                                 LOCK_FOR_HABITS.notify();
-                                Log.d(TAG, "NOTIFIED!");
+                                Log.d(TAG, "NOTIFIED ABOUT THE HABITS!");
                             }
                         } else {
                             isHabitsPersonalDownloadCompleted = false;

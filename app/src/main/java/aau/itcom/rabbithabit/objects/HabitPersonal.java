@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -76,22 +77,24 @@ public class HabitPersonal extends Habit/* implements Serializable*/ {
     }
 
     @Override
-    public TextView display(final Context context, int textSize, LinearLayout.LayoutParams params, final Habit listener) {
-        Log.d("display() in hPersonal", " am inside");
+    public TextView display(final Context context, int textSize, /*LinearLayout.LayoutParams params*/ViewGroup.LayoutParams params, final Habit listener) {
+        Log.d("DISPLAY IN HABIT PRS!", " am inside");
         final TextView textView = new TextView(context);
         textView.setText(listener.getName());
         textView.setTextSize(textSize);
         textView.setLayoutParams(params);
+        textView.setVisibility(View.VISIBLE);
+        //textView.setPadding(10,10,10,10);
         //textView.setBackground(ContextCompat.getDrawable(context, R.drawable.my_button_white));
 
         if (listener instanceof HabitPersonal){
             HabitPersonal habit = (HabitPersonal) listener;
             if (habit.isCompletedOn(Calendar.getInstance().getTime())) {
                 textView.setBackgroundResource(R.drawable.my_button);
-                textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.facebook, 0);
+                textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_done_green, 0);
             } else {
                 textView.setBackground(ContextCompat.getDrawable(context, R.drawable.my_button_white));
-                textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.plus, 0);
+                textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_not_done, 0);
             }
         }
 
@@ -117,7 +120,7 @@ public class HabitPersonal extends Habit/* implements Serializable*/ {
                     vibrator.vibrate(300);
 
                     textView.setBackgroundResource(R.drawable.my_button);
-                    textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.facebook, 0);
+                    textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_done_green, 0);
                 }
                 return true;
             }

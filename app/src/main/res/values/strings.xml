@@ -40,15 +40,19 @@
     <string name="total_number_of_habits">No. of habits</string>
     <string name="total_number_of_stories">No. of stories</string>
     <string name="mood_title">How would you describe your day?</string>
+
     <string-array name="welcome">
         <item>Hello Brian</item>
         <item>Enjoy our app</item>
     </string-array>
+    <string name="key_notification">notification_frequency</string>
     <string-array name="notifications">
-        <item>Once a day</item>
-        <item>2 times a day</item>
-        <item>3 times a day</item>
-        <item>None</item>
+        <item>Morning - 9:00am (GMT+2)</item>
+        <item>Afternoon - 2:00pm (GMT+2)</item>
+        <item>Evening - 7:00pm (GMT+2)</item>
+    </string-array>
+    <string-array name="default_value_for_notifications">
+        <item>Afternoon - 2:00pm (GMT+2)</item>
     </string-array>
     <string-array name="snooze">
         <item>1 minute</item>

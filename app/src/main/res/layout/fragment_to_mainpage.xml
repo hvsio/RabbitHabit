@@ -54,17 +54,17 @@
                 android:background="@color/colorAccent" />
 
             <LinearLayout
-                android:id="@+id/habitLinearLayout"
+                android:id="@+id/habitsLayoutMainPage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="@dimen/activity_horizontal_margin">
+                android:orientation="vertical"
+                android:paddingTop="@dimen/activity_horizontal_margin"
+                android:layout_margin="10dp">
 
                 <TextView
                     android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@drawable/my_button_white"
                     android:text="TextView" />
             </LinearLayout>
@@ -101,8 +101,9 @@
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/layout"
-                android:layout_width="377dp"
-                android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp">
 
                 <View
                     android:id="@+id/view2"

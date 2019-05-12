@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,7 +25,7 @@ public class HabitPublished extends Habit {
     }
 
     @Override
-    public TextView display(final Context context, int textSize, LinearLayout.LayoutParams params, final Habit listener) {
+    public TextView display(final Context context, int textSize, /*LinearLayout.LayoutParams params*/ViewGroup.LayoutParams params, final Habit listener) {
         Log.d("display() in hPublished", " am inside");
         TextView textView = new TextView(context);
         textView.setText(listener.getName());

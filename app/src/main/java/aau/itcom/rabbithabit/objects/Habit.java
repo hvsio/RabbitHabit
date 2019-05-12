@@ -1,6 +1,7 @@
 package aau.itcom.rabbithabit.objects;
 
 import android.content.Context;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,7 +24,7 @@ public class Habit implements Serializable{
         return super.equals(obj);
     }
 
-    public TextView display(final Context context, int textSize, LinearLayout.LayoutParams params, Habit listener ){
+    public TextView display(final Context context, int textSize, /*LinearLayout.LayoutParams params*/ViewGroup.LayoutParams params, Habit listener ){
         return null;
     }
 

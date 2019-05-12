@@ -59,7 +59,6 @@ public class MainPageActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         viewBlurred = findViewById(R.id.viewBlurred);
-        transitionsContainer = findViewById(R.id.mainPageLayout);
         fabAdd = findViewById(R.id.fabAdd);
 
         transitionsContainer = findViewById(R.id.mainLayout);

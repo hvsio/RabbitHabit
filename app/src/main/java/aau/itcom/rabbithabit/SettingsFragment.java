@@ -8,14 +8,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
+import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,9 +26,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.Objects;
+import java.util.Set;
 
 import aau.itcom.rabbithabit.objects.Database;
-
 
 
 public class SettingsFragment extends Fragment {
@@ -35,7 +38,7 @@ public class SettingsFragment extends Fragment {
     public static final String WELCOME_SCREEN = "welcome_screen";
     public static final String DOWNLOAD_PHOTO = "download_photo";
     public static final String TAKE_PHOTO = "take_photo";
-    public static final String NOTIFICATION_FREQUENCY = "frequency_of_notifications";
+    public static final String NOTIFICATION_FREQUENCY = "notification_frequency";
     public static final String SNOOZE_TIME = "snooze_time";
     public static final String FEEDBACK = "feedback";
 
@@ -63,7 +66,7 @@ public class SettingsFragment extends Fragment {
         SwitchPreference welcomeScreen;
         SwitchPreference photoDownload;
         SwitchPreference photoTake;
-        ListPreference frequencyOfNotifications;
+        MultiSelectListPreference frequencyOfNotifications;
         ListPreference snooze;
         Preference feedback;
         private FirebaseAuth mAuth;
@@ -79,7 +82,6 @@ public class SettingsFragment extends Fragment {
             db = Database.getInstance();
             mAuth = FirebaseAuth.getInstance();
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
-//            mFirebaseAnalytics.setUserProperty("notification_frequency", "1");
 
             sharedPreferences = getActivity().getSharedPreferences(SETTINGS, Context.MODE_PRIVATE);
             final SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -88,7 +90,7 @@ public class SettingsFragment extends Fragment {
             welcomeScreen = (SwitchPreference) findPreference(WELCOME_SCREEN);
             photoDownload = (SwitchPreference) findPreference(DOWNLOAD_PHOTO);
             photoTake = (SwitchPreference) findPreference(TAKE_PHOTO);
-            frequencyOfNotifications = (ListPreference) findPreference(NOTIFICATION_FREQUENCY);
+            frequencyOfNotifications = (MultiSelectListPreference) findPreference(NOTIFICATION_FREQUENCY);
             snooze = (ListPreference) findPreference(SNOOZE_TIME);
             feedback = findPreference(FEEDBACK);
 
@@ -141,62 +143,108 @@ public class SettingsFragment extends Fragment {
                 }
             });
 
+            frequencyOfNotifications.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    //Set<String> selections = frequencyOfNotifications.getValues();
+
+                    Set<String> selections = (Set<String>) newValue;
+                    updateNotifications(selections);
+                    Toast.makeText(getActivity(), selections.toString(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getActivity(), newValue.toString(), Toast.LENGTH_LONG).show();
+                    return true;
+                }
+            });
         }
 
+        private void updateNotifications(Set<String> selections) {
+            Log.i("UPDATE NOTIFICATIONS", "Inside");
 
-        public void changeUsername() {
-            String newName = username.getText();
+            if (selections.contains("Morning - 9:00am (GMT+2)")) {
+                Log.i("UPDATE NOTIFICATIONS", "Morning is checked");
+                mFirebaseAnalytics.setUserProperty("notification_frequency", "M");
+                if (selections.contains("Morning - 9:00am (GMT+2)") && selections.contains("Afternoon - 2:00pm (GMT+2)")) {
+                    Log.i("UPDATE NOTIFICATIONS", "Morning & Afternoon is checked");
+                    mFirebaseAnalytics.setUserProperty("notification_frequency", "MA");
+                    if (selections.contains("Morning - 9:00am (GMT+2)") && selections.contains("Afternoon - 2:00pm (GMT+2)") && selections.contains("Evening - 7:00pm (GMT+2)"))
+                        mFirebaseAnalytics.setUserProperty("notification_frequency", "MAE");
+                }
+                if (selections.contains("Morning - 9:00am (GMT+2)") && selections.contains("Evening - 7:00pm (GMT+2)")) {
+                    Log.i("UPDATE NOTIFICATIONS", "Morning & Evening is checked");
+                    mFirebaseAnalytics.setUserProperty("notification_frequency", "ME");
+                }
 
-            FirebaseUser user = mAuth.getCurrentUser();
-            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(newName).build();
-            assert user != null;
-            user.updateProfile(profileUpdates);
-            db.createNewUser(mAuth.getCurrentUser());
-            username.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-            //Toast.makeText(getApplicationContext(), "It may take a while.", Toast.LENGTH_SHORT).show();
-        }
+                if (selections.contains("Afternoon - 2:00pm (GMT+2)")) {
+                    mFirebaseAnalytics.setUserProperty("notification_frequency", "A");
+                    if (selections.contains("Afternoon - 2:00pm (GMT+2)") && selections.contains("Evening - 7:00pm (GMT+2)"))
+                        mFirebaseAnalytics.setUserProperty("notification_frequency", "AE");
+                }
 
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                if (selections.contains("Evening - 7:00pm (GMT+2)"))
+                    mFirebaseAnalytics.setUserProperty("notification_frequency", "E");
 
-
-        }
-
-        @Override
-        public void onResume() {
-            super.onResume();
-            getPreferenceScreen()
-                    .getSharedPreferences()
-                    .registerOnSharedPreferenceChangeListener(this);
-        }
-
-        @Override
-        public void onPause() {
-            super.onPause();
-            getPreferenceScreen()
-                    .getSharedPreferences()
-                    .unregisterOnSharedPreferenceChangeListener(this);
-        }
-
-
-        public static void sendFeedback(Context context) {
-            String body = null;
-            try {
-                body = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-                body = "\n\n-----------------------------\nPlease don't remove this information\n Device OS: Android \n Device OS version: " +
-                        Build.VERSION.RELEASE + "\n App Version: " + body + "\n Device Brand: " + Build.BRAND +
-                        "\n Device Model: " + Build.MODEL + "\n Device Manufacturer: " + Build.MANUFACTURER;
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
+                // .isEmpty() is not working I don't know why
+                if (!selections.contains("Morning - 9:00am (GMT+2)") && !selections.contains("Afternoon - 2:00pm (GMT+2)") && !selections.contains("Evening - 7:00pm (GMT+2)"))
+                    mFirebaseAnalytics.setUserProperty("notification_frequency", "");
             }
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("message/rfc822");
-            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"contact@androidhive.info"});
-            intent.putExtra(Intent.EXTRA_SUBJECT, "Query from android app");
-            intent.putExtra(Intent.EXTRA_TEXT, body);
-            context.startActivity(Intent.createChooser(intent, context.getString(R.string.email_input)));
+        }
+//        <item>Morning - 9:00am (GMT+2)</item>
+//        <item>Afternoon - 2:00pm (GMT+2)</item>
+//        <item>Evening - 7:00pm (GMT+2)</item>
+//
+            public void changeUsername () {
+                String newName = username.getText();
+
+                FirebaseUser user = mAuth.getCurrentUser();
+                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                        .setDisplayName(newName).build();
+                assert user != null;
+                user.updateProfile(profileUpdates);
+                db.createNewUser(mAuth.getCurrentUser());
+                username.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+                //Toast.makeText(getApplicationContext(), "It may take a while.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSharedPreferenceChanged (SharedPreferences sharedPreferences, String key){
+
+
+            }
+
+            @Override
+            public void onResume () {
+                super.onResume();
+                getPreferenceScreen()
+                        .getSharedPreferences()
+                        .registerOnSharedPreferenceChangeListener(this);
+            }
+
+            @Override
+            public void onPause () {
+                super.onPause();
+                getPreferenceScreen()
+                        .getSharedPreferences()
+                        .unregisterOnSharedPreferenceChangeListener(this);
+            }
+
+
+            public static void sendFeedback (Context context){
+                String body = null;
+                try {
+                    body = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+                    body = "\n\n-----------------------------\nPlease don't remove this information\n Device OS: Android \n Device OS version: " +
+                            Build.VERSION.RELEASE + "\n App Version: " + body + "\n Device Brand: " + Build.BRAND +
+                            "\n Device Model: " + Build.MODEL + "\n Device Manufacturer: " + Build.MANUFACTURER;
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("message/rfc822");
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"contact@androidhive.info"});
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Query from android app");
+                intent.putExtra(Intent.EXTRA_TEXT, body);
+                context.startActivity(Intent.createChooser(intent, context.getString(R.string.email_input)));
+            }
         }
     }
-}
 
