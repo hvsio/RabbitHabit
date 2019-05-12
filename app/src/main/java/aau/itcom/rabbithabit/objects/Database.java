@@ -142,7 +142,7 @@ public class Database {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                habitPersonals.add(new HabitPersonal(document.getId(), document.getLong("duration"), document.getString("details"), document.getTimestamp("startDate").toDate()));
+                                habitPersonals.add(new HabitPersonal(document.getId(), document.getLong("duration"), document.getString("details"), document.getTimestamp("startDate").toDate(), (Map<String, Boolean>) document.get("complexity")));
                             }
                             Log.d(TAG, "Habits are now loaded!");
                             isHabitsPersonalDownloadCompleted = true;

@@ -27,14 +27,13 @@ import com.hsalf.smilerating.SmileRating;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import aau.itcom.rabbithabit.objects.Database;
-import aau.itcom.rabbithabit.objects.HabitPersonal;
 import aau.itcom.rabbithabit.objects.PhoneState;
+import aau.itcom.rabbithabit.objects.Story;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainPageFragment extends Fragment {
@@ -126,9 +125,10 @@ public class MainPageFragment extends Fragment {
     private void displayStory(){
         String text = "You have no story to display.";
 
+        Story story = db.getStory();
         try{
-            storyTextView.setText(db.getStory().getTextContent());
-            ratingBar.setSelectedSmile(((int) db.getStory().getMood()));
+            storyTextView.setText(story.getTextContent());
+            ratingBar.setSelectedSmile(((int) story.getMood()));
         } catch (NoSuchElementException | NullPointerException ex) {
             /*SharedPreferences pref = getContext().getSharedPreferences(SettingsFragment.SETTINGS, Context.MODE_PRIVATE);
             Log.i(TAG, "#################### " + Boolean.toString(pref.getBoolean(SettingsFragment.DOWNLOAD_PHOTO, true)));*/
@@ -136,7 +136,7 @@ public class MainPageFragment extends Fragment {
             Log.w(TAG, "Error loading Story. No story to display!\n" + ex);
             storyTextView.setText(text);
         }
-
+      //  ratingBar.setSelectedSmile(((int) db.getStory().getMood()));
 
     }
 

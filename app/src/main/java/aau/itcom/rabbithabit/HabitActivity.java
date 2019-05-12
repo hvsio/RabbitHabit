@@ -121,12 +121,12 @@ public class HabitActivity extends AppCompatActivity {
     }
 
     private void saveHabitAsPublished() {
-        db.addHabitPersonal(new HabitPersonal(nameTextView.getText().toString(),Integer.parseInt(durationTextView.getText().toString()), detailsTextView.getText().toString(), Calendar.getInstance().getTime()), FirebaseAuth.getInstance().getCurrentUser());
+        db.addHabitPersonal(new HabitPersonal(nameTextView.getText().toString(),Integer.parseInt(durationTextView.getText().toString()), detailsTextView.getText().toString(), Calendar.getInstance().getTime(), null), FirebaseAuth.getInstance().getCurrentUser());
         db.addHabitPublished(new HabitPublished(nameTextView.getText().toString(),Integer.parseInt(durationTextView.getText().toString()), detailsTextView.getText().toString(), "true", FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), 0));
     }
 
     private void saveHabitAsPersonal() {
-        db.addHabitPersonal(new HabitPersonal(nameTextView.getText().toString(),Integer.parseInt(durationTextView.getText().toString()), detailsTextView.getText().toString(), Calendar.getInstance().getTime()), FirebaseAuth.getInstance().getCurrentUser());
+        db.addHabitPersonal(new HabitPersonal(nameTextView.getText().toString(),Integer.parseInt(durationTextView.getText().toString()), detailsTextView.getText().toString(), Calendar.getInstance().getTime(), null), FirebaseAuth.getInstance().getCurrentUser());
     }
 
 

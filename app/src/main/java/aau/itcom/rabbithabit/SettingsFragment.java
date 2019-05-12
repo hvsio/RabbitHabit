@@ -16,8 +16,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -26,20 +26,18 @@ import java.util.Objects;
 
 import aau.itcom.rabbithabit.objects.Database;
 
-import static android.content.Context.MODE_PRIVATE;
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class SettingsFragment extends Fragment {
-    public static final String SETTINGS = "settings" ;
+    public static final String SETTINGS = "settings";
 
     public static final String USERNAME = "username";
-    public static final String WELCOME_SCREEN = "welcome_screen" ;
-    public static final String DOWNLOAD_PHOTO = "download_photo" ;
-    public static final String TAKE_PHOTO = "take_photo" ;
-    public static final String NOTIFIXATION_FREQUENCY = "frequency_of_notifications" ;
-    public static final String SNOOZE_TIME = "snooze_time" ;
-    public static final String FEEDBACK = "feedback" ;
+    public static final String WELCOME_SCREEN = "welcome_screen";
+    public static final String DOWNLOAD_PHOTO = "download_photo";
+    public static final String TAKE_PHOTO = "take_photo";
+    public static final String NOTIFICATION_FREQUENCY = "frequency_of_notifications";
+    public static final String SNOOZE_TIME = "snooze_time";
+    public static final String FEEDBACK = "feedback";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,7 +55,7 @@ public class SettingsFragment extends Fragment {
                 .commit();
     }
 
-    public static class SettingsPreferenceFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener{
+    public static class SettingsPreferenceFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
         SharedPreferences sharedPreferences;
 
@@ -70,6 +68,7 @@ public class SettingsFragment extends Fragment {
         Preference feedback;
         private FirebaseAuth mAuth;
         private Database db;
+        private FirebaseAnalytics mFirebaseAnalytics;
 
 
         @Override
@@ -79,6 +78,9 @@ public class SettingsFragment extends Fragment {
 
             db = Database.getInstance();
             mAuth = FirebaseAuth.getInstance();
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
+//            mFirebaseAnalytics.setUserProperty("notification_frequency", "1");
+
             sharedPreferences = getActivity().getSharedPreferences(SETTINGS, Context.MODE_PRIVATE);
             final SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -86,10 +88,9 @@ public class SettingsFragment extends Fragment {
             welcomeScreen = (SwitchPreference) findPreference(WELCOME_SCREEN);
             photoDownload = (SwitchPreference) findPreference(DOWNLOAD_PHOTO);
             photoTake = (SwitchPreference) findPreference(TAKE_PHOTO);
-            frequencyOfNotifications = (ListPreference) findPreference(NOTIFIXATION_FREQUENCY);
+            frequencyOfNotifications = (ListPreference) findPreference(NOTIFICATION_FREQUENCY);
             snooze = (ListPreference) findPreference(SNOOZE_TIME);
             feedback = findPreference(FEEDBACK);
-
 
 
             username.setDefaultValue(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
@@ -143,18 +144,18 @@ public class SettingsFragment extends Fragment {
         }
 
 
-public void changeUsername() {
-    String newName = username.getText();
+        public void changeUsername() {
+            String newName = username.getText();
 
-    FirebaseUser user = mAuth.getCurrentUser();
-    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-            .setDisplayName(newName).build();
-    assert user != null;
-    user.updateProfile(profileUpdates);
-    db.createNewUser(mAuth.getCurrentUser());
-    username.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-    //Toast.makeText(getApplicationContext(), "It may take a while.", Toast.LENGTH_SHORT).show();
-}
+            FirebaseUser user = mAuth.getCurrentUser();
+            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(newName).build();
+            assert user != null;
+            user.updateProfile(profileUpdates);
+            db.createNewUser(mAuth.getCurrentUser());
+            username.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+            //Toast.makeText(getApplicationContext(), "It may take a while.", Toast.LENGTH_SHORT).show();
+        }
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -187,7 +188,7 @@ public void changeUsername() {
                         Build.VERSION.RELEASE + "\n App Version: " + body + "\n Device Brand: " + Build.BRAND +
                         "\n Device Model: " + Build.MODEL + "\n Device Manufacturer: " + Build.MANUFACTURER;
             } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+                e.printStackTrace();
             }
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("message/rfc822");
