@@ -12,18 +12,20 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import aau.itcom.rabbithabit.objects.Database;
 import aau.itcom.rabbithabit.objects.Habit;
+import aau.itcom.rabbithabit.objects.HabitPersonal;
 import aau.itcom.rabbithabit.objects.HabitPublished;
 
 public class AddHabitActivity extends AppCompatActivity {
 
     private static final String TAG = "AddHabitActivity";
     static ArrayList<Habit> habits;
-    ArrayList<HabitPublished> habitsToDisplay;
+    //ArrayList<Habit> habitsToDisplay;
     ListView listView;
     private static CustomAdapterSearchingHabits adapter;
     LinearLayout displayTrendingLayout;
@@ -42,7 +44,6 @@ public class AddHabitActivity extends AppCompatActivity {
         params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        loadTrendingHabits();
         displayTrendingLayout = findViewById(R.id.trendingHabitsLayout);
 
         habits = new ArrayList<>();
@@ -60,7 +61,7 @@ public class AddHabitActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
-    private void loadTrendingHabits() {
+    public   void loadTrendingHabits(View view) {
         ExecutorService service = Executors.newSingleThreadExecutor();
         service.submit(new LoadTrendingHabitsTask());
         service.shutdown();
@@ -73,23 +74,13 @@ public class AddHabitActivity extends AppCompatActivity {
     }
 
     private void displayHabits() {
-        habitsToDisplay = new ArrayList<>(db.getArrayListOfHabitsPublished());
+        habits.clear();
+        habits.addAll(db.getArrayListOfHabitsPublished());
+        Collections.reverse(habits);
 
-        ArrayList<TextView> textViews = new ArrayList<>(createTextFieldsForHabits());
-        for(int i = 0;i<textViews.size();i++){
-            displayTrendingLayout.addView(textViews.get(i));
-        }
-    }
+        adapter = new CustomAdapterSearchingHabits(habits, getApplicationContext());
 
-    public ArrayList<TextView> createTextFieldsForHabits() {
-        Log.d(TAG, "Inside createTextFieldsForHabits()");
-        ArrayList<TextView> arrayOfTextViews = new ArrayList<>();
-
-        for (int i = 0; i < habitsToDisplay.size(); i++) {
-            Log.d(TAG, "Inside loop for textfields - createTextFieldsForHabits()");
-            arrayOfTextViews.add(habitsToDisplay.get(i).display(getApplicationContext(), 18, params, habitsToDisplay.get(i), Calendar.getInstance().getTime()));
-        }
-        return arrayOfTextViews;
+        listView.setAdapter(adapter);
     }
 
     static Intent createNewIntent(Context context) {
@@ -113,7 +104,7 @@ public class AddHabitActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            Log.d(THREAD_TRENDING_HABIT_TAG, "Story is: " + db.getStory().getTextContent());
+            //Log.d(THREAD_TRENDING_HABIT_TAG, db.getArrayListOfHabitsPublished().toString());
 
             runOnUiThread(new Runnable() {
                 @Override
