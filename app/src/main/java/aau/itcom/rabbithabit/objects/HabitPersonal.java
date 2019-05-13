@@ -77,7 +77,7 @@ public class HabitPersonal extends Habit/* implements Serializable*/ {
     }
 
     @Override
-    public TextView display(final Context context, int textSize, /*LinearLayout.LayoutParams params*/ViewGroup.LayoutParams params, final Habit listener) {
+    public TextView display(final Context context, int textSize, /*LinearLayout.LayoutParams params*/ViewGroup.LayoutParams params, final Habit listener, Date date) {
         Log.d("DISPLAY IN HABIT PRS!", " am inside");
         final TextView textView = new TextView(context);
         textView.setText(listener.getName());
@@ -89,7 +89,7 @@ public class HabitPersonal extends Habit/* implements Serializable*/ {
 
         if (listener instanceof HabitPersonal){
             HabitPersonal habit = (HabitPersonal) listener;
-            if (habit.isCompletedOn(Calendar.getInstance().getTime())) {
+            if (habit.isCompletedOn(date)) {
                 textView.setBackgroundResource(R.drawable.my_button);
                 textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_done_green, 0);
             } else {

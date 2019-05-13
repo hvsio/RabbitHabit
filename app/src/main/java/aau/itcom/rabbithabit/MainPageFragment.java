@@ -46,9 +46,6 @@ public class MainPageFragment extends Fragment {
     private TextView storyTextView;
     private ImageView photoView;
     private CircleImageView profilePic;
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     @Nullable
     @Override
@@ -127,7 +124,7 @@ public class MainPageFragment extends Fragment {
         ArrayList<HabitPersonal> habits = new ArrayList<>(db.getArrayListOfHabitsPersonal());
 
         for (int i = 0; i < habits.size(); i++) {
-            arrayOfTextViews.add(habits.get(i).display(getActivity(), 18, habitsLayout.getLayoutParams(), habits.get(i)));
+            arrayOfTextViews.add(habits.get(i).display(getActivity(), 18, habitsLayout.getLayoutParams(), habits.get(i), Calendar.getInstance().getTime()));
         }
 
         return arrayOfTextViews;

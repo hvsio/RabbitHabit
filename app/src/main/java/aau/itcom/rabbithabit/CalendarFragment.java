@@ -1,7 +1,6 @@
 package aau.itcom.rabbithabit;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -12,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,7 +40,7 @@ import aau.itcom.rabbithabit.objects.Story;
 public class CalendarFragment extends Fragment {
 
     CalendarView calendar;
-    LinearLayout layout;
+    LinearLayout habitsLayout;
     LinearLayout layoutHabits;
     TextView storyTextView;
     LinearLayout.LayoutParams params;
@@ -53,6 +51,7 @@ public class CalendarFragment extends Fragment {
     SmileRating ratingBar;
     Story story;
     Database db;
+    Date date = null;
     private StorageReference mStorageRef;
 
     private static final String TAG = "CalendarFragment";
@@ -78,7 +77,7 @@ public class CalendarFragment extends Fragment {
         ratingBar = v.findViewById(R.id.ratingBar);
         storyTextView = v.findViewById(R.id.textViewForStory);
         listView = v.findViewById(R.id.habits_from_the_day);
-        layout = v.findViewById(R.id.linearLayoutOfDay);
+        habitsLayout = v.findViewById(R.id.calendarHabitsLinearLayout);
         calendar = v.findViewById(R.id.calendarViewDaily);
         imageView = v.findViewById(R.id.imageView3);
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -88,10 +87,12 @@ public class CalendarFragment extends Fragment {
                 changeCurrentDay(collectDate);
             }
         });
+
+        SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy");
+        changeCurrentDay(formater.format(Calendar.getInstance().getTime()));
     }
 
     private void changeCurrentDay(String dateInString) {
-        Date date = null;
         SharedPreferences pref = getContext().getSharedPreferences(SettingsFragment.SETTINGS, Context.MODE_PRIVATE);
 
         try {
@@ -104,12 +105,12 @@ public class CalendarFragment extends Fragment {
         ExecutorService service = Executors.newCachedThreadPool();
         service.submit(new LoadHabitsTask());
         service.submit(new LoadStoryTask());
-        //service.submit(new LoadPhotoTask());
+        service.submit(new LoadPhotoTask());
         service.shutdown();
 
         Log.d(TAG, "I am inside changeCurrentDay(), and I am loading info");
         db.loadSetOfHabitsOnDate(date, FirebaseAuth.getInstance().getCurrentUser());
-        //db.loadPhotoOnDate(date, FirebaseAuth.getInstance().getCurrentUser(), getContext());
+        db.loadPhotoOnDate(date, FirebaseAuth.getInstance().getCurrentUser(), getContext());
         db.loadStoryOnDate(date, FirebaseAuth.getInstance().getCurrentUser());
 
         if (PhoneState.getConnectionType(getActivity()).equals("WIFI") || !pref.getBoolean(SettingsFragment.DOWNLOAD_PHOTO, true)){
@@ -125,6 +126,7 @@ public class CalendarFragment extends Fragment {
 
     private void displayStory() {
         Log.d(TAG, "Inside displayStory()");
+        storyTextView.setText("No story to display!");
 
         try {
             story = db.getStory();
@@ -152,42 +154,34 @@ public class CalendarFragment extends Fragment {
     }
 
     private void displayHabits() {
-        //ArrayList<TextView> textViews = new ArrayList<>(createTextFieldsForHabits());
-        listView.setAdapter(null);
-        Log.d(TAG, "Inside displayHabits()");
-        habitArray.addAll(db.getArrayListOfHabitsPersonal());
-        Log.d(TAG, "Inside displayHabits() and habit array size is: " + habitArray.size());
-        adapter = new CustomAdapterDayHabit(getContext(), habitArray);
-        listView.setAdapter(adapter);
+        Log.i(TAG, "INSIDE DISPLAYHABITS()");
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                HabitPersonal habitPersonal = habitArray.get(position);
-                Intent intent = HabitDetailsActivity.createNewIntent(getContext());
-                intent.putExtra("habit", habitPersonal);
-                getContext().startActivity(intent);
-            }
-        });
+        habitsLayout.removeAllViews();
+        final ArrayList<TextView> textViews = new ArrayList<>(createTextFieldsForHabits());
 
-
-//        for(int i = 0;i<textViews.size();i++){
-//            layoutHabits.addView(textViews.get(i));
-//        }
-
+        for (int i = 0; i < textViews.size(); i++) {
+            habitsLayout.addView(textViews.get(i));
+        }
     }
 
     public ArrayList<TextView> createTextFieldsForHabits() {
         Log.d(TAG, "Inside createTextFieldsForHabits()");
         ArrayList<TextView> arrayOfTextViews = new ArrayList<>();
 
-        for (int i = 0; i < habitArray.size(); i++) {
-            Log.d(TAG, "Inside loop for textfields - createTextFieldsForHabits()");
-            arrayOfTextViews.add(habitArray.get(i).display(getContext(), 18, params, habitArray.get(i)));
+        ArrayList<HabitPersonal> habits = new ArrayList<>(db.getArrayListOfHabitsPersonal());
+
+        for (int i = 0; i < habits.size(); i++) {
+            arrayOfTextViews.add(habits.get(i).display(getActivity(), 18, habitsLayout.getLayoutParams(), habits.get(i), date));
+            arrayOfTextViews.get(i).setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return false;
+                }
+            });
         }
+
         return arrayOfTextViews;
     }
-
 
     private class LoadHabitsTask implements Runnable {
 
