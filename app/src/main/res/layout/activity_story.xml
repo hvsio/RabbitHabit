@@ -28,8 +28,8 @@
 
     <View
         android:id="@+id/view5"
-        android:layout_width="wrap_content"
-        android:layout_height="141dp"
+        android:layout_width="387dp"
+        android:layout_height="140dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
@@ -37,12 +37,14 @@
         android:background="@drawable/my_button3"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.357"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDailyStory" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewDailyStory"
+        app:layout_constraintVertical_bias="0.569" />
 
     <EditText
         android:id="@+id/editTextStory"
-        android:layout_width="0dp"
+        android:layout_width="370dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
@@ -54,7 +56,7 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/view5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/view5"
         app:layout_constraintTop_toTopOf="@+id/view5"
         app:layout_constraintVertical_bias="0.0" />

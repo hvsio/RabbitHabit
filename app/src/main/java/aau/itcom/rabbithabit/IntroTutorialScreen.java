@@ -1,8 +1,8 @@
 package aau.itcom.rabbithabit;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.github.paolorotolo.appintro.AppIntro;
@@ -15,10 +15,12 @@ public class IntroTutorialScreen extends AppIntro {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_intro_tutorial_screen);
 
-        addSlide(AppIntroFragment.newInstance("First screen", "First application introduction screen", R.drawable.first_screen, R.drawable.another_gradient));
-        addSlide(AppIntroFragment.newInstance("Second screen", "Second application introduction screen", R.drawable.second_screen, R.drawable.another_gradient));
-        addSlide(AppIntroFragment.newInstance("Third screen", "Third application introduction screen", R.drawable.third_screen, R.drawable.another_gradient));
+        int color = Color.parseColor("#95C2E7");
 
+        addSlide(AppIntroFragment.newInstance("Reach everything with only one button!", "Click on a plus button in the corner of your phone to add your picture, story and habits!", R.drawable.fab_button, color));
+        addSlide(AppIntroFragment.newInstance("Enter your story and mood of the day!", "Something cool happened to you today? Write it down adn select how you feel about so you will be able to keep this memory forever!", R.drawable.story_picture, color));
+        addSlide(AppIntroFragment.newInstance("Implement new habits to improve your life!", "Choose top habits from the ranking or create the new ones, which will benefit you the most!", R.drawable.habit_picture, color));
+        addSlide(AppIntroFragment.newInstance("Easily follow your progress! ", "Click and hold for a few seconds a habit, which you have completed and be proud of yourself!", R.drawable.habits_completed, color));
 
     }
 
