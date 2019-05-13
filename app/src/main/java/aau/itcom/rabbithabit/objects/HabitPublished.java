@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Date;
+
 import aau.itcom.rabbithabit.HabitActivity;
 import aau.itcom.rabbithabit.R;
 
@@ -25,7 +27,7 @@ public class HabitPublished extends Habit {
     }
 
     @Override
-    public TextView display(final Context context, int textSize, /*LinearLayout.LayoutParams params*/ViewGroup.LayoutParams params, final Habit listener) {
+    public TextView display(final Context context, int textSize, /*LinearLayout.LayoutParams params*/ViewGroup.LayoutParams params, final Habit listener, Date date) {
         Log.d("display() in hPublished", " am inside");
         TextView textView = new TextView(context);
         textView.setText(listener.getName());

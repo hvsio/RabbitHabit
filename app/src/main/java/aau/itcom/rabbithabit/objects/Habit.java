@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Habit implements Serializable{
     private String name;
@@ -24,7 +25,7 @@ public class Habit implements Serializable{
         return super.equals(obj);
     }
 
-    public TextView display(final Context context, int textSize, /*LinearLayout.LayoutParams params*/ViewGroup.LayoutParams params, Habit listener ){
+    public TextView display(final Context context, int textSize, /*LinearLayout.LayoutParams params*/ViewGroup.LayoutParams params, Habit listener, Date data ){
         return null;
     }
 

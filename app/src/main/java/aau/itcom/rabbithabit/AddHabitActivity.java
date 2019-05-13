@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -86,7 +87,7 @@ public class AddHabitActivity extends AppCompatActivity {
 
         for (int i = 0; i < habitsToDisplay.size(); i++) {
             Log.d(TAG, "Inside loop for textfields - createTextFieldsForHabits()");
-            arrayOfTextViews.add(habitsToDisplay.get(i).display(getApplicationContext(), 18, params, habitsToDisplay.get(i)));
+            arrayOfTextViews.add(habitsToDisplay.get(i).display(getApplicationContext(), 18, params, habitsToDisplay.get(i), Calendar.getInstance().getTime()));
         }
         return arrayOfTextViews;
     }
