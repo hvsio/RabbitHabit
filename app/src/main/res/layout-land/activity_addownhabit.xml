@@ -24,8 +24,8 @@
                 android:id="@+id/questionBar"
                 android:layout_width="match_parent"
                 android:layout_height="39dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:background="@color/colorAccent"
                 android:shadowColor="@color/common_google_signin_btn_text_light_pressed"
                 android:text="@string/pusblishing"
@@ -37,8 +37,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cloudArea"
-                app:layout_constraintVertical_bias="0.01999998" />
+                app:layout_constraintTop_toBottomOf="@+id/cloudArea" />
 
             <EditText
                 android:id="@+id/nameOfHabit"
@@ -156,7 +155,6 @@
                 android:layout_width="192dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="50dp"
                 android:background="@drawable/my_button3"
@@ -166,8 +164,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.52"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cloudArea"
-                app:layout_constraintVertical_bias="0.838" />
+                app:layout_constraintTop_toBottomOf="@+id/radioGroupPublishment" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

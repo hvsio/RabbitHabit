@@ -13,9 +13,9 @@
         android:layout_width="424dp"
         android:layout_height="238dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="516dp"
+        android:layout_marginBottom="8dp"
         android:adjustViewBounds="false"
         android:contentDescription="@string/app_name"
         android:cropToPadding="false"
@@ -24,7 +24,7 @@
         app:layout_constraintHorizontal_bias="0.46"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.037"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/logo" />
 
     <com.tomer.fadingtextview.FadingTextView
@@ -45,7 +45,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewLogo"
-        app:layout_constraintVertical_bias="0.12"
+        app:layout_constraintVertical_bias="0.0"
         app:texts="@array/welcome"
         app:timeout="1000" />
 

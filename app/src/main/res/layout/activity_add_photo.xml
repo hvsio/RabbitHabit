@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/imageViewDisplay"
-        android:layout_width="254dp"
-        android:layout_height="460dp"
+        android:layout_width="0dp"
+        android:layout_height="416dp"
         android:elevation="30dp"
         android:fadingEdgeLength="@dimen/activity_horizontal_margin"
         app:layout_constraintBottom_toBottomOf="@+id/view"
@@ -31,10 +31,10 @@
         android:onClick="dispatchTakePictureIntent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.707"
+        app:layout_constraintHorizontal_bias="0.7"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view"
-        app:layout_constraintVertical_bias="0.196"
+        app:layout_constraintVertical_bias="0.100000024"
         app:srcCompat="@drawable/ic_menu_camera" />
 
     <android.support.design.widget.FloatingActionButton
@@ -52,7 +52,7 @@
         app:layout_constraintHorizontal_bias="0.3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view"
-        app:layout_constraintVertical_bias="0.196"
+        app:layout_constraintVertical_bias="0.100000024"
         app:srcCompat="@drawable/ic_menu_gallery" />
 
     <Button
@@ -71,12 +71,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/take_photo_button"
-        app:layout_constraintVertical_bias="0.289" />
+        app:layout_constraintVertical_bias="0.3" />
 
     <View
         android:id="@+id/view"
-        android:layout_width="280dp"
-        android:layout_height="485dp"
+        android:layout_width="276dp"
+        android:layout_height="460dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/my_button_white"
         app:layout_constraintBottom_toBottomOf="parent"

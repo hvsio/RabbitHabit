@@ -43,8 +43,6 @@ public class AddHabitActivity extends AppCompatActivity {
         params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        displayTrendingLayout = findViewById(R.id.trendingHabitsLayout);
-
         habits = new ArrayList<>();
         habits.add(new HabitPublished("Smoke less", 30, "Smoke less than usual", "false", "Pre-defined", 1));
         habits.add(new HabitPublished("Walk for at least 15 min", 30, "Walkie walkie", "false", "Pre-defined", 1));

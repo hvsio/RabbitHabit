@@ -63,9 +63,9 @@
                     android:id="@+id/calendarViewDaily"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="16dp"
                     android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -76,9 +76,11 @@
 
                 <View
                     android:id="@+id/view3"
-                    android:layout_width="377dp"
+                    android:layout_width="0dp"
                     android:layout_height="181dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
                     android:background="@drawable/my_button_white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -101,7 +103,7 @@
 
                 <TextView
                     android:id="@+id/textViewForStory"
-                    android:layout_width="351dp"
+                    android:layout_width="0dp"
                     android:layout_height="126dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="16dp"
@@ -117,6 +119,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     app:isIndicator="true"
                     app:layout_constraintBottom_toTopOf="@+id/view4"
@@ -137,11 +140,13 @@
 
                 <android.support.v4.widget.NestedScrollView
                     android:id="@+id/nestedScrollView2"
-                    android:layout_width="377dp"
+                    android:layout_width="0dp"
                     android:layout_height="200dp"
                     android:layout_above="@+id/view3"
                     android:layout_below="@+id/imageView3"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="32dp"
+                    android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/my_button_white"
                     android:fillViewport="true"

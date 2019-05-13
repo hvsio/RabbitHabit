@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -30,12 +31,15 @@ import java.util.Date;
 import aau.itcom.rabbithabit.objects.Database;
 import aau.itcom.rabbithabit.objects.PhoneState;
 
+import static android.support.v4.content.PermissionChecker.checkSelfPermission;
+
 public class AddPhotoActivity extends AppCompatActivity {
 
     static String currentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 1;
     private static final int MY_CAMERA_REQUEST_CODE = 100;
     private static final int REQUEST_GET_PIC = 100;
+    private static final int SELECT_FILE = 101;
     private ImageView imageView;
     private FloatingActionButton takePhoto;
     private FloatingActionButton pickFromGallery;
@@ -54,10 +58,16 @@ public class AddPhotoActivity extends AppCompatActivity {
         pickFromGallery = findViewById(R.id.pick_from_gallery);
         db = Database.getInstance();
 
-        if (checkSelfPermission(Manifest.permission.CAMERA)
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.CAMERA},
                     MY_CAMERA_REQUEST_CODE);
+        }
+
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    SELECT_FILE);
         }
 
     }

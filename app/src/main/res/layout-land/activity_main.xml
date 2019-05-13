@@ -30,7 +30,7 @@
         app:layout_constraintHorizontal_bias="0.173"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewLogo2"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="0.186"
         tools:targetApi="o" />
 
     <EditText
@@ -56,7 +56,7 @@
         app:layout_constraintHorizontal_bias="0.173"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
-        app:layout_constraintVertical_bias="0.061"
+        app:layout_constraintVertical_bias="0.155"
         tools:targetApi="o" />
 
 
@@ -76,10 +76,10 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.106"
+        app:layout_constraintHorizontal_bias="0.927"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
-        app:layout_constraintVertical_bias="0.168"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLoginGoogle2"
+        app:layout_constraintVertical_bias="0.37"
         tools:targetApi="lollipop" />
 
 
@@ -90,13 +90,12 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="24dp"
         android:text="Don't have an account? Sign in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
-        app:layout_constraintVertical_bias="0.416" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
@@ -147,7 +146,7 @@
         app:layout_constraintHorizontal_bias="0.927"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonLoginFB2"
-        app:layout_constraintVertical_bias="0.16000003"
+        app:layout_constraintVertical_bias="0.006"
         tools:targetApi="lollipop" />
 
     <Button

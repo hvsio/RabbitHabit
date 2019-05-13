@@ -8,6 +8,7 @@
     android:background="@drawable/another_gradient">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -17,9 +18,15 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewHabitsName">
 
         <LinearLayout
-            android:layout_width="347dp"
+            android:layout_width="match_parent"
             android:layout_height="166dp"
             android:layout_margin="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp"
             android:background="@drawable/my_button_white"
             android:orientation="vertical">
 
@@ -40,7 +47,7 @@
         <TextView
             android:id="@+id/textViewStatistics"
             android:layout_width="match_parent"
-            android:layout_height="39dp"
+            android:layout_height="43dp"
             android:background="@color/colorAccent"
             android:shadowColor="@color/common_google_signin_btn_text_light_pressed"
             android:text="@string/stats"
@@ -73,6 +80,7 @@
         android:textColor="@color/com_facebook_button_background_color_focused"
         android:textSize="24sp"
         android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

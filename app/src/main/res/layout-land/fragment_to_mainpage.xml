@@ -60,24 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingTop="@dimen/activity_horizontal_margin">
-
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="608dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="0dp"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/my_button_white"
-                    android:padding="0dp"
-                    android:text="TextView" />
-            </LinearLayout>
+                android:paddingTop="@dimen/activity_horizontal_margin"/>
 
             <LinearLayout
                 android:id="@+id/layout_story"
@@ -118,8 +101,6 @@
                 android:id="@+id/layout"
                 android:layout_width="match_parent"
                 android:layout_height="900dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:layout_editor_absoluteY="304dp">
 
@@ -129,21 +110,20 @@
                     android:layout_height="454dp"
                     android:layout_margin="20dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:background="@drawable/my_button_white"
                     app:layout_constraintBottom_toBottomOf="@id/layout"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ratingBar2" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.hsalf.smilerating.SmileRating
                     android:id="@+id/ratingBar2"
                     android:layout_width="513dp"
                     android:layout_height="103dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="32dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="18dp"
                     android:layout_weight="1"
                     app:layout_constraintBottom_toTopOf="@+id/view2"
                     app:layout_constraintEnd_toEndOf="parent"
