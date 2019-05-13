@@ -20,16 +20,19 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import aau.itcom.rabbithabit.objects.Database;
 import aau.itcom.rabbithabit.objects.Habit;
+import aau.itcom.rabbithabit.objects.HabitPublished;
 
-public class CustomAdapterSearchingHabits extends ArrayAdapter<Habit> implements View.OnClickListener {
+public class CustomAdapterSearchingHabits extends ArrayAdapter<HabitPublished> implements View.OnClickListener {
 
-    private ArrayList<Habit> habitArrayList;
+    private ArrayList<HabitPublished> habitArrayList;
     Context mContext;
     public static final String PASS_HABIT_NAME = "HABIT_NAME";
     public static final String PASS_HABIT_DURATION = "HABIT_DURATION";
     public static final String PASS_HABIT_DETAILS = "HABIT_DETAILS";
     public static final int OPEN_ACTIVITY = 1;
+    Database db;
 
     private static class ViewHolder {
         TextView nameOfHabit;
@@ -38,18 +41,18 @@ public class CustomAdapterSearchingHabits extends ArrayAdapter<Habit> implements
     }
 
 
-    public CustomAdapterSearchingHabits(ArrayList<Habit> habitArrayList, Context context) {
+    public CustomAdapterSearchingHabits(ArrayList<HabitPublished> habitArrayList, Context context) {
         super(context, R.layout.custom_list_row, habitArrayList);
         this.habitArrayList = habitArrayList;
         this.mContext = context;
-
+        db = Database.getInstance();
     }
 
     @Override
     public void onClick(View v) {
         int position = (Integer) v.getTag();
         Object object = getItem(position);
-        Habit habit = (Habit) object;
+        HabitPublished habit = (HabitPublished) object;
         switch (v.getId()) {
             case R.id.item_info:
                 Snackbar.make(v, "Details: " + habit.getDetails(), Snackbar.LENGTH_LONG)
@@ -62,6 +65,8 @@ public class CustomAdapterSearchingHabits extends ArrayAdapter<Habit> implements
                 extras.putString(PASS_HABIT_DETAILS, habit.getDetails());
                 extras.putString(PASS_HABIT_DURATION, String.valueOf(habit.getDuration()));
                 intent.putExtras(extras);
+                habit.incrementNumberOfLikes();
+                db.incrementNumberOfAdds(habit);
                 mContext.startActivity(intent);
 
         }
@@ -76,7 +81,7 @@ public class CustomAdapterSearchingHabits extends ArrayAdapter<Habit> implements
         mContext = parent.getContext();
 
         // Get the data item for this position
-        final Habit habit = getItem(position);
+        final HabitPublished habit = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
 

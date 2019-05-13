@@ -24,8 +24,7 @@ import aau.itcom.rabbithabit.objects.HabitPublished;
 public class AddHabitActivity extends AppCompatActivity {
 
     private static final String TAG = "AddHabitActivity";
-    static ArrayList<Habit> habits;
-    //ArrayList<Habit> habitsToDisplay;
+    static ArrayList<HabitPublished> habits;
     ListView listView;
     private static CustomAdapterSearchingHabits adapter;
     LinearLayout displayTrendingLayout;
@@ -47,14 +46,14 @@ public class AddHabitActivity extends AppCompatActivity {
         displayTrendingLayout = findViewById(R.id.trendingHabitsLayout);
 
         habits = new ArrayList<>();
-        habits.add(new Habit("Smoke less", 30, "Smoke less than usual"));
-        habits.add(new Habit("Walk for at least 15 min", 30, "Walkie walkie"));
-        habits.add(new Habit("Be nicer", 30, "Some random details"));
-        habits.add(new Habit("Drink more water", 30, "Some random details"));
-        habits.add(new Habit("Do not procastinate", 30, "Some random details"));
-        habits.add(new Habit("Meditate", 30, "Some random details"));
-        habits.add(new Habit("Read for half an hour a day", 30, "Some random details"));
-        habits.add(new Habit("Walk instead of taking a bus", 30, "Some random details"));
+        habits.add(new HabitPublished("Smoke less", 30, "Smoke less than usual", "false", "Pre-defined", 1));
+        habits.add(new HabitPublished("Walk for at least 15 min", 30, "Walkie walkie", "false", "Pre-defined", 1));
+        habits.add(new HabitPublished("Be nicer", 30, "Some random details", "false", "Pre-defined", 1));
+        habits.add(new HabitPublished("Drink more water", 30, "Some random details", "false", "Pre-defined", 1));
+        habits.add(new HabitPublished("Do not procastinate", 30, "Some random details", "false", "Pre-defined", 1));
+        habits.add(new HabitPublished("Meditate", 30, "Some random details", "false", "Pre-defined", 1));
+        habits.add(new HabitPublished("Read for half an hour a day", 30, "Some random details", "false", "Pre-defined", 1));
+        habits.add(new HabitPublished("Walk instead of taking a bus", 30, "Some random details", "false", "Pre-defined", 1));
 
         adapter = new CustomAdapterSearchingHabits(habits, getApplicationContext());
 

@@ -67,7 +67,7 @@ public class HabitActivity extends AppCompatActivity {
             durationTextView.setEnabled(true);
             durationTextView.setText(habitDuration);
             durationTextView.setTextColor(Color.BLACK);
-            detailsTextView.setEnabled(false);
+            detailsTextView.setEnabled(true);
             detailsTextView.setText(habitDetails);
             detailsTextView.setTextColor(Color.BLACK);
             publishmentRadio.setVisibility(View.GONE);

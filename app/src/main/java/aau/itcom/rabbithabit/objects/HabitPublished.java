@@ -62,9 +62,12 @@ public class HabitPublished extends Habit {
         this.creator = creator;
     }
 
-    // ??
     public void incrementNumberOfLikes(){
         numberOfLikes++;
+    }
+
+    public long getNumberOfLikes() {
+        return numberOfLikes;
     }
 
 }

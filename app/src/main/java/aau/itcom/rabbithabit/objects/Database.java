@@ -174,7 +174,7 @@ public class Database {
         map.put("showCreator", habit.getShowCreator());
         map.put("creator", habit.getCreator());
         map.put("suggestedDuration", habit.getDuration());
-        map.put("numberOfLikes", 0);
+        map.put("numberOfLikes", habit.getNumberOfLikes());
 
         db.collection("HabitsPublished").document(habit.getName())
                 .set(map)
@@ -482,4 +482,16 @@ public class Database {
         db.addHabitPersonal(habitPersonal, FirebaseAuth.getInstance().getCurrentUser());
     }
 
+
+    // TODO : IF HAVE TIME MAKE IT BETTER
+    public void incrementNumberOfAdds(Habit habitPublished){
+        Database db = Database.getInstance();
+        Log.i(TAG, "inside incrementNumberOfAdds()");
+
+        if (habitPublished instanceof HabitPublished) {
+            Log.i(TAG, "inside IF STATEMENT incrementNumberOfAdds()");
+            HabitPublished habit = (HabitPublished) habitPublished;
+            db.addHabitPublished(habit);
+        }
+    }
 }
