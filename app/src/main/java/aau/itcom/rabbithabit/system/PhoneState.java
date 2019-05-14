@@ -1,4 +1,4 @@
-package aau.itcom.rabbithabit.objects;
+package aau.itcom.rabbithabit.system;
 
 
 import android.content.Context;
@@ -11,18 +11,6 @@ import android.os.BatteryManager;
 public class PhoneState {
     private static final String TAG = "PhoneStateClass";
     public static float BATTERY_LIMIT = 10;
-    /*private static PhoneState instance = null;
-
-    private PhoneState() {
-
-    }
-
-    public synchronized static PhoneState getInstance() {
-        if (instance == null) {
-            instance = new PhoneState();
-        }
-        return instance;
-    }*/
 
     public static float getBatteryLevelInPrc(Context context) {
 

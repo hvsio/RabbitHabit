@@ -1,4 +1,4 @@
-package aau.itcom.rabbithabit;
+package aau.itcom.rabbithabit.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,16 +8,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
+import aau.itcom.rabbithabit.R;
 import aau.itcom.rabbithabit.objects.HabitPersonal;
 
 public class CustomAdapterDayHabit extends ArrayAdapter<HabitPersonal> {
 
     public CustomAdapterDayHabit(@NonNull Context context, ArrayList<HabitPersonal> habitPersonals) {
-        super(context,0, habitPersonals);
+        super(context, 0, habitPersonals);
     }
 
     private static class ViewHolder {
@@ -34,8 +33,7 @@ public class CustomAdapterDayHabit extends ArrayAdapter<HabitPersonal> {
             convertView = inflater.inflate(R.layout.habit_day_adapter, parent, false);
             viewHolder.habitName = convertView.findViewById(R.id.habits_name);
             convertView.setTag(viewHolder);
-        }
-        else {
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.habitName.setText(habit.getName());

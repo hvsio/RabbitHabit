@@ -33,8 +33,6 @@ import java.util.NoSuchElementException;
 
 public class Database {
 
-    // TODO : UPDATE LOGS AFTER COPY & PASTE
-
     private static final String TAG = "DatabaseClass";
     private FirebaseFirestore db;
     private static Database instance = null;
@@ -289,8 +287,6 @@ public class Database {
     public void uploadPhotoFile(Date date, FirebaseUser user, File filePassed) {
 
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-//        Uri file = Uri.fromFile(new File(AddPhotoActivity.getCurrentPhotoPath()));
-//        Uri file = Uri.fromFile(filePassed);
         StorageReference riversRef = mStorageRef.child(user.getUid() + "/" + dateFormat.format(date) + ".jpg");
 
         riversRef.putFile(Uri.fromFile(filePassed))
@@ -484,7 +480,7 @@ public class Database {
 
 
     // TODO : IF HAVE TIME MAKE IT BETTER
-    public void incrementNumberOfAdds(Habit habitPublished){
+    public static void incrementNumberOfAdds(Habit habitPublished){
         Database db = Database.getInstance();
         Log.i(TAG, "inside incrementNumberOfAdds()");
 

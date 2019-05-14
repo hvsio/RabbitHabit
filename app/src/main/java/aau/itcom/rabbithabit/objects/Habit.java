@@ -25,7 +25,7 @@ public class Habit implements Serializable{
         return super.equals(obj);
     }
 
-    public TextView display(final Context context, int textSize, /*LinearLayout.LayoutParams params*/ViewGroup.LayoutParams params, Habit listener, Date data ){
+    public TextView display(final Context context, int textSize, ViewGroup.LayoutParams params, Habit listener, Date data ){
         return null;
     }
 
@@ -41,11 +41,6 @@ public class Habit implements Serializable{
         return duration;
     }
 
-    public void setDuration(long duration) {
-        this.duration = duration;
-    }
-
     public String getDetails() { return details; }
 
-    public void setDetails(String details) { this.details = details; }
 }

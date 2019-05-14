@@ -1,7 +1,6 @@
-package aau.itcom.rabbithabit;
+package aau.itcom.rabbithabit.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,12 +8,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,9 +26,10 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import aau.itcom.rabbithabit.R;
 import aau.itcom.rabbithabit.objects.Database;
 import aau.itcom.rabbithabit.objects.HabitPersonal;
-import aau.itcom.rabbithabit.objects.PhoneState;
+import aau.itcom.rabbithabit.system.PhoneState;
 import aau.itcom.rabbithabit.objects.Story;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -40,9 +38,7 @@ public class MainPageFragment extends Fragment {
     Database db;
     private static final String TAG = "MainPageFragment";
     private SmileRating ratingBar;
-    private LinearLayout.LayoutParams params;
     private LinearLayout habitsLayout;
-    private ConstraintLayout constraintLayoutMainPageFragment;
     private TextView storyTextView;
     private ImageView photoView;
     private CircleImageView profilePic;
@@ -59,15 +55,14 @@ public class MainPageFragment extends Fragment {
         db = Database.getInstance();
 
         View v = getView();
-        params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        constraintLayoutMainPageFragment = v.findViewById(R.id.layout);
+        ConstraintLayout constraintLayoutMainPageFragment = v.findViewById(R.id.layout);
         ratingBar = constraintLayoutMainPageFragment.findViewById(R.id.ratingBar2);
         habitsLayout = v.findViewById(R.id.habitsLayoutMainPage);
         storyTextView = v.findViewById(R.id.textViewForStoryContent);
         photoView = v.findViewById(R.id.photoOfTheDay);
         profilePic = v.findViewById(R.id.profile_image);
 
+/*
 
         Button button = v.findViewById(R.id.buttonTesting);
         button.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +72,7 @@ public class MainPageFragment extends Fragment {
                 startActivity(i);
             }
         });
+*/
 
         loadDetails();
     }
@@ -115,7 +111,7 @@ public class MainPageFragment extends Fragment {
         for (int i = 0; i < textViews.size(); i++) {
             habitsLayout.addView(textViews.get(i));
         }
-}
+    }
 
     public ArrayList<TextView> createTextFieldsForHabits() {
         Log.d(TAG, "Inside createTextFieldsForHabits()");
@@ -177,116 +173,116 @@ public class MainPageFragment extends Fragment {
 
     }
 
-private class LoadHabitsTask implements Runnable {
+    private class LoadHabitsTask implements Runnable {
 
-    private static final String THREAD_HABIT_TAG = "LoadHabitsTask";
+        private static final String THREAD_HABIT_TAG = "LoadHabitsTask";
 
-    @Override
-    public void run() {
-        try {
-            synchronized (Database.LOCK_FOR_HABITS) {
-                Database.LOCK_FOR_HABITS.wait();
+        @Override
+        public void run() {
+            try {
+                synchronized (Database.LOCK_FOR_HABITS) {
+                    Database.LOCK_FOR_HABITS.wait();
+                }
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        if (isAdded()) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    displayHabits();
-                }
-            });
-        } else {
-            Log.w(THREAD_HABIT_TAG, "Fragment is no longer attached to its activity");
+            if (isAdded()) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        displayHabits();
+                    }
+                });
+            } else {
+                Log.w(THREAD_HABIT_TAG, "Fragment is no longer attached to its activity");
+            }
         }
     }
-}
 
-private class LoadPhotoTask implements Runnable {
+    private class LoadPhotoTask implements Runnable {
 
-    private static final String THREAD_PHOTO_TAG = "LoadPhotoTask";
+        private static final String THREAD_PHOTO_TAG = "LoadPhotoTask";
 
-    @Override
-    public void run() {
-        try {
-            synchronized (Database.LOCK_FOR_PHOTO) {
-                Database.LOCK_FOR_PHOTO.wait();
+        @Override
+        public void run() {
+            try {
+                synchronized (Database.LOCK_FOR_PHOTO) {
+                    Database.LOCK_FOR_PHOTO.wait();
+                }
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        if (isAdded()) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    displayPhoto();
-                }
-            });
-        } else {
-            Log.w(THREAD_PHOTO_TAG, "Fragment is no longer attached to its activity");
+            if (isAdded()) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        displayPhoto();
+                    }
+                });
+            } else {
+                Log.w(THREAD_PHOTO_TAG, "Fragment is no longer attached to its activity");
+            }
         }
     }
-}
 
-private class LoadStoryTask implements Runnable {
+    private class LoadStoryTask implements Runnable {
 
-    private static final String THREAD_STORY_TAG = "LoadStoryTask";
+        private static final String THREAD_STORY_TAG = "LoadStoryTask";
 
-    @Override
-    public void run() {
-        try {
-            synchronized (Database.LOCK_FOR_STORY) {
-                Database.LOCK_FOR_STORY.wait();
+        @Override
+        public void run() {
+            try {
+                synchronized (Database.LOCK_FOR_STORY) {
+                    Database.LOCK_FOR_STORY.wait();
+                }
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        if (isAdded()) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    displayStory();
-                }
-            });
-        } else {
-            Log.w(THREAD_STORY_TAG, "Fragment is no longer attached to its activity");
+            if (isAdded()) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        displayStory();
+                    }
+                });
+            } else {
+                Log.w(THREAD_STORY_TAG, "Fragment is no longer attached to its activity");
+            }
         }
     }
-}
 
-private class LoadProfilePictureTask implements Runnable {
+    private class LoadProfilePictureTask implements Runnable {
 
-    private static final String THREAD_PHOTO_TAG = "LoadProfilePictureTask";
+        private static final String THREAD_PHOTO_TAG = "LoadProfilePictureTask";
 
-    @Override
-    public void run() {
-        try {
-            synchronized (Database.LOCK_FOR_PROFILE_PIC) {
-                Database.LOCK_FOR_PROFILE_PIC.wait();
+        @Override
+        public void run() {
+            try {
+                synchronized (Database.LOCK_FOR_PROFILE_PIC) {
+                    Database.LOCK_FOR_PROFILE_PIC.wait();
+                }
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        if (isAdded()) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    displayProfilePicture();
-                }
-            });
-        } else {
-            Log.w(THREAD_PHOTO_TAG, "Fragment is no longer attached to its activity");
+            if (isAdded()) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        displayProfilePicture();
+                    }
+                });
+            } else {
+                Log.w(THREAD_PHOTO_TAG, "Fragment is no longer attached to its activity");
+            }
         }
     }
-}
 
 }

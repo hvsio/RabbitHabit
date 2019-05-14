@@ -5,7 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/another_gradient"
-    tools:context=".AddPhotoActivity">
+    tools:context=".activities.AddPhotoActivity">
 
     <ImageView
         android:id="@+id/imageViewDisplay"

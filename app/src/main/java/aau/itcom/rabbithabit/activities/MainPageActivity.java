@@ -1,21 +1,15 @@
-package aau.itcom.rabbithabit;
+package aau.itcom.rabbithabit.activities;
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceFragment;
-import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.transition.TransitionManager;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -27,11 +21,13 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+
+import aau.itcom.rabbithabit.R;
+import aau.itcom.rabbithabit.fragments.CalendarFragment;
+import aau.itcom.rabbithabit.fragments.MainPageFragment;
+import aau.itcom.rabbithabit.fragments.ProfileFragment;
+import aau.itcom.rabbithabit.fragments.SettingsFragment;
 
 
 public class MainPageActivity extends AppCompatActivity
@@ -41,8 +37,6 @@ public class MainPageActivity extends AppCompatActivity
     CoordinatorLayout transitionsContainer;
     View viewBlurred;
     boolean isButtonAddClicked;
-    private NotificationManagerCompat notificationManager;
-
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -52,8 +46,6 @@ public class MainPageActivity extends AppCompatActivity
         setContentView(R.layout.activity_mainpage);
 
         isButtonAddClicked = false;
-
-        notificationManager = NotificationManagerCompat.from(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -67,12 +59,11 @@ public class MainPageActivity extends AppCompatActivity
         fabPhoto = transitionsContainer.findViewById(R.id.fabPhoto);
 
 
-
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("RestrictedApi")
             @Override
             public void onClick(View view) {
-                if (!isButtonAddClicked()){
+                if (!isButtonAddClicked()) {
                     TransitionManager.beginDelayedTransition(transitionsContainer);
                     viewBlurred.setVisibility(View.VISIBLE);
                     fabHabit.setVisibility(View.VISIBLE);
@@ -130,7 +121,6 @@ public class MainPageActivity extends AppCompatActivity
         });
 
 
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -145,13 +135,6 @@ public class MainPageActivity extends AppCompatActivity
 
     }
 
-    /*public void sendOnChannel1(View v) {
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID).setSmallIcon(R.drawable.notifications_on).setContentTitle("Title").setContentText("Message").build();
-
-        notificationManager.notify(1, notification);
-
-    }*/
-
     public boolean isButtonAddClicked() {
         return isButtonAddClicked;
     }
@@ -162,19 +145,20 @@ public class MainPageActivity extends AppCompatActivity
 
 
     boolean doubleBackToExitPressedOnce = false;
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if (getSupportFragmentManager().findFragmentById(R.id.frameLayout) instanceof MainPageFragment){
+        } else if (getSupportFragmentManager().findFragmentById(R.id.frameLayout) instanceof MainPageFragment) {
             //Checking for fragment count on backstack
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 getSupportFragmentManager().popBackStack();
 
             } else if (!doubleBackToExitPressedOnce) {
                 this.doubleBackToExitPressedOnce = true;
-                Toast.makeText(this,"Please click BACK again to exit.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please click BACK again to exit.", Toast.LENGTH_SHORT).show();
 
                 new Handler().postDelayed(new Runnable() {
 
@@ -189,45 +173,9 @@ public class MainPageActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
-/*
-
-        //Checking for fragment count on backstack
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            getSupportFragmentManager().popBackStack();
-
-            // TODO : FIX IT
-
-        } else if (!doubleBackToExitPressedOnce) {
-            this.doubleBackToExitPressedOnce = true;
-            Toast.makeText(this,"Please click BACK again to exit.", Toast.LENGTH_SHORT).show();
-
-            new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    doubleBackToExitPressedOnce = false;
-                }
-            }, 2000);
-        } else {
-            this.finishAffinity();
-        }
-
-*/
-    }
-
-    // TODO : What is that doing here?
-    public static class PrefsFragment extends PreferenceFragment {
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            // Load the preferences from an XML resource
-            addPreferencesFromResource(R.xml.settings_screen);
-        }
     }
 
     @SuppressLint("ResourceType")
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -238,7 +186,7 @@ public class MainPageActivity extends AppCompatActivity
         } else if (id == R.id.nav_main) {
             getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new MainPageFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_profile) {
-           getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_settings) {
             getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new SettingsFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_log_out) {
@@ -250,7 +198,7 @@ public class MainPageActivity extends AppCompatActivity
         return true;
     }
 
-    static Intent createNewIntent(Context context) {
+    public static Intent createNewIntent(Context context) {
         return new Intent(context, MainPageActivity.class);
     }
 
@@ -264,11 +212,13 @@ public class MainPageActivity extends AppCompatActivity
         Intent intent = new Intent(getApplicationContext(), AddHabitActivity.class);
         startActivity(intent);
     }
+
     public void addStory(View view) {
         Intent intent = new Intent(getApplicationContext(), AddStoryActivity.class);
-        startActivity(intent);    }
+        startActivity(intent);
+    }
 
-    public void addPhoto(View view){
+    public void addPhoto(View view) {
         startActivity(AddPhotoActivity.createNewIntent(getApplicationContext()));
     }
 

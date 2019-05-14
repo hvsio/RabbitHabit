@@ -1,4 +1,4 @@
-package aau.itcom.rabbithabit;
+package aau.itcom.rabbithabit.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,17 +8,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import aau.itcom.rabbithabit.adapters.CustomAdapterSearchingHabits;
+import aau.itcom.rabbithabit.R;
 import aau.itcom.rabbithabit.objects.Database;
-import aau.itcom.rabbithabit.objects.Habit;
-import aau.itcom.rabbithabit.objects.HabitPersonal;
 import aau.itcom.rabbithabit.objects.HabitPublished;
 
 public class AddHabitActivity extends AppCompatActivity {
@@ -26,8 +24,7 @@ public class AddHabitActivity extends AppCompatActivity {
     private static final String TAG = "AddHabitActivity";
     static ArrayList<HabitPublished> habits;
     ListView listView;
-    private static CustomAdapterSearchingHabits adapter;
-    LinearLayout displayTrendingLayout;
+    private CustomAdapterSearchingHabits adapter;
     Database db;
     LinearLayout.LayoutParams params;
 
@@ -66,8 +63,7 @@ public class AddHabitActivity extends AppCompatActivity {
     }
 
     public void addOwnHabit(View view) {
-        Intent intent = new Intent(getApplicationContext(), HabitActivity.class);
-        startActivityForResult(intent, OWN_HABIT);
+        startActivityForResult(HabitActivity.createNewIntent(getApplicationContext()), OWN_HABIT);
     }
 
     private void displayHabits() {

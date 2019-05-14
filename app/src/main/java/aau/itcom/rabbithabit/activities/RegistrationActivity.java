@@ -1,5 +1,6 @@
-package aau.itcom.rabbithabit;
+package aau.itcom.rabbithabit.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import aau.itcom.rabbithabit.R;
 import aau.itcom.rabbithabit.objects.Database;
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -48,27 +50,25 @@ public class RegistrationActivity extends AppCompatActivity {
 
     public void registerUser(View view) {
 
-        String emailText = email.getText().toString().replaceAll(" ","");
+        String emailText = email.getText().toString().replaceAll(" ", "");
         String passwordText = password.getText().toString();
         String passwordConfText = passwordConf.getText().toString();
         nameText = name.getText().toString();
         if (emailText.equals("") || passwordText.equals("") || nameText.equals("")) {
             Toast.makeText(getApplicationContext(), "Please fill all the fields!", Toast.LENGTH_SHORT).show();
-        }
-        else if (!passwordConfText.equals(passwordText)) {
+        } else if (!passwordConfText.equals(passwordText)) {
             Toast.makeText(getApplicationContext(), "Passwords do not match!", Toast.LENGTH_SHORT).show();
 
-        }
-        else {
+        } else {
             createAccount(emailText, passwordText, nameText);
         }
     }
 
     private void updateUI(FirebaseUser currentUser) {
         if (currentUser != null) {
-           // startActivity(MainPageActivity.createNewIntent(getApplicationContext()));
+            // startActivity(MainPageActivity.createNewIntent(getApplicationContext()));
             Intent i = new Intent(RegistrationActivity.this, IntroTutorialScreen.class);
-          //  i.putExtra("Name", nameText);
+            //  i.putExtra("Name", nameText);
             startActivity(i);
         }
     }
@@ -98,4 +98,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 });
     }
 
+    public static Intent createNewIntent(Context context) {
+        return new Intent(context, RegistrationActivity.class);
+    }
 }

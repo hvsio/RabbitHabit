@@ -1,6 +1,5 @@
-package aau.itcom.rabbithabit;
+package aau.itcom.rabbithabit.activities;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -8,12 +7,13 @@ import android.os.Bundle;
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 
+import aau.itcom.rabbithabit.R;
+
 public class IntroTutorialScreen extends AppIntro {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_intro_tutorial_screen);
 
         int color = Color.parseColor("#95C2E7");
 
@@ -27,14 +27,12 @@ public class IntroTutorialScreen extends AppIntro {
     @Override
     public void onDonePressed(Fragment currentFragment) {
         super.onDonePressed(currentFragment);
-        Intent i = new Intent(getApplicationContext(), WelcomePage.class);
-        startActivity(i);
+        startActivity(WelcomePage.createNewIntent(getApplicationContext()));
     }
 
     @Override
     public void onSkipPressed(Fragment currentFragment) {
         super.onSkipPressed(currentFragment);
-        Intent i = new Intent(getApplicationContext(), WelcomePage.class);
-        startActivity(i);
+        startActivity(WelcomePage.createNewIntent(getApplicationContext()));
     }
 }

@@ -1,4 +1,4 @@
-package aau.itcom.rabbithabit;
+package aau.itcom.rabbithabit.activities;
 
 
 import android.Manifest;
@@ -28,10 +28,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import aau.itcom.rabbithabit.R;
+import aau.itcom.rabbithabit.fragments.SettingsFragment;
 import aau.itcom.rabbithabit.objects.Database;
-import aau.itcom.rabbithabit.objects.PhoneState;
-
-import static android.support.v4.content.PermissionChecker.checkSelfPermission;
+import aau.itcom.rabbithabit.system.PhoneState;
 
 public class AddPhotoActivity extends AppCompatActivity {
 
@@ -66,10 +66,11 @@ public class AddPhotoActivity extends AppCompatActivity {
 
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    SELECT_FILE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        SELECT_FILE);
+            }
         }
-
     }
 
     @Override
@@ -131,7 +132,7 @@ public class AddPhotoActivity extends AppCompatActivity {
                 }
             }
         } else {
-            Toast.makeText(getApplicationContext(),"The battery level is too low", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "The battery level is too low", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -160,8 +161,7 @@ public class AddPhotoActivity extends AppCompatActivity {
 
     public void addAsDailyPic(View view) {
         db.uploadPhotoFile(new Date(), FirebaseAuth.getInstance().getCurrentUser(), f);
-        Intent intent = new Intent(getApplicationContext(), MainPageActivity.class);
-        startActivity(intent);
+        startActivity(MainPageActivity.createNewIntent(getApplicationContext()));
     }
 
     static Intent createNewIntent(Context context) {

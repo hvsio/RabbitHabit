@@ -1,4 +1,4 @@
-package aau.itcom.rabbithabit.objects;
+package aau.itcom.rabbithabit.system;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -7,14 +7,9 @@ import android.content.Context;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -36,12 +31,12 @@ public class NotificationService extends FirebaseMessagingService {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         String NOTIFICATION_CHANNEL_ID = "aau.itcom.rabbithabit.NOTIFICATION";
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Notification", NotificationManager.IMPORTANCE_DEFAULT);
             notificationChannel.setDescription("RabbitHabbit Channel");
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.YELLOW);
-            notificationChannel.setVibrationPattern(new long[]{0,1000, 500, 1000});
+            notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
 
             notificationManager.createNotificationChannel(notificationChannel);
         }

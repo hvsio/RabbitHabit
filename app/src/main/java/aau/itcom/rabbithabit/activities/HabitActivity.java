@@ -1,11 +1,10 @@
-package aau.itcom.rabbithabit;
+package aau.itcom.rabbithabit.activities;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -15,13 +14,14 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Calendar;
 
+import aau.itcom.rabbithabit.R;
 import aau.itcom.rabbithabit.objects.Database;
 import aau.itcom.rabbithabit.objects.HabitPersonal;
 import aau.itcom.rabbithabit.objects.HabitPublished;
 
-import static aau.itcom.rabbithabit.CustomAdapterSearchingHabits.PASS_HABIT_DETAILS;
-import static aau.itcom.rabbithabit.CustomAdapterSearchingHabits.PASS_HABIT_DURATION;
-import static aau.itcom.rabbithabit.CustomAdapterSearchingHabits.PASS_HABIT_NAME;
+import static aau.itcom.rabbithabit.adapters.CustomAdapterSearchingHabits.PASS_HABIT_DETAILS;
+import static aau.itcom.rabbithabit.adapters.CustomAdapterSearchingHabits.PASS_HABIT_DURATION;
+import static aau.itcom.rabbithabit.adapters.CustomAdapterSearchingHabits.PASS_HABIT_NAME;
 
 
 public class HabitActivity extends AppCompatActivity {
@@ -31,13 +31,9 @@ public class HabitActivity extends AppCompatActivity {
     TextView questionBar;
     TextView durationTextView;
     Database db;
-    private String habitName;
-    private String habitDetails;
-    private String habitDuration;
     Intent intentFromSearching;
 
     private static final String TAG = "AddingHabitActivity";
-
 
 
     @Override
@@ -56,11 +52,11 @@ public class HabitActivity extends AppCompatActivity {
         db = Database.getInstance();
 
 
-        if(intentFromSearching.getExtras()!=null) {
+        if (intentFromSearching.getExtras() != null) {
             Bundle retrievedBundle = getIntent().getExtras();
-            habitName = retrievedBundle.getString(PASS_HABIT_NAME);
-            habitDetails = retrievedBundle.getString(PASS_HABIT_DETAILS);
-            habitDuration = retrievedBundle.getString(PASS_HABIT_DURATION);
+            String habitName = retrievedBundle.getString(PASS_HABIT_NAME);
+            String habitDetails = retrievedBundle.getString(PASS_HABIT_DETAILS);
+            String habitDuration = retrievedBundle.getString(PASS_HABIT_DURATION);
             nameTextView.setEnabled(false);
             nameTextView.setText(habitName);
             nameTextView.setTextColor(Color.BLACK);
@@ -77,7 +73,7 @@ public class HabitActivity extends AppCompatActivity {
 
 
     public void collectInformation(View view) {
-        if(intentFromSearching.getExtras()!=null) {
+        if (intentFromSearching.getExtras() != null) {
             saveHabitAsPersonal();
         } else if (checkInformation()) {
             switch (publishmentRadio.getCheckedRadioButtonId()) {
@@ -98,8 +94,7 @@ public class HabitActivity extends AppCompatActivity {
     }
 
     private boolean checkInformation() {
-        if (publishmentRadio.getCheckedRadioButtonId() == -1){
-            Log.d(TAG, "to jest kurwa dziwne");
+        if (publishmentRadio.getCheckedRadioButtonId() == -1) {
         }
 
         return !nameTextView.getText().equals("") && !durationTextView.getText().equals("")
@@ -114,26 +109,25 @@ public class HabitActivity extends AppCompatActivity {
             publishmentRadio.setEnabled(false);
         } else {
             nameTextView.setEnabled(true);
-           durationTextView.setEnabled(true);
+            durationTextView.setEnabled(true);
             detailsTextView.setEnabled(true);
             publishmentRadio.setEnabled(true);
         }
     }
 
     private void saveHabitAsPublished() {
-        db.addHabitPersonal(new HabitPersonal(nameTextView.getText().toString(),Integer.parseInt(durationTextView.getText().toString()), detailsTextView.getText().toString(), Calendar.getInstance().getTime(), null), FirebaseAuth.getInstance().getCurrentUser());
-        db.addHabitPublished(new HabitPublished(nameTextView.getText().toString(),Integer.parseInt(durationTextView.getText().toString()), detailsTextView.getText().toString(), "true", FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), 0));
+        db.addHabitPersonal(new HabitPersonal(nameTextView.getText().toString(), Integer.parseInt(durationTextView.getText().toString()), detailsTextView.getText().toString(), Calendar.getInstance().getTime(), null), FirebaseAuth.getInstance().getCurrentUser());
+        db.addHabitPublished(new HabitPublished(nameTextView.getText().toString(), Integer.parseInt(durationTextView.getText().toString()), detailsTextView.getText().toString(), "true", FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), 0));
     }
 
     private void saveHabitAsPersonal() {
-        db.addHabitPersonal(new HabitPersonal(nameTextView.getText().toString(),Integer.parseInt(durationTextView.getText().toString()), detailsTextView.getText().toString(), Calendar.getInstance().getTime(), null), FirebaseAuth.getInstance().getCurrentUser());
+        db.addHabitPersonal(new HabitPersonal(nameTextView.getText().toString(), Integer.parseInt(durationTextView.getText().toString()), detailsTextView.getText().toString(), Calendar.getInstance().getTime(), null), FirebaseAuth.getInstance().getCurrentUser());
     }
 
 
     private void displayToast(String text) {
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
-
 
 
     public static Intent createNewIntent(Context context) {

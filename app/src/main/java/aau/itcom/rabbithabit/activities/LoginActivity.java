@@ -1,4 +1,4 @@
-package aau.itcom.rabbithabit;
+package aau.itcom.rabbithabit.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -35,6 +35,8 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import aau.itcom.rabbithabit.R;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -154,10 +156,9 @@ public class LoginActivity extends AppCompatActivity {
 
         SpannableString ss = new SpannableString(text);
 
-         ClickableSpan cs = new ClickableSpan() {
+        ClickableSpan cs = new ClickableSpan() {
             public void onClick(View widget) {
-//                createUserWithEmailAndPassword();
-                startActivity(new Intent(getApplicationContext(), RegistrationActivity.class));
+                startActivity(RegistrationActivity.createNewIntent(getApplicationContext()));
             }
         };
         ss.setSpan(cs, 23, 30, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -183,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void signInWithEmailAndPassword(View view) {
 
-        String email = emailField.getText().toString().replaceAll(" ","");
+        String email = emailField.getText().toString().replaceAll(" ", "");
         String password = passwordField.getText().toString();
 
         if (email.equals("") || password.equals("")) {

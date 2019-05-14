@@ -6,12 +6,11 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.Date;
 
-import aau.itcom.rabbithabit.HabitActivity;
+import aau.itcom.rabbithabit.activities.HabitActivity;
 import aau.itcom.rabbithabit.R;
 
 public class HabitPublished extends Habit {
@@ -27,7 +26,7 @@ public class HabitPublished extends Habit {
     }
 
     @Override
-    public TextView display(final Context context, int textSize, /*LinearLayout.LayoutParams params*/ViewGroup.LayoutParams params, final Habit listener, Date date) {
+    public TextView display(final Context context, int textSize, ViewGroup.LayoutParams params, final Habit listener, Date date) {
         Log.d("display() in hPublished", " am inside");
         TextView textView = new TextView(context);
         textView.setText(listener.getName());
@@ -50,16 +49,8 @@ public class HabitPublished extends Habit {
         return showCreator;
     }
 
-    public void setShowCreator(String showCreator) {
-        this.showCreator = showCreator;
-    }
-
     public String getCreator() {
         return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
     }
 
     public void incrementNumberOfLikes(){

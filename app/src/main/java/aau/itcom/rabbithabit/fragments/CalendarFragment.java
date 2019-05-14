@@ -1,4 +1,4 @@
-package aau.itcom.rabbithabit;
+package aau.itcom.rabbithabit.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,8 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.hsalf.smilerating.SmileRating;
 
 import java.text.ParseException;
@@ -32,27 +30,25 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import aau.itcom.rabbithabit.R;
 import aau.itcom.rabbithabit.objects.Database;
 import aau.itcom.rabbithabit.objects.HabitPersonal;
-import aau.itcom.rabbithabit.objects.PhoneState;
+import aau.itcom.rabbithabit.system.PhoneState;
 import aau.itcom.rabbithabit.objects.Story;
 
 public class CalendarFragment extends Fragment {
 
     CalendarView calendar;
     LinearLayout habitsLayout;
-    LinearLayout layoutHabits;
     TextView storyTextView;
     LinearLayout.LayoutParams params;
     ArrayList<HabitPersonal> habitArray;
     ImageView imageView;
     ListView listView;
-    CustomAdapterDayHabit adapter;
     SmileRating ratingBar;
     Story story;
     Database db;
     Date date = null;
-    private StorageReference mStorageRef;
 
     private static final String TAG = "CalendarFragment";
 
@@ -60,7 +56,6 @@ public class CalendarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mStorageRef = FirebaseStorage.getInstance().getReference();
         return inflater.inflate(R.layout.fragment_calendar, container, false);
     }
 
@@ -113,13 +108,13 @@ public class CalendarFragment extends Fragment {
         db.loadPhotoOnDate(date, FirebaseAuth.getInstance().getCurrentUser(), getContext());
         db.loadStoryOnDate(date, FirebaseAuth.getInstance().getCurrentUser());
 
-        if (PhoneState.getConnectionType(getActivity()).equals("WIFI") || !pref.getBoolean(SettingsFragment.DOWNLOAD_PHOTO, true)){
+        if (PhoneState.getConnectionType(getActivity()).equals("WIFI") || !pref.getBoolean(SettingsFragment.DOWNLOAD_PHOTO, true)) {
             ExecutorService executorService = Executors.newSingleThreadExecutor();
             executorService.submit(new LoadPhotoTask());
             executorService.shutdown();
             db.loadPhotoOnDate(date, FirebaseAuth.getInstance().getCurrentUser(), getContext());
         } else {
-            Toast.makeText(getActivity(),"Connect to WIFI or change setting to download photos", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "Connect to WIFI or change setting to download photos", Toast.LENGTH_LONG).show();
         }
 
     }

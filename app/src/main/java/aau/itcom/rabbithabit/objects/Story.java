@@ -27,16 +27,7 @@ public class Story {
         return textContent;
     }
 
-    public void setTextContent(String textContent) {
-        this.textContent = textContent;
-    }
-
     public long getMood() {
         return mood;
     }
-
-    public void setMood(long mood) {
-        this.mood = mood;
-    }
-
 }

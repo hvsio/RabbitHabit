@@ -21,9 +21,8 @@
         android:roundIcon="@mipmap/icon_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".IntroTutorialScreen"></activity>
 
-        <service android:name=".objects.NotificationService">
+        <service android:name=".system.NotificationService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -43,16 +42,17 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".MainPageActivity" />
-        <activity android:name=".HabitDetailsActivity" />
-        <activity android:name=".AddHabitActivity" />
-        <activity android:name=".AddPhotoActivity" />
-        <activity android:name=".AddStoryActivity" />
-        <activity android:name=".HabitActivity" />
-        <activity android:name=".WelcomePage" />
-        <activity android:name=".RegistrationActivity" />
+        <activity android:name=".activities.IntroTutorialScreen"/>
+        <activity android:name=".activities.MainPageActivity" />
+        <activity android:name=".activities.HabitDetailsActivity" />
+        <activity android:name=".activities.AddHabitActivity" />
+        <activity android:name=".activities.AddPhotoActivity" />
+        <activity android:name=".activities.AddStoryActivity" />
+        <activity android:name=".activities.HabitActivity" />
+        <activity android:name=".activities.WelcomePage" />
+        <activity android:name=".activities.RegistrationActivity" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".activities.LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

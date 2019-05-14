@@ -1,4 +1,4 @@
-package aau.itcom.rabbithabit;
+package aau.itcom.rabbithabit.fragments;
 
 import android.Manifest;
 
@@ -20,17 +20,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -38,35 +33,26 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import aau.itcom.rabbithabit.R;
 import aau.itcom.rabbithabit.objects.Database;
-import aau.itcom.rabbithabit.objects.PhoneState;
+import aau.itcom.rabbithabit.system.PhoneState;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
-import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.facebook.FacebookSdk.getCacheDir;
 
 
 public class ProfileFragment extends Fragment {
 
     CircleImageView profilePic;
-    Button changeProfInfo;
-    File storageDir = getCacheDir();
-    File profilePicture;
-    static String photoPath;
     private static final int REQUEST_CAMERA = 3;
     private static final int SELECT_FILE = 2;
-    Uri imageHoldUri = null;
     Database db;
     TextView name;
     TextView email;
-    StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
-    StorageReference userRefPictures = mStorageRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-    StorageReference userRefProfilePic = mStorageRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid() + "/profile_picture.jpg");
     TextView noOfHabits;
     TextView noOfStories;
-    private static int numberOfStories;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -143,13 +129,13 @@ public class ProfileFragment extends Fragment {
     }
 
     private void cameraIntent() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(SettingsFragment.SETTINGS, Context.MODE_PRIVATE);
+        SharedPreferences pref = getContext().getSharedPreferences(SettingsFragment.SETTINGS, Context.MODE_PRIVATE);
 
-        if (PhoneState.getBatteryLevelInPrc(getApplicationContext()) >= PhoneState.BATTERY_LIMIT || pref.getBoolean(SettingsFragment.TAKE_PHOTO, false)) {
+        if (PhoneState.getBatteryLevelInPrc(getContext()) >= PhoneState.BATTERY_LIMIT || pref.getBoolean(SettingsFragment.TAKE_PHOTO, false)) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(intent, REQUEST_CAMERA);
         } else {
-            Toast.makeText(getApplicationContext(),"The battery level is too low", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "The battery level is too low", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -157,14 +143,14 @@ public class ProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Uri imageUri;
         String path;
-        File f ;
+        File f;
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CAMERA  && resultCode == RESULT_OK){
+        if (requestCode == REQUEST_CAMERA && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             profilePic.setImageBitmap(imageBitmap);
             saveImageAndUpload(imageBitmap);
-        }else if ( requestCode == SELECT_FILE && resultCode == RESULT_OK ){
+        } else if (requestCode == SELECT_FILE && resultCode == RESULT_OK) {
             imageUri = data.getData();
             path = getPathFromURI(imageUri);
             if (path != null) {
@@ -188,10 +174,10 @@ public class ProfileFragment extends Fragment {
     }
 
     private void displayProfilePicture() {
-            profilePic.setImageURI(db.getProfilePhoto());
+        profilePic.setImageURI(db.getProfilePhoto());
     }
 
-    private class LoadProfilePicture implements Runnable{
+    private class LoadProfilePicture implements Runnable {
 
         private static final String THREAD_PHOTO_TAG = "LoadProfilePicture";
 
@@ -206,7 +192,7 @@ public class ProfileFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            if (isAdded()){
+            if (isAdded()) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -233,7 +219,7 @@ public class ProfileFragment extends Fragment {
 
 
     private void saveImageAndUpload(Bitmap finalBitmap) {
-        try (FileOutputStream outputStream = new FileOutputStream(new File(getCacheDir(), "profile_pic.jpeg"))){
+        try (FileOutputStream outputStream = new FileOutputStream(new File(getCacheDir(), "profile_pic.jpeg"))) {
             finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
             db.uploadProfilePic(FirebaseAuth.getInstance().getCurrentUser(), new File(getCacheDir(), "profile_pic.jpeg"));
 
@@ -244,7 +230,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private class LoadStories implements Runnable{
+    private class LoadStories implements Runnable {
 
         @Override
         public void run() {
@@ -256,7 +242,7 @@ public class ProfileFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            if(isAdded()){
+            if (isAdded()) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -268,7 +254,6 @@ public class ProfileFragment extends Fragment {
 
 
     }
-
 
 
 }

@@ -1,10 +1,9 @@
-package aau.itcom.rabbithabit;
+package aau.itcom.rabbithabit.activities;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -12,6 +11,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.tomer.fadingtextview.FadingTextView;
 
 import java.util.concurrent.TimeUnit;
+
+import aau.itcom.rabbithabit.R;
+import aau.itcom.rabbithabit.fragments.SettingsFragment;
 
 
 public class WelcomePage extends AppCompatActivity {
@@ -30,16 +32,16 @@ public class WelcomePage extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    startActivity(new Intent(getApplicationContext(), MainPageActivity.class));
+                    startActivity(MainPageActivity.createNewIntent(getApplicationContext()));
                 }
             }, 4 * 1000);
 
         } else {
-            startActivity(new Intent(getApplicationContext(), MainPageActivity.class));
+            startActivity(MainPageActivity.createNewIntent(getApplicationContext()));
         }
     }
 
-    static Intent createNewIntent(Context context) {
+    public static Intent createNewIntent(Context context) {
         return new Intent(context, WelcomePage.class);
     }
 

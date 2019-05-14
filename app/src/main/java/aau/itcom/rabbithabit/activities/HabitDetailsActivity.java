@@ -1,4 +1,4 @@
-package aau.itcom.rabbithabit;
+package aau.itcom.rabbithabit.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,28 +13,17 @@ import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
-import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
+import aau.itcom.rabbithabit.R;
 import aau.itcom.rabbithabit.objects.HabitPersonal;
 
 public class HabitDetailsActivity extends AppCompatActivity {
@@ -60,7 +49,7 @@ public class HabitDetailsActivity extends AppCompatActivity {
         dates = habitPersonal.getArrayOfDates();
         String firstDay = dates[0];
         String lastDay = dates[dates.length - 1];
-        String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        //String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
 
         super.onCreate(savedInstanceState);
@@ -70,7 +59,7 @@ public class HabitDetailsActivity extends AppCompatActivity {
         habitsName = findViewById(R.id.textViewHabitsName);
         habitsDetails = findViewById(R.id.textViewDetails);
         habitsDuration = findViewById(R.id.textViewHabitsDuration);
-        chart = (LineChart) findViewById(R.id.chart);
+        chart = findViewById(R.id.chart);
 
         habitsName.setText(habitPersonal.getName());
         habitsDetails.setText(habitPersonal.getDetails());
@@ -82,12 +71,11 @@ public class HabitDetailsActivity extends AppCompatActivity {
         lineDataSet.setCircleColor(R.color.colorChart);
         lineDataSet.setDrawValues(true);
         lineDataSet.setColor(R.color.colorChart1);
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();dataSets.add(lineDataSet);
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(lineDataSet);
         LineData data = new LineData(lineDataSet);
         chart.setData(data);
-        chart.animateX(2500, Easing.EaseInBounce );
-
-
+        chart.animateX(2500, Easing.EaseInBounce);
 
 
     }
@@ -131,7 +119,6 @@ public class HabitDetailsActivity extends AppCompatActivity {
         xAxis.setDrawGridLines(false);
 
 
-
         xAxis.setValueFormatter(new IndexAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
@@ -145,7 +132,7 @@ public class HabitDetailsActivity extends AppCompatActivity {
         xAxis.setDrawLabels(true);
 
 
-        yAxis = chart.getAxisLeft() ;
+        yAxis = chart.getAxisLeft();
         yAxis.setDrawGridLines(false);
 
         yAxis.setValueFormatter(new IndexAxisValueFormatter() {
@@ -156,7 +143,7 @@ public class HabitDetailsActivity extends AppCompatActivity {
                 return String.valueOf(valueInt);
             }
 
-            });
+        });
 
         chart.getAxisRight().setEnabled(false);
 
@@ -172,7 +159,7 @@ public class HabitDetailsActivity extends AppCompatActivity {
 //            int valueInt = (int) value;
 //            return String.valueOf(dataValues.get(valueInt));
 //        }
-    }
+}
 
 
 

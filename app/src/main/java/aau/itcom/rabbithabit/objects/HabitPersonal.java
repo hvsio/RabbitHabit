@@ -2,39 +2,29 @@ package aau.itcom.rabbithabit.objects;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
-import aau.itcom.rabbithabit.HabitDetailsActivity;
+import aau.itcom.rabbithabit.activities.HabitDetailsActivity;
 import aau.itcom.rabbithabit.R;
 
-public class HabitPersonal extends Habit/* implements Serializable*/ {
+public class HabitPersonal extends Habit{
     private Date startDate;
     private String[] arrayOfDates;
     private Map<String, Boolean> complexion;
-    HabitPersonal reference = this;
+    private HabitPersonal reference = this;
 
 
 
@@ -77,7 +67,7 @@ public class HabitPersonal extends Habit/* implements Serializable*/ {
     }
 
     @Override
-    public TextView display(final Context context, int textSize, /*LinearLayout.LayoutParams params*/ViewGroup.LayoutParams params, final Habit listener, Date date) {
+    public TextView display(final Context context, int textSize, ViewGroup.LayoutParams params, final Habit listener, Date date) {
         Log.d("DISPLAY IN HABIT PRS!", " am inside");
         final TextView textView = new TextView(context);
         textView.setText(listener.getName());
@@ -133,10 +123,6 @@ public class HabitPersonal extends Habit/* implements Serializable*/ {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
     public boolean isCompletedOn(Date date){
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -146,13 +132,7 @@ public class HabitPersonal extends Habit/* implements Serializable*/ {
             return false;
     }
 
-    public void setCompletedOn(Date date){
-
-    }
-
     public String[] getArrayOfDates(){
-        //return (String[]) complexion.keySet().toArray();
-        //return complexion.keySet().toArray(new String[0]);
         return arrayOfDates;
     }
 
@@ -160,16 +140,4 @@ public class HabitPersonal extends Habit/* implements Serializable*/ {
         return complexion;
     }
 
-    public void displayStatistics(){
-
-    }
-
-    @Override
-    public String toString() {
-        return "HabitPersonal{" +
-                "startDate=" + startDate +
-                ", arrayOfDates=" + Arrays.toString(arrayOfDates) +
-                ", complexion=" + complexion +
-                '}';
-    }
 }

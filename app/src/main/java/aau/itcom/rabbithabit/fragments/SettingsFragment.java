@@ -1,4 +1,4 @@
-package aau.itcom.rabbithabit;
+package aau.itcom.rabbithabit.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,6 @@ import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -28,12 +27,12 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import java.util.Objects;
 import java.util.Set;
 
+import aau.itcom.rabbithabit.R;
 import aau.itcom.rabbithabit.objects.Database;
 
 
 public class SettingsFragment extends Fragment {
     public static final String SETTINGS = "settings";
-
     public static final String USERNAME = "username";
     public static final String WELCOME_SCREEN = "welcome_screen";
     public static final String DOWNLOAD_PHOTO = "download_photo";
@@ -70,7 +69,7 @@ public class SettingsFragment extends Fragment {
         ListPreference snooze;
         Preference feedback;
         private FirebaseAuth mAuth;
-        private Database db;
+        //private Database db;
         private FirebaseAnalytics mFirebaseAnalytics;
 
 
@@ -79,7 +78,7 @@ public class SettingsFragment extends Fragment {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.settings_screen);
 
-            db = Database.getInstance();
+            //db = Database.getInstance();
             mAuth = FirebaseAuth.getInstance();
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
 
@@ -146,8 +145,6 @@ public class SettingsFragment extends Fragment {
             frequencyOfNotifications.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    //Set<String> selections = frequencyOfNotifications.getValues();
-
                     Set<String> selections = (Set<String>) newValue;
                     updateNotifications(selections);
                     Toast.makeText(getActivity(), selections.toString(), Toast.LENGTH_LONG).show();
@@ -173,78 +170,68 @@ public class SettingsFragment extends Fragment {
                     Log.i("UPDATE NOTIFICATIONS", "Morning & Evening is checked");
                     mFirebaseAnalytics.setUserProperty("notification_frequency", "ME");
                 }
-
-                if (selections.contains("Afternoon - 2:00pm (GMT+2)")) {
-                    mFirebaseAnalytics.setUserProperty("notification_frequency", "A");
-                    if (selections.contains("Afternoon - 2:00pm (GMT+2)") && selections.contains("Evening - 7:00pm (GMT+2)"))
-                        mFirebaseAnalytics.setUserProperty("notification_frequency", "AE");
-                }
-
-                if (selections.contains("Evening - 7:00pm (GMT+2)"))
-                    mFirebaseAnalytics.setUserProperty("notification_frequency", "E");
-
-                // .isEmpty() is not working I don't know why
-                if (!selections.contains("Morning - 9:00am (GMT+2)") && !selections.contains("Afternoon - 2:00pm (GMT+2)") && !selections.contains("Evening - 7:00pm (GMT+2)"))
-                    mFirebaseAnalytics.setUserProperty("notification_frequency", "");
             }
+
+            if (!selections.contains("Morning - 9:00am (GMT+2)") && selections.contains("Afternoon - 2:00pm (GMT+2)")) {
+                mFirebaseAnalytics.setUserProperty("notification_frequency", "A");
+                if (selections.contains("Afternoon - 2:00pm (GMT+2)") && selections.contains("Evening - 7:00pm (GMT+2)"))
+                    mFirebaseAnalytics.setUserProperty("notification_frequency", "AE");
+            }
+
+            if (!selections.contains("Morning - 9:00am (GMT+2)") && !selections.contains("Afternoon - 2:00pm (GMT+2)") && selections.contains("Evening - 7:00pm (GMT+2)"))
+                mFirebaseAnalytics.setUserProperty("notification_frequency", "E");
+
+            if (!selections.contains("Morning - 9:00am (GMT+2)") && !selections.contains("Afternoon - 2:00pm (GMT+2)") && !selections.contains("Evening - 7:00pm (GMT+2)"))
+                mFirebaseAnalytics.setUserProperty("notification_frequency", "");
         }
-//        <item>Morning - 9:00am (GMT+2)</item>
-//        <item>Afternoon - 2:00pm (GMT+2)</item>
-//        <item>Evening - 7:00pm (GMT+2)</item>
-//
-            public void changeUsername () {
-                String newName = username.getText();
 
-                FirebaseUser user = mAuth.getCurrentUser();
-                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                        .setDisplayName(newName).build();
-                assert user != null;
-                user.updateProfile(profileUpdates);
-                db.createNewUser(mAuth.getCurrentUser());
-                username.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-                //Toast.makeText(getApplicationContext(), "It may take a while.", Toast.LENGTH_SHORT).show();
+        public void changeUsername() {
+            String newName = username.getText();
+
+            FirebaseUser user = mAuth.getCurrentUser();
+            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(newName).build();
+            assert user != null;
+            user.updateProfile(profileUpdates);
+            //db.createNewUser(mAuth.getCurrentUser());
+            username.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+            //Toast.makeText(getApplicationContext(), "It may take a while.", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        }
+
+
+        public static void sendFeedback(Context context) {
+            String body = null;
+            try {
+                body = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+                body = "\n\n-----------------------------\nPlease don't remove this information\n Device OS: Android \n Device OS version: " +
+                        Build.VERSION.RELEASE + "\n App Version: " + body + "\n Device Brand: " + Build.BRAND +
+                        "\n Device Model: " + Build.MODEL + "\n Device Manufacturer: " + Build.MANUFACTURER;
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
             }
-
-            @Override
-            public void onSharedPreferenceChanged (SharedPreferences sharedPreferences, String key){
-
-
-            }
-
-            @Override
-            public void onResume () {
-                super.onResume();
-                getPreferenceScreen()
-                        .getSharedPreferences()
-                        .registerOnSharedPreferenceChangeListener(this);
-            }
-
-            @Override
-            public void onPause () {
-                super.onPause();
-                getPreferenceScreen()
-                        .getSharedPreferences()
-                        .unregisterOnSharedPreferenceChangeListener(this);
-            }
-
-
-            public static void sendFeedback (Context context){
-                String body = null;
-                try {
-                    body = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-                    body = "\n\n-----------------------------\nPlease don't remove this information\n Device OS: Android \n Device OS version: " +
-                            Build.VERSION.RELEASE + "\n App Version: " + body + "\n Device Brand: " + Build.BRAND +
-                            "\n Device Model: " + Build.MODEL + "\n Device Manufacturer: " + Build.MANUFACTURER;
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("message/rfc822");
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"contact@androidhive.info"});
-                intent.putExtra(Intent.EXTRA_SUBJECT, "Query from android app");
-                intent.putExtra(Intent.EXTRA_TEXT, body);
-                context.startActivity(Intent.createChooser(intent, context.getString(R.string.email_input)));
-            }
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("message/rfc822");
+            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"contact@androidhive.info"});
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Query from android app");
+            intent.putExtra(Intent.EXTRA_TEXT, body);
+            context.startActivity(Intent.createChooser(intent, context.getString(R.string.email_input)));
         }
     }
+}
 

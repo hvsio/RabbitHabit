@@ -1,13 +1,10 @@
-package aau.itcom.rabbithabit;
+package aau.itcom.rabbithabit.adapters;
 
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +17,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import aau.itcom.rabbithabit.R;
+import aau.itcom.rabbithabit.activities.HabitActivity;
 import aau.itcom.rabbithabit.objects.Database;
-import aau.itcom.rabbithabit.objects.Habit;
 import aau.itcom.rabbithabit.objects.HabitPublished;
 
 public class CustomAdapterSearchingHabits extends ArrayAdapter<HabitPublished> implements View.OnClickListener {
@@ -31,8 +29,6 @@ public class CustomAdapterSearchingHabits extends ArrayAdapter<HabitPublished> i
     public static final String PASS_HABIT_NAME = "HABIT_NAME";
     public static final String PASS_HABIT_DURATION = "HABIT_DURATION";
     public static final String PASS_HABIT_DETAILS = "HABIT_DETAILS";
-    public static final int OPEN_ACTIVITY = 1;
-    Database db;
 
     private static class ViewHolder {
         TextView nameOfHabit;
@@ -45,30 +41,27 @@ public class CustomAdapterSearchingHabits extends ArrayAdapter<HabitPublished> i
         super(context, R.layout.custom_list_row, habitArrayList);
         this.habitArrayList = habitArrayList;
         this.mContext = context;
-        db = Database.getInstance();
     }
 
     @Override
     public void onClick(View v) {
         int position = (Integer) v.getTag();
-        Object object = getItem(position);
-        HabitPublished habit = (HabitPublished) object;
+        HabitPublished habit = getItem(position);
         switch (v.getId()) {
             case R.id.item_info:
                 Snackbar.make(v, "Details: " + habit.getDetails(), Snackbar.LENGTH_LONG)
                         .setAction("No action", null).show();
                 break;
             case R.id.addBtn:
-                Intent intent = new Intent(mContext, HabitActivity.class);
+                Intent intent = HabitActivity.createNewIntent(getContext());
                 Bundle extras = new Bundle();
                 extras.putString(PASS_HABIT_NAME, habit.getName());
                 extras.putString(PASS_HABIT_DETAILS, habit.getDetails());
                 extras.putString(PASS_HABIT_DURATION, String.valueOf(habit.getDuration()));
                 intent.putExtras(extras);
                 habit.incrementNumberOfLikes();
-                db.incrementNumberOfAdds(habit);
+                Database.incrementNumberOfAdds(habit);
                 mContext.startActivity(intent);
-
         }
     }
 

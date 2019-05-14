@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/another_gradient"
     android:id="@+id/welcomePage"
-    tools:context=".WelcomePage">
+    tools:context=".activities.WelcomePage">
 
     <ImageView
         android:id="@+id/imageViewLogo"
