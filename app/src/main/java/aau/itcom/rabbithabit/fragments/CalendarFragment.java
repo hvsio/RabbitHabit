@@ -44,7 +44,6 @@ public class CalendarFragment extends Fragment {
     LinearLayout.LayoutParams params;
     ArrayList<HabitPersonal> habitArray;
     ImageView imageView;
-    ListView listView;
     SmileRating ratingBar;
     Story story;
     Database db;
@@ -71,7 +70,6 @@ public class CalendarFragment extends Fragment {
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         ratingBar = v.findViewById(R.id.ratingBar);
         storyTextView = v.findViewById(R.id.textViewForStory);
-        listView = v.findViewById(R.id.habits_from_the_day);
         habitsLayout = v.findViewById(R.id.calendarHabitsLinearLayout);
         calendar = v.findViewById(R.id.calendarViewDaily);
         imageView = v.findViewById(R.id.imageView3);

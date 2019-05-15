@@ -28,15 +28,19 @@
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_margin="10dp">
 
                 <View
                     android:id="@+id/view4"
-                    android:layout_width="344dp"
+                    android:layout_width="0dp"
                     android:layout_height="434dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="32dp"
+                    android:layout_marginEnd="8dp"
                     android:background="@drawable/my_button_white"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.432"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
@@ -63,9 +67,9 @@
                     android:id="@+id/calendarViewDaily"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -74,17 +78,27 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.124" />
 
+                <LinearLayout
+                    android:id="@+id/calendarHabitsLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@+id/calendarViewDaily"/>
+
                 <View
                     android:id="@+id/view3"
                     android:layout_width="0dp"
                     android:layout_height="181dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
                     android:background="@drawable/my_button_white"
+                    app:layout_constraintBottom_toTopOf="@+id/ratingBar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/calendarViewDaily" />
+                    app:layout_constraintTop_toBottomOf="@+id/calendarHabitsLinearLayout" />
 
                 <TextView
                     android:id="@+id/textViewStory"
@@ -104,7 +118,7 @@
                 <TextView
                     android:id="@+id/textViewForStory"
                     android:layout_width="0dp"
-                    android:layout_height="126dp"
+                    android:layout_height="0dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="16dp"
                     app:layout_constraintBottom_toBottomOf="@+id/view3"
@@ -114,16 +128,16 @@
 
                 <com.hsalf.smilerating.SmileRating
                     android:id="@+id/ratingBar"
-                    android:layout_width="543dp"
-                    android:layout_height="71dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     app:isIndicator="true"
                     app:layout_constraintBottom_toTopOf="@+id/view4"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view3" />
 
@@ -137,39 +151,6 @@
                     app:layout_constraintStart_toStartOf="@+id/view4"
                     app:layout_constraintTop_toTopOf="@+id/view4"
                     tools:src="@drawable/no_picture" />
-
-                <android.support.v4.widget.NestedScrollView
-                    android:id="@+id/nestedScrollView2"
-                    android:layout_width="0dp"
-                    android:layout_height="200dp"
-                    android:layout_above="@+id/view3"
-                    android:layout_below="@+id/imageView3"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/my_button_white"
-                    android:fillViewport="true"
-                    android:isScrollContainer="false"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view4">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <ListView
-                            android:id="@+id/habits_from_the_day"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:dividerHeight="2dp"
-                            android:scrollbars="vertical"
-                            tools:layout_editor_absoluteY="1126dp" />
-                    </LinearLayout>
-                </android.support.v4.widget.NestedScrollView>
 
             </android.support.constraint.ConstraintLayout>
 
