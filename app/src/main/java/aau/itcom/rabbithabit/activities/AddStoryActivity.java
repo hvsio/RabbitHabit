@@ -21,10 +21,13 @@ import aau.itcom.rabbithabit.objects.Story;
 
 public class AddStoryActivity extends AppCompatActivity {
 
+    private static final String KEY_STORY = "key_story";
+    private static final String KEY_MOOD = "key_mood";
     String TAG = "AddStoryActivity";
     private EditText story;
     Database db;
     long getRating;
+    SmileRating smileRating;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,8 +35,9 @@ public class AddStoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_story);
 
         db = Database.getInstance();
-        final SmileRating smileRating = findViewById(R.id.ratingBar);
+        smileRating = findViewById(R.id.ratingBar);
         story = findViewById(R.id.editTextStory);
+
         Button add = findViewById(R.id.buttonAdd);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,8 +60,19 @@ public class AddStoryActivity extends AppCompatActivity {
                 getRating = level;
             }
         });
+
+        if (savedInstanceState != null){
+            story.setText(savedInstanceState.getCharSequence(KEY_STORY));
+            smileRating.setSelectedSmile(savedInstanceState.getInt(KEY_MOOD)-1);
+        }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putCharSequence(KEY_STORY, story.getText());
+        outState.putInt(KEY_MOOD, smileRating.getRating());
+    }
 
     static Intent createNewIntent(Context context) {
         return new Intent(context, AddStoryActivity.class);

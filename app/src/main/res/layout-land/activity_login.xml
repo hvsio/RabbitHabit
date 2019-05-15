@@ -78,7 +78,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.927"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLoginGoogle2"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLoginGoogle"
         app:layout_constraintVertical_bias="0.37"
         tools:targetApi="lollipop" />
 
@@ -130,7 +130,7 @@
         app:srcCompat="@drawable/logo" />
 
     <Button
-        android:id="@+id/buttonLoginGoogle2"
+        android:id="@+id/buttonLoginGoogle"
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_marginStart="8dp"

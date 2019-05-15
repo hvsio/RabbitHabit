@@ -82,7 +82,9 @@ public class CalendarFragment extends Fragment {
         });
 
         SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy");
-        changeCurrentDay(formater.format(Calendar.getInstance().getTime()));
+        if (savedInstanceState == null){
+            changeCurrentDay(formater.format(Calendar.getInstance().getTime()));
+        }
     }
 
     private void changeCurrentDay(String dateInString) {

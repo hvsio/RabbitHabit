@@ -35,6 +35,7 @@ import aau.itcom.rabbithabit.system.PhoneState;
 
 public class AddPhotoActivity extends AppCompatActivity {
 
+    private static final String KEY_URI = "key_uri";
     static String currentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 1;
     private static final int MY_CAMERA_REQUEST_CODE = 100;
@@ -46,6 +47,7 @@ public class AddPhotoActivity extends AppCompatActivity {
     Database db;
     String path;
     File f;
+    private Uri uriOfPicture;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -71,12 +73,25 @@ public class AddPhotoActivity extends AppCompatActivity {
                         SELECT_FILE);
             }
         }
+
+        if (savedInstanceState != null){
+            uriOfPicture = savedInstanceState.getParcelable(KEY_URI);
+            imageView.setImageURI((Uri) savedInstanceState.getParcelable(KEY_URI));
+            imageView.setRotation(90);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(KEY_URI, uriOfPicture);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             f = new File(currentPhotoPath);
+            uriOfPicture = Uri.fromFile(f);
             imageView.setImageURI(Uri.fromFile(f));
             imageView.setRotation(90);
         }
@@ -85,12 +100,10 @@ public class AddPhotoActivity extends AppCompatActivity {
             path = getPathFromURI(selectedImageUri);
             if (path != null) {
                 f = new File(path);
+                uriOfPicture = Uri.fromFile(f);
                 imageView.setImageURI(Uri.fromFile(f));
                 imageView.setRotation(90);
             }
-
-
-
         }
     }
 

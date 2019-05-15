@@ -18,6 +18,7 @@ import aau.itcom.rabbithabit.R;
 import aau.itcom.rabbithabit.objects.Database;
 import aau.itcom.rabbithabit.objects.HabitPersonal;
 import aau.itcom.rabbithabit.objects.HabitPublished;
+import aau.itcom.rabbithabit.system.PhoneState;
 
 import static aau.itcom.rabbithabit.adapters.CustomAdapterSearchingHabits.PASS_HABIT_DETAILS;
 import static aau.itcom.rabbithabit.adapters.CustomAdapterSearchingHabits.PASS_HABIT_DURATION;
@@ -34,7 +35,7 @@ public class HabitActivity extends AppCompatActivity {
     Intent intentFromSearching;
 
     private static final String TAG = "AddingHabitActivity";
-
+    private static final String KEY_PUBLISHMENT = "key_publishment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +70,24 @@ public class HabitActivity extends AppCompatActivity {
             publishmentRadio.setVisibility(View.GONE);
             questionBar.setVisibility(View.GONE);
         }
+
+        PhoneState.hideKeyboard(this);
+        if (savedInstanceState != null){
+            if (savedInstanceState.getBoolean(KEY_PUBLISHMENT))
+                publishmentRadio.check(R.id.yesButton);
+            else
+                publishmentRadio.check(R.id.noButton);
+        }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (publishmentRadio.getCheckedRadioButtonId() != R.id.yesButton)
+            outState.putBoolean(KEY_PUBLISHMENT, true);
+        else if (publishmentRadio.getCheckedRadioButtonId() != R.id.noButton)
+            outState.putBoolean(KEY_PUBLISHMENT, false);
+    }
 
     public void collectInformation(View view) {
         if (intentFromSearching.getExtras() != null) {
@@ -94,9 +111,6 @@ public class HabitActivity extends AppCompatActivity {
     }
 
     private boolean checkInformation() {
-        if (publishmentRadio.getCheckedRadioButtonId() == -1) {
-        }
-
         return !nameTextView.getText().equals("") && !durationTextView.getText().equals("")
                 && !detailsTextView.getText().equals("") && publishmentRadio.getCheckedRadioButtonId() != -1;
     }

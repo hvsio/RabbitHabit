@@ -62,6 +62,11 @@ public class MainPageFragment extends Fragment {
         photoView = v.findViewById(R.id.photoOfTheDay);
         profilePic = v.findViewById(R.id.profile_image);
 
+        if (savedInstanceState != null){
+            habitsLayout.removeAllViews();
+        } else {
+            loadDetails();
+        }
 /*
 
         Button button = v.findViewById(R.id.buttonTesting);
@@ -73,8 +78,6 @@ public class MainPageFragment extends Fragment {
             }
         });
 */
-
-        loadDetails();
     }
 
     private void loadDetails() {

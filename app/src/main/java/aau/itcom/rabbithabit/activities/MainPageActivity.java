@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.transition.TransitionManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -33,6 +34,7 @@ import aau.itcom.rabbithabit.fragments.SettingsFragment;
 public class MainPageActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String KEY_FRAGMET = "key_fragment";
     FloatingActionButton fabHabit, fabStory, fabAdd, fabPhoto;
     CoordinatorLayout transitionsContainer;
     View viewBlurred;
@@ -131,8 +133,40 @@ public class MainPageActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_main);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new MainPageFragment()).commit();
+        if (savedInstanceState != null){
+            String currentFragment = savedInstanceState.getString(KEY_FRAGMET);
 
+            if (currentFragment.equals("MainPageFragment"))
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new MainPageFragment()).commit();
+            if (currentFragment.equals("CalendarFragment"))
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new CalendarFragment()).commit();
+            if (currentFragment.equals("ProfileFragment"))
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
+            if (currentFragment.equals("SettingsFragment"))
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new SettingsFragment()).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new MainPageFragment()).commit();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frameLayout);
+
+        if (currentFragment instanceof MainPageFragment)
+            outState.putString(KEY_FRAGMET, "MainPageFragment");
+            //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new MainPageFragment()).commit();
+        if (currentFragment instanceof CalendarFragment)
+            //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new CalendarFragment()).commit();
+            outState.putString(KEY_FRAGMET, "CalendarFragment");
+        if (currentFragment instanceof ProfileFragment)
+            outState.putString(KEY_FRAGMET, "ProfileFragment");
+            //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
+        if (currentFragment instanceof SettingsFragment)
+            outState.putString(KEY_FRAGMET, "SettingsFragment");
+            //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new SettingsFragment()).commit();
     }
 
     public boolean isButtonAddClicked() {
@@ -152,23 +186,27 @@ public class MainPageActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (getSupportFragmentManager().findFragmentById(R.id.frameLayout) instanceof MainPageFragment) {
-            //Checking for fragment count on backstack
-            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                getSupportFragmentManager().popBackStack();
-
-            } else if (!doubleBackToExitPressedOnce) {
-                this.doubleBackToExitPressedOnce = true;
-                Toast.makeText(this, "Please click BACK again to exit.", Toast.LENGTH_SHORT).show();
-
-                new Handler().postDelayed(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        doubleBackToExitPressedOnce = false;
-                    }
-                }, 2000);
+            if (isButtonAddClicked){
+                fabAdd.performClick();
             } else {
-                this.finishAffinity();
+                //Checking for fragment count on backstack
+                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    getSupportFragmentManager().popBackStack();
+
+                } else if (!doubleBackToExitPressedOnce) {
+                    this.doubleBackToExitPressedOnce = true;
+                    Toast.makeText(this, "Please click BACK again to exit.", Toast.LENGTH_SHORT).show();
+
+                    new Handler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            doubleBackToExitPressedOnce = false;
+                        }
+                    }, 2000);
+                } else {
+                    this.finishAffinity();
+                }
             }
         } else {
             super.onBackPressed();
@@ -209,13 +247,11 @@ public class MainPageActivity extends AppCompatActivity
     }
 
     public void addHabit(View view) {
-        Intent intent = new Intent(getApplicationContext(), AddHabitActivity.class);
-        startActivity(intent);
+        startActivity(AddHabitActivity.createNewIntent(getApplicationContext()));
     }
 
     public void addStory(View view) {
-        Intent intent = new Intent(getApplicationContext(), AddStoryActivity.class);
-        startActivity(intent);
+        startActivity(AddStoryActivity.createNewIntent(getApplicationContext()));
     }
 
     public void addPhoto(View view) {
