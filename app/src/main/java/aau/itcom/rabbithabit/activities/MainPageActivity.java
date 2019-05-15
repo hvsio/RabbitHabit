@@ -10,7 +10,9 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -39,6 +41,7 @@ public class MainPageActivity extends AppCompatActivity
     CoordinatorLayout transitionsContainer;
     View viewBlurred;
     boolean isButtonAddClicked;
+    NavigationView navigationView;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -46,7 +49,6 @@ public class MainPageActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainpage);
-
         isButtonAddClicked = false;
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -129,11 +131,11 @@ public class MainPageActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_main);
 
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             String currentFragment = savedInstanceState.getString(KEY_FRAGMET);
 
             if (currentFragment.equals("MainPageFragment"))
@@ -147,6 +149,7 @@ public class MainPageActivity extends AppCompatActivity
         } else {
             getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new MainPageFragment()).commit();
         }
+
     }
 
     @Override
@@ -157,16 +160,16 @@ public class MainPageActivity extends AppCompatActivity
 
         if (currentFragment instanceof MainPageFragment)
             outState.putString(KEY_FRAGMET, "MainPageFragment");
-            //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new MainPageFragment()).commit();
+        //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new MainPageFragment()).commit();
         if (currentFragment instanceof CalendarFragment)
             //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new CalendarFragment()).commit();
             outState.putString(KEY_FRAGMET, "CalendarFragment");
         if (currentFragment instanceof ProfileFragment)
             outState.putString(KEY_FRAGMET, "ProfileFragment");
-            //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
+        //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
         if (currentFragment instanceof SettingsFragment)
             outState.putString(KEY_FRAGMET, "SettingsFragment");
-            //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new SettingsFragment()).commit();
+        //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new SettingsFragment()).commit();
     }
 
     public boolean isButtonAddClicked() {
@@ -185,32 +188,55 @@ public class MainPageActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else if (isButtonAddClicked) {
+            fabAdd.performClick();
         } else if (getSupportFragmentManager().findFragmentById(R.id.frameLayout) instanceof MainPageFragment) {
-            if (isButtonAddClicked){
-                fabAdd.performClick();
-            } else {
-                //Checking for fragment count on backstack
-                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                    getSupportFragmentManager().popBackStack();
+            if (!doubleBackToExitPressedOnce) {
+                this.doubleBackToExitPressedOnce = true;
+                Toast.makeText(this, "Please click BACK again to exit.", Toast.LENGTH_SHORT).show();
 
-                } else if (!doubleBackToExitPressedOnce) {
-                    this.doubleBackToExitPressedOnce = true;
-                    Toast.makeText(this, "Please click BACK again to exit.", Toast.LENGTH_SHORT).show();
+                new Handler().postDelayed(new Runnable() {
 
-                    new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        doubleBackToExitPressedOnce = false;
+                    }
+                }, 2000);
+            } else
+                this.finishAffinity();
+        } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
 
-                        @Override
-                        public void run() {
-                            doubleBackToExitPressedOnce = false;
-                        }
-                    }, 2000);
-                } else {
-                    this.finishAffinity();
+            if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+
+                int index = getSupportFragmentManager().getBackStackEntryCount() - 2;
+                Log.i("* * * * * * * * * * *", "INDEX IS: " + index);
+                FragmentManager.BackStackEntry backStackEntry = getSupportFragmentManager().getBackStackEntryAt(index);
+                Log.i("* * * * * * * * * * *", "FRAGMENT IS: " + backStackEntry.getName());
+
+
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag(backStackEntry.getName());
+                Log.i("* * * * * * * * * * *", "FRAGMENT ASSIGNED IS: " + fragment);
+                if (fragment instanceof MainPageFragment) {
+                    navigationView.setCheckedItem(R.id.nav_main);
                 }
+                if (fragment instanceof CalendarFragment) {
+                    Log.i("* * * * * * * * * * *", "INSIDE CALENDAR");
+                    navigationView.setCheckedItem(R.id.nav_calendar);
+                }
+                if (fragment instanceof ProfileFragment) {
+                    navigationView.setCheckedItem(R.id.nav_profile);
+                }
+                if (fragment instanceof SettingsFragment) {
+                    navigationView.setCheckedItem(R.id.nav_settings);
+                }
+
+                getSupportFragmentManager().popBackStack();
+            } else {
+                navigationView.setCheckedItem(R.id.nav_main);
+                getSupportFragmentManager().popBackStack();
             }
-        } else {
+        } else
             super.onBackPressed();
-        }
     }
 
     @SuppressLint("ResourceType")
@@ -220,13 +246,13 @@ public class MainPageActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_calendar) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new CalendarFragment()).addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new CalendarFragment(), CalendarFragment.class.getName()).addToBackStack(CalendarFragment.class.getName()).commit();
         } else if (id == R.id.nav_main) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new MainPageFragment()).addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new MainPageFragment(), MainPageFragment.class.getName()).addToBackStack(MainPageFragment.class.getName()).commit();
         } else if (id == R.id.nav_profile) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment(), ProfileFragment.class.getName()).addToBackStack(ProfileFragment.class.getName()).commit();
         } else if (id == R.id.nav_settings) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new SettingsFragment()).addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new SettingsFragment(), SettingsFragment.class.getName()).addToBackStack(SettingsFragment.class.getName()).commit();
         } else if (id == R.id.nav_log_out) {
             logOutFromFirebase();
         }

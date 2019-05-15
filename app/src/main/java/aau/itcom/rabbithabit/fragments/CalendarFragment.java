@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,9 +61,7 @@ public class CalendarFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         View v = getView();
-
         habitArray = new ArrayList<>();
-
         db = Database.getInstance();
         params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);

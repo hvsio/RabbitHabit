@@ -28,7 +28,6 @@ import java.util.Objects;
 import java.util.Set;
 
 import aau.itcom.rabbithabit.R;
-import aau.itcom.rabbithabit.objects.Database;
 
 
 public class SettingsFragment extends Fragment {
@@ -44,7 +43,6 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_settings, container, false);
 
     }
@@ -69,7 +67,6 @@ public class SettingsFragment extends Fragment {
         ListPreference snooze;
         Preference feedback;
         private FirebaseAuth mAuth;
-        //private Database db;
         private FirebaseAnalytics mFirebaseAnalytics;
 
 
@@ -77,8 +74,6 @@ public class SettingsFragment extends Fragment {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.settings_screen);
-
-            //db = Database.getInstance();
             mAuth = FirebaseAuth.getInstance();
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
 

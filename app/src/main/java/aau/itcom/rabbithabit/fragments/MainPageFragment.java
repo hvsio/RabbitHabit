@@ -27,6 +27,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import aau.itcom.rabbithabit.R;
+import aau.itcom.rabbithabit.activities.MainPageActivity;
 import aau.itcom.rabbithabit.objects.Database;
 import aau.itcom.rabbithabit.objects.HabitPersonal;
 import aau.itcom.rabbithabit.system.PhoneState;
@@ -50,8 +51,15 @@ public class MainPageFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+       // MainPageActivity.lastSelectedItemId.push(R.id.nav_main);
+        super.onPause();
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         db = Database.getInstance();
 
         View v = getView();
@@ -78,6 +86,7 @@ public class MainPageFragment extends Fragment {
             }
         });
 */
+
     }
 
     private void loadDetails() {
