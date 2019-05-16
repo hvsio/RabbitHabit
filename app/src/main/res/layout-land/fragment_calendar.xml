@@ -83,8 +83,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:layout_marginStart="8dp"
                     android:orientation="vertical"
-                    app:layout_constraintTop_toBottomOf="@+id/calendarViewDaily"/>
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/calendarViewDaily" />
 
                 <View
                     android:id="@+id/view3"
@@ -124,7 +128,8 @@
                     app:layout_constraintBottom_toBottomOf="@+id/view3"
                     app:layout_constraintEnd_toEndOf="@+id/view3"
                     app:layout_constraintStart_toStartOf="@+id/view3"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewStory" />
+                    app:layout_constraintTop_toBottomOf="@+id/textViewStory"
+                    tools:visibility="gone" />
 
                 <com.hsalf.smilerating.SmileRating
                     android:id="@+id/ratingBar"
@@ -145,12 +150,52 @@
                     android:id="@+id/imageView3"
                     android:layout_width="269dp"
                     android:layout_height="376dp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/view4"
                     app:layout_constraintCircleRadius="5dp"
                     app:layout_constraintEnd_toEndOf="@+id/view4"
                     app:layout_constraintStart_toStartOf="@+id/view4"
                     app:layout_constraintTop_toTopOf="@+id/view4"
                     tools:src="@drawable/no_picture" />
+
+                <ProgressBar
+                    android:id="@+id/progressBarPhotoCalendar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="@+id/view4"
+                    app:layout_constraintEnd_toEndOf="@+id/view4"
+                    app:layout_constraintStart_toStartOf="@+id/view4"
+                    app:layout_constraintTop_toTopOf="@+id/view4" />
+
+                <ProgressBar
+                    android:id="@+id/progressBarStoryCalendar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/view3"
+                    app:layout_constraintEnd_toEndOf="@+id/view3"
+                    app:layout_constraintStart_toStartOf="@+id/view3"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewStory" />
+
+                <ProgressBar
+                    android:id="@+id/progressBarHabitsCalendar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toTopOf="@+id/view3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/calendarHabitsLinearLayout" />
 
             </android.support.constraint.ConstraintLayout>
 

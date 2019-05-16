@@ -174,6 +174,7 @@ public class AddPhotoActivity extends AppCompatActivity {
 
     public void addAsDailyPic(View view) {
         db.uploadPhotoFile(new Date(), FirebaseAuth.getInstance().getCurrentUser(), f);
+        Toast.makeText(getApplicationContext(),"It may take a while until we upload the photo to our servers", Toast.LENGTH_LONG).show();
         startActivity(MainPageActivity.createNewIntent(getApplicationContext()));
     }
 

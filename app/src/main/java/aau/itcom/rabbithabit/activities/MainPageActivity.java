@@ -141,7 +141,8 @@ public class MainPageActivity extends AppCompatActivity
             if (currentFragment.equals("MainPageFragment"))
                 getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new MainPageFragment()).commit();
             if (currentFragment.equals("CalendarFragment"))
-                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new CalendarFragment()).commit();
+                //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new CalendarFragment()).commit();
+                getSupportFragmentManager().getFragment(savedInstanceState, CalendarFragment.class.getName());
             if (currentFragment.equals("ProfileFragment"))
                 getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
             if (currentFragment.equals("SettingsFragment"))
@@ -160,16 +161,14 @@ public class MainPageActivity extends AppCompatActivity
 
         if (currentFragment instanceof MainPageFragment)
             outState.putString(KEY_FRAGMET, "MainPageFragment");
-        //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new MainPageFragment()).commit();
-        if (currentFragment instanceof CalendarFragment)
-            //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new CalendarFragment()).commit();
+        if (currentFragment instanceof CalendarFragment) {
             outState.putString(KEY_FRAGMET, "CalendarFragment");
+            getSupportFragmentManager().putFragment(outState, CalendarFragment.class.getName(), getSupportFragmentManager().findFragmentByTag(CalendarFragment.class.getName()));
+        }
         if (currentFragment instanceof ProfileFragment)
             outState.putString(KEY_FRAGMET, "ProfileFragment");
-        //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
         if (currentFragment instanceof SettingsFragment)
             outState.putString(KEY_FRAGMET, "SettingsFragment");
-        //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new SettingsFragment()).commit();
     }
 
     public boolean isButtonAddClicked() {

@@ -3,6 +3,7 @@ package aau.itcom.rabbithabit.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.service.autofill.CharSequenceTransformation;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -111,6 +112,12 @@ public class HabitActivity extends AppCompatActivity {
     }
 
     private boolean checkInformation() {
+        int durationInDays = Integer.parseInt(durationTextView.getText().toString());
+
+        if (durationInDays > 100) {
+            displayToast("Max duration is 100 days!");
+            return false;
+        }
         return !nameTextView.getText().equals("") && !durationTextView.getText().equals("")
                 && !detailsTextView.getText().equals("") && publishmentRadio.getCheckedRadioButtonId() != -1;
     }

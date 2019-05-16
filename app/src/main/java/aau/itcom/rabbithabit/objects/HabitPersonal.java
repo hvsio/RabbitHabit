@@ -140,4 +140,14 @@ public class HabitPersonal extends Habit{
         return complexion;
     }
 
+    public long numberOfDaysLeft (Date date){
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        String dateInString = dateFormat.format(date);
+
+        for (int i=0; i < arrayOfDates.length; i++){
+            if (arrayOfDates[i].equals(dateInString))
+                return arrayOfDates.length - i;
+        }
+        return 0;
+    }
 }

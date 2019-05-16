@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,9 @@ public class CalendarFragment extends Fragment {
     ArrayList<HabitPersonal> habitArray;
     ImageView imageView;
     SmileRating ratingBar;
+    ProgressBar habitProgressBar;
+    ProgressBar storyProgressBar;
+    ProgressBar photoProgressBar;
     Story story;
     Database db;
     Date date = null;
@@ -69,6 +73,9 @@ public class CalendarFragment extends Fragment {
         ratingBar = v.findViewById(R.id.ratingBar);
         storyTextView = v.findViewById(R.id.textViewForStory);
         habitsLayout = v.findViewById(R.id.calendarHabitsLinearLayout);
+        photoProgressBar = v.findViewById(R.id.progressBarPhotoCalendar);
+        storyProgressBar = v.findViewById(R.id.progressBarStoryCalendar);
+        habitProgressBar = v.findViewById(R.id.progressBarHabitsCalendar);
         calendar = v.findViewById(R.id.calendarViewDaily);
         imageView = v.findViewById(R.id.imageView3);
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -81,8 +88,24 @@ public class CalendarFragment extends Fragment {
 
         SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy");
         if (savedInstanceState == null){
+            Log.i(TAG,"savedInstanceState == NULL!!! ");
             changeCurrentDay(formater.format(Calendar.getInstance().getTime()));
-        } else {
+        }
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            Log.i(TAG, "savedInstanceState != null and date is: " + savedInstanceState.getString("date"));
+            habitsLayout.removeAllViews();
+            habitArray.clear();
+            try {
+                SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy");
+                calendar.setDate(formater.parse(savedInstanceState.getString("date")).getTime());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             changeCurrentDay(savedInstanceState.getString("date"));
         }
     }
@@ -145,11 +168,22 @@ public class CalendarFragment extends Fragment {
             if (story.getTextContent() != null)
                 storyTextView.setText(story.getTextContent());
         }
+
+        storyProgressBar.setVisibility(View.GONE);
+        storyTextView.setVisibility(View.VISIBLE);
+
     }
 
 
     private void displayPhoto() {
-        Uri photo = db.getPhoto();
+        Uri photo = null;
+
+        try{
+            photo = db.getPhoto();
+        } catch(NoSuchElementException e){
+            e.printStackTrace();
+        }
+
         if (photo == null) {
             imageView.setImageResource(R.drawable.no_picture);
             imageView.setRotation(0);
@@ -157,6 +191,9 @@ public class CalendarFragment extends Fragment {
             imageView.setImageURI(photo);
             imageView.setRotation(90);
         }
+
+        photoProgressBar.setVisibility(View.GONE);
+        imageView.setVisibility(View.VISIBLE);
     }
 
     private void displayHabits() {
@@ -168,6 +205,9 @@ public class CalendarFragment extends Fragment {
         for (int i = 0; i < textViews.size(); i++) {
             habitsLayout.addView(textViews.get(i));
         }
+
+        habitProgressBar.setVisibility(View.GONE);
+        habitsLayout.setVisibility(View.VISIBLE);
     }
 
     public ArrayList<TextView> createTextFieldsForHabits() {
