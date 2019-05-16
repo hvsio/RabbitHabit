@@ -103,6 +103,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:drawableStart="@drawable/ic_action_password"
         android:ems="10"
         android:hint="@string/confirm_password_input"
         android:importantForAutofill="no"
@@ -113,7 +114,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password"
-        app:layout_constraintVertical_bias="0.029" tools:targetApi="o" />
+        app:layout_constraintVertical_bias="0.029"
+        tools:targetApi="o" />
 
     <TextView
         android:id="@+id/header_email"

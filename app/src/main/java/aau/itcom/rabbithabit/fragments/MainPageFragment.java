@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +29,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import aau.itcom.rabbithabit.R;
-import aau.itcom.rabbithabit.activities.MainPageActivity;
 import aau.itcom.rabbithabit.objects.Database;
 import aau.itcom.rabbithabit.objects.HabitPersonal;
 import aau.itcom.rabbithabit.system.PhoneState;
@@ -43,6 +44,8 @@ public class MainPageFragment extends Fragment {
     private TextView storyTextView;
     private ImageView photoView;
     private CircleImageView profilePic;
+    private ProgressBar progressBar;
+    private ScrollView scrollView;
 
     @Nullable
     @Override
@@ -50,11 +53,6 @@ public class MainPageFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_to_mainpage, container, false);
     }
 
-    @Override
-    public void onPause() {
-       // MainPageActivity.lastSelectedItemId.push(R.id.nav_main);
-        super.onPause();
-    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -64,6 +62,8 @@ public class MainPageFragment extends Fragment {
 
         View v = getView();
         ConstraintLayout constraintLayoutMainPageFragment = v.findViewById(R.id.layout);
+        scrollView = v.findViewById(R.id.scrollViewMainPageFragment);
+        progressBar = v.findViewById(R.id.progressBar);
         ratingBar = constraintLayoutMainPageFragment.findViewById(R.id.ratingBar2);
         habitsLayout = v.findViewById(R.id.habitsLayoutMainPage);
         storyTextView = v.findViewById(R.id.textViewForStoryContent);
@@ -75,28 +75,21 @@ public class MainPageFragment extends Fragment {
         } else {
             loadDetails();
         }
-/*
-
-        Button button = v.findViewById(R.id.buttonTesting);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getContext(), IntroTutorialScreen.class);
-                startActivity(i);
-            }
-        });
-*/
-
     }
 
     private void loadDetails() {
         Log.d(TAG, "I am inside loadDetails(), and I am starting THREADS!");
         SharedPreferences pref = getContext().getSharedPreferences(SettingsFragment.SETTINGS, Context.MODE_PRIVATE);
 
+        LoadStoryTask storyTask = new LoadStoryTask();
+        LoadProfilePictureTask profilePictureTask = new LoadProfilePictureTask();
+        LoadHabitsTask habitsTask = new LoadHabitsTask();
+
         ExecutorService service = Executors.newCachedThreadPool();
-        service.submit(new LoadHabitsTask());
-        service.submit(new LoadStoryTask());
-        service.submit(new LoadProfilePictureTask());
+        service.submit(storyTask);
+        service.submit(profilePictureTask);
+        service.submit(habitsTask);
+        service.submit(new ShowProgresBarTask(habitsTask,storyTask,profilePictureTask));
         service.shutdown();
 
         Log.d(TAG, "I am inside loadDetails(), and I am loading info");
@@ -109,8 +102,10 @@ public class MainPageFragment extends Fragment {
             executorService.submit(new LoadPhotoTask());
             executorService.shutdown();
             db.loadPhotoOnDate(Calendar.getInstance().getTime(), FirebaseAuth.getInstance().getCurrentUser(), getContext());
-        } else
+        } else {
             Toast.makeText(getActivity(), "Connect to WIFI or change setting to download photos", Toast.LENGTH_LONG).show();
+            displayPhoto();
+        }
 
     }
 
@@ -185,9 +180,65 @@ public class MainPageFragment extends Fragment {
 
     }
 
+    private class ShowProgresBarTask implements Runnable{
+
+        boolean profile;
+        boolean habits;
+        boolean story;
+        boolean photo;
+
+        LoadHabitsTask habitsTask;
+        //LoadPhotoTask photoTask;
+        LoadStoryTask storyTask;
+        LoadProfilePictureTask profilePictureTask;
+
+        public ShowProgresBarTask(LoadHabitsTask habitsTask, /*LoadPhotoTask photoTask,*/ LoadStoryTask storyTask, LoadProfilePictureTask profilePictureTask) {
+            this.habitsTask = habitsTask;
+            //this.photoTask = photoTask;
+            this.storyTask = storyTask;
+            this.profilePictureTask = profilePictureTask;
+
+        }
+
+        @Override
+        public void run() {
+            while (!profilePictureTask.isProfilePictureLoaded() && !habitsTask.isHabitsLoaded() && !storyTask.isStoryLoaded() /*&& !photo*/){
+                try {
+                    Thread.sleep(250);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            Log.i(TAG, "____________________________________After the loop!");
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    progressBar.setVisibility(View.GONE);
+                    scrollView.setVisibility(View.VISIBLE);
+                }
+            });
+        }
+    }
+
     private class LoadHabitsTask implements Runnable {
 
         private static final String THREAD_HABIT_TAG = "LoadHabitsTask";
+        boolean isHabitsLoaded;
+        private final Object lock;
+
+        LoadHabitsTask (){
+            lock = new Object();
+            synchronized (lock) {
+                isHabitsLoaded = false;
+            }
+        }
+
+        public boolean isHabitsLoaded() {
+            synchronized (lock) {
+                return isHabitsLoaded;
+            }
+        }
 
         @Override
         public void run() {
@@ -198,6 +249,10 @@ public class MainPageFragment extends Fragment {
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+
+            synchronized (lock) {
+                isHabitsLoaded = true;
             }
 
             if (isAdded()) {
@@ -216,6 +271,21 @@ public class MainPageFragment extends Fragment {
     private class LoadPhotoTask implements Runnable {
 
         private static final String THREAD_PHOTO_TAG = "LoadPhotoTask";
+        boolean isPhotoLoaded;
+        private final Object lock;
+
+        LoadPhotoTask (){
+            lock = new Object();
+            synchronized (lock) {
+                isPhotoLoaded = false;
+            }
+        }
+
+        public boolean isPhotoLoaded() {
+            synchronized (lock) {
+                return isPhotoLoaded;
+            }
+        }
 
         @Override
         public void run() {
@@ -226,6 +296,10 @@ public class MainPageFragment extends Fragment {
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+
+            synchronized (lock) {
+                isPhotoLoaded = true;
             }
 
             if (isAdded()) {
@@ -244,6 +318,21 @@ public class MainPageFragment extends Fragment {
     private class LoadStoryTask implements Runnable {
 
         private static final String THREAD_STORY_TAG = "LoadStoryTask";
+        boolean isStoryLoaded;
+        private final Object lock;
+
+        LoadStoryTask (){
+            lock = new Object();
+            synchronized (lock) {
+                isStoryLoaded = false;
+            }
+        }
+
+        public boolean isStoryLoaded() {
+            synchronized (lock) {
+                return isStoryLoaded;
+            }
+        }
 
         @Override
         public void run() {
@@ -254,6 +343,10 @@ public class MainPageFragment extends Fragment {
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+
+            synchronized (lock) {
+                isStoryLoaded = true;
             }
 
             if (isAdded()) {
@@ -272,6 +365,21 @@ public class MainPageFragment extends Fragment {
     private class LoadProfilePictureTask implements Runnable {
 
         private static final String THREAD_PHOTO_TAG = "LoadProfilePictureTask";
+        boolean isProfilePictureLoaded;
+        private final Object lock;
+
+        LoadProfilePictureTask (){
+            lock = new Object();
+            synchronized (lock) {
+                isProfilePictureLoaded = false;
+            }
+        }
+
+        public boolean isProfilePictureLoaded() {
+            synchronized (lock) {
+                return isProfilePictureLoaded;
+            }
+        }
 
         @Override
         public void run() {
@@ -282,6 +390,10 @@ public class MainPageFragment extends Fragment {
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+
+            synchronized (lock) {
+                isProfilePictureLoaded = true;
             }
 
             if (isAdded()) {

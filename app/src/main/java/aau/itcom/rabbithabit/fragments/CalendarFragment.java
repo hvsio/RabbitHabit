@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.hsalf.smilerating.BaseRating;
 import com.hsalf.smilerating.SmileRating;
 
 import java.text.ParseException;
@@ -81,11 +82,24 @@ public class CalendarFragment extends Fragment {
         SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy");
         if (savedInstanceState == null){
             changeCurrentDay(formater.format(Calendar.getInstance().getTime()));
+        } else {
+            changeCurrentDay(savedInstanceState.getString("date"));
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy");
+        if (date != null)
+            outState.putString("date", formater.format(date));
     }
 
     private void changeCurrentDay(String dateInString) {
         SharedPreferences pref = getContext().getSharedPreferences(SettingsFragment.SETTINGS, Context.MODE_PRIVATE);
+        ratingBar.setSelectedSmile(BaseRating.NONE);
+        storyTextView.setText("No text to display!");
+        habitsLayout.removeAllViews();
 
         try {
             date = new SimpleDateFormat("dd.MM.yyyy").parse(dateInString);

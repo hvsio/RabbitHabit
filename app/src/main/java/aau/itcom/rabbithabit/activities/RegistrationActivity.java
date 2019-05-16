@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
@@ -89,9 +92,16 @@ public class RegistrationActivity extends AppCompatActivity {
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
-                            // TODO FIX THIS, INFO IS NOT ENOUGH
-                            Toast.makeText(getApplicationContext(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            Log.i("createNewUser()", task.getException().toString());
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+//                                Toast.makeText(getApplicationContext(), "Invalid Email or Password", Toast.LENGTH_SHORT).show();
+                                if (task.getException() instanceof FirebaseAuthWeakPasswordException) {
+                                    Toast.makeText(getApplicationContext(), "Password should be at least 6 characters!", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                    Toast.makeText(getApplicationContext(), "Invalid email!", Toast.LENGTH_SHORT).show();
+                            } else
+                                Toast.makeText(getApplicationContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
                     }

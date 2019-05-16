@@ -1,5 +1,7 @@
 package aau.itcom.rabbithabit.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -34,5 +36,9 @@ public class IntroTutorialScreen extends AppIntro {
     public void onSkipPressed(Fragment currentFragment) {
         super.onSkipPressed(currentFragment);
         startActivity(WelcomePage.createNewIntent(getApplicationContext()));
+    }
+
+    public static Intent createNewIntent(Context context) {
+        return new Intent(context, IntroTutorialScreen.class);
     }
 }

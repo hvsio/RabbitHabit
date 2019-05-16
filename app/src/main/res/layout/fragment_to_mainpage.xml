@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayoutMainPageFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:addStatesFromChildren="false"
-    android:background="@drawable/another_gradient">
+    android:background="@drawable/another_gradient"
+    android:layout_gravity="center">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"/>
 
     <ScrollView
-        android:id="@+id/scrollView4"
+        android:id="@+id/scrollViewMainPageFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/another_gradient"
         android:padding="@dimen/nav_header_vertical_spacing"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,19 +56,6 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="1.0" />
 
-                <Button
-                    android:id="@+id/buttonTesting"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="29dp"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginEnd="278dp"
-                    android:layout_marginBottom="163dp"
-                    android:text="Testing"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
             </android.support.constraint.ConstraintLayout>
 
             <View
@@ -71,9 +68,9 @@
                 android:id="@+id/habitsLayoutMainPage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/activity_horizontal_margin"
-                android:layout_margin="10dp"/>
+                android:paddingTop="@dimen/activity_horizontal_margin" />
 
             <LinearLayout
                 android:id="@+id/layout_story"
