@@ -26,11 +26,14 @@ import android.widget.Toast;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.File;
+
 import aau.itcom.rabbithabit.R;
 import aau.itcom.rabbithabit.fragments.CalendarFragment;
 import aau.itcom.rabbithabit.fragments.MainPageFragment;
 import aau.itcom.rabbithabit.fragments.ProfileFragment;
 import aau.itcom.rabbithabit.fragments.SettingsFragment;
+import aau.itcom.rabbithabit.system.PhoneState;
 
 
 public class MainPageActivity extends AppCompatActivity
@@ -201,8 +204,10 @@ public class MainPageActivity extends AppCompatActivity
                         doubleBackToExitPressedOnce = false;
                     }
                 }, 2000);
-            } else
+            } else{
+                PhoneState.deleteCache(getApplicationContext());
                 this.finishAffinity();
+            }
         } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
 
             if (getSupportFragmentManager().getBackStackEntryCount() > 1) {

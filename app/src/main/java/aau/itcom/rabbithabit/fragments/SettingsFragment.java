@@ -161,7 +161,7 @@ public class SettingsFragment extends Fragment {
                     if (selections.contains("Morning - 9:00am (GMT+2)") && selections.contains("Afternoon - 2:00pm (GMT+2)") && selections.contains("Evening - 7:00pm (GMT+2)"))
                         mFirebaseAnalytics.setUserProperty("notification_frequency", "MAE");
                 }
-                if (selections.contains("Morning - 9:00am (GMT+2)") && selections.contains("Evening - 7:00pm (GMT+2)")) {
+                if (selections.contains("Morning - 9:00am (GMT+2)") && selections.contains("Evening - 7:00pm (GMT+2)") && !selections.contains("Evening - 7:00pm (GMT+2)")) {
                     Log.i("UPDATE NOTIFICATIONS", "Morning & Evening is checked");
                     mFirebaseAnalytics.setUserProperty("notification_frequency", "ME");
                 }

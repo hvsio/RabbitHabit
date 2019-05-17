@@ -37,6 +37,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import aau.itcom.rabbithabit.R;
+import aau.itcom.rabbithabit.system.PhoneState;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -108,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        PhoneState.deleteCache(getApplicationContext());
         this.finishAffinity();
     }
 

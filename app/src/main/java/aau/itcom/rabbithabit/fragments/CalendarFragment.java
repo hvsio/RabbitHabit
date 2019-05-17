@@ -119,6 +119,14 @@ public class CalendarFragment extends Fragment {
     }
 
     private void changeCurrentDay(String dateInString) {
+        storyTextView.setVisibility(View.GONE);
+        imageView.setVisibility(View.GONE);
+        habitsLayout.setVisibility(View.GONE);
+
+        habitProgressBar.setVisibility(View.VISIBLE);
+        storyProgressBar.setVisibility(View.VISIBLE);
+        photoProgressBar.setVisibility(View.VISIBLE);
+
         SharedPreferences pref = getContext().getSharedPreferences(SettingsFragment.SETTINGS, Context.MODE_PRIVATE);
         ratingBar.setSelectedSmile(BaseRating.NONE);
         storyTextView.setText("No text to display!");
