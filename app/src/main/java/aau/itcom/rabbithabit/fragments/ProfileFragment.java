@@ -53,6 +53,7 @@ public class ProfileFragment extends Fragment {
     TextView email;
     TextView noOfHabits;
     TextView noOfStories;
+    String stories = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,7 +80,13 @@ public class ProfileFragment extends Fragment {
                 profilePicSelection();
             }
         });
-        load();
+
+        if (savedInstanceState != null) {
+            String stories = savedInstanceState.getString("noOfStories");
+            noOfStories.setText(stories);
+        } else {
+            load();
+        }
     }
 
     private void profilePicSelection() {
@@ -118,7 +125,14 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    private void galleryIntent() {
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putString("noOfStories", stories);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+
+        private void galleryIntent() {
         Log.d("GALLERY", "entered gallery");
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
@@ -243,7 +257,8 @@ public class ProfileFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        noOfStories.setText(String.valueOf(db.stories.size()));
+                        stories = String.valueOf(db.stories.size());
+                        noOfStories.setText(stories);
                     }
                 });
             }

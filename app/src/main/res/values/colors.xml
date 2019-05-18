@@ -7,4 +7,6 @@
     <color name="colorBackground">#3C000000</color>
     <color name="colorChart">#000000</color>
     <color name="colorChart1">#74000000</color>
+    <color name="orange">#FFCF9F</color>
+
 </resources>

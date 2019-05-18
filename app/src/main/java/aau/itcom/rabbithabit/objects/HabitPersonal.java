@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -74,6 +75,9 @@ public class HabitPersonal extends Habit{
         textView.setTextSize(textSize);
         textView.setLayoutParams(params);
         textView.setVisibility(View.VISIBLE);
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        param.setMargins(10,10,10,10);
+        textView.setLayoutParams(param);
         //textView.setPadding(10,10,10,10);
         //textView.setBackground(ContextCompat.getDrawable(context, R.drawable.my_button_white));
 
@@ -84,7 +88,7 @@ public class HabitPersonal extends Habit{
                 textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_done_green, 0);
             } else {
                 textView.setBackground(ContextCompat.getDrawable(context, R.drawable.my_button_white));
-                textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_not_done, 0);
+                textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_not_done, 0);
             }
         }
 

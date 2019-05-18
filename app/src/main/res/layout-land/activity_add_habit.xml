@@ -31,6 +31,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/my_button3"
+        android:onClick="loadTrendingHabits"
         android:shadowColor="@color/common_google_signin_btn_text_dark_focused"
         android:text="@string/showtrendinghabits"
         app:layout_constraintBottom_toBottomOf="parent"

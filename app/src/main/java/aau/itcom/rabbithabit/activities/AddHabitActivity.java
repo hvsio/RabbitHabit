@@ -27,6 +27,7 @@ public class AddHabitActivity extends AppCompatActivity {
     private CustomAdapterSearchingHabits adapter;
     Database db;
     LinearLayout.LayoutParams params;
+    Boolean trendingIsClicked = false;
 
     public static final int OWN_HABIT = 1;
 
@@ -41,29 +42,47 @@ public class AddHabitActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
         habits = new ArrayList<>();
-        habits.add(new HabitPublished("Smoke less", 30, "Smoke less than usual", "false", "Pre-defined", 1));
-        habits.add(new HabitPublished("Walk for at least 15 min", 30, "Walkie walkie", "false", "Pre-defined", 1));
-        habits.add(new HabitPublished("Be nicer", 30, "Some random details", "false", "Pre-defined", 1));
-        habits.add(new HabitPublished("Drink more water", 30, "Some random details", "false", "Pre-defined", 1));
-        habits.add(new HabitPublished("Do not procastinate", 30, "Some random details", "false", "Pre-defined", 1));
-        habits.add(new HabitPublished("Meditate", 30, "Some random details", "false", "Pre-defined", 1));
-        habits.add(new HabitPublished("Read for half an hour a day", 30, "Some random details", "false", "Pre-defined", 1));
-        habits.add(new HabitPublished("Walk instead of taking a bus", 30, "Some random details", "false", "Pre-defined", 1));
+        addToList();
 
         adapter = new CustomAdapterSearchingHabits(habits, getApplicationContext());
 
         listView.setAdapter(adapter);
+
+        if (savedInstanceState != null) {
+            trendingIsClicked = savedInstanceState.getBoolean("trendingClicked");
+            if (trendingIsClicked) {
+                ExecutorService service = Executors.newSingleThreadExecutor();
+                service.submit(new LoadTrendingHabitsTask());
+                service.shutdown();
+                db.loadSetOfTrendingHabits();
+            }
+        }
     }
 
     public   void loadTrendingHabits(View view) {
-        ExecutorService service = Executors.newSingleThreadExecutor();
-        service.submit(new LoadTrendingHabitsTask());
-        service.shutdown();
-        db.loadSetOfTrendingHabits();
+        if (!trendingIsClicked) {
+            trendingIsClicked = true;
+            ExecutorService service = Executors.newSingleThreadExecutor();
+            service.submit(new LoadTrendingHabitsTask());
+            service.shutdown();
+            db.loadSetOfTrendingHabits();
+        } else {
+            trendingIsClicked = false;
+            habits.clear();
+            addToList();
+            adapter = new CustomAdapterSearchingHabits(habits, getApplicationContext());
+            listView.setAdapter(adapter);
+        }
     }
 
     public void addOwnHabit(View view) {
         startActivityForResult(HabitActivity.createNewIntent(getApplicationContext()), OWN_HABIT);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putBoolean("trendingClicked", trendingIsClicked);
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     private void displayHabits() {
@@ -78,6 +97,17 @@ public class AddHabitActivity extends AppCompatActivity {
 
     static Intent createNewIntent(Context context) {
         return new Intent(context, AddHabitActivity.class);
+    }
+
+    private void addToList () {
+        habits.add(new HabitPublished("Smoke less", 30, "Smoke less than usual", "false", "Pre-defined", 1));
+        habits.add(new HabitPublished("Walk for at least 15 min", 30, "Walkie walkie", "false", "Pre-defined", 1));
+        habits.add(new HabitPublished("Be nicer", 30, "Some random details", "false", "Pre-defined", 1));
+        habits.add(new HabitPublished("Drink more water", 30, "Some random details", "false", "Pre-defined", 1));
+        habits.add(new HabitPublished("Do not procastinate", 30, "Some random details", "false", "Pre-defined", 1));
+        habits.add(new HabitPublished("Meditate", 30, "Some random details", "false", "Pre-defined", 1));
+        habits.add(new HabitPublished("Read for half an hour a day", 30, "Some random details", "false", "Pre-defined", 1));
+        habits.add(new HabitPublished("Walk instead of taking a bus", 30, "Some random details", "false", "Pre-defined", 1));
     }
 
     private class LoadTrendingHabitsTask implements Runnable {

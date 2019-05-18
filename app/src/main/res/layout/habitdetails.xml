@@ -71,9 +71,8 @@
 
     <TextView
         android:id="@+id/textViewHabitsName"
-        android:layout_width="411dp"
+        android:layout_width="0dp"
         android:layout_height="43dp"
-        android:layout_marginTop="84dp"
         android:background="@color/colorAccent"
         android:text="@string/habitsname"
         android:textAlignment="center"

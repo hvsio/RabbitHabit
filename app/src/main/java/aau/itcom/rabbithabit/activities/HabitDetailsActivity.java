@@ -18,8 +18,11 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.ArrayList;
 
@@ -33,7 +36,6 @@ public class HabitDetailsActivity extends AppCompatActivity {
     TextView habitsDetails;
     String[] dates;
     XAxis xAxis;
-    YAxis yAxis2;
     YAxis yAxis;
     LineChart chart;
     ArrayList<Entry> dataValues;
@@ -49,7 +51,6 @@ public class HabitDetailsActivity extends AppCompatActivity {
         dates = habitPersonal.getArrayOfDates();
         String firstDay = dates[0];
         String lastDay = dates[dates.length - 1];
-        //String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
 
         super.onCreate(savedInstanceState);
@@ -68,14 +69,16 @@ public class HabitDetailsActivity extends AppCompatActivity {
         transformDates();
         statsSettings();
         LineDataSet lineDataSet = new LineDataSet(dataValues, "DataSet");
-        lineDataSet.setCircleColor(R.color.colorChart);
-        lineDataSet.setDrawValues(true);
-        lineDataSet.setColor(R.color.colorChart1);
+        lineDataSet.setDrawValues(false);
+        lineDataSet.setCircleRadius(0);
+        lineDataSet.setColor(R.color.orange);
+        lineDataSet.setValueFormatter(new MyValueFormatter());
+        lineDataSet.setLineWidth(4);
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(lineDataSet);
         LineData data = new LineData(lineDataSet);
         chart.setData(data);
-        chart.animateX(2500, Easing.EaseInBounce);
+        chart.animateXY(3000, 3000, Easing.EaseInOutCubic, Easing.EaseInOutBounce);
 
 
     }
@@ -97,9 +100,9 @@ public class HabitDetailsActivity extends AppCompatActivity {
         chart.setDescription(description);
         legend = chart.getLegend();
         legend.setEnabled(true);
-        LegendEntry[] legendEntry = new LegendEntry[1];
+        LegendEntry[] legendEntry = new LegendEntry[2];
         LegendEntry entry = new LegendEntry();
-        entry.label = habitPersonal.getName();
+        entry.label = "Peaks mean the habit was completed on this day";
         legendEntry[0] = entry;
         legend.setCustom(legendEntry);
         chart.setPinchZoom(true);
@@ -119,31 +122,30 @@ public class HabitDetailsActivity extends AppCompatActivity {
         xAxis.setDrawGridLines(false);
 
 
-        xAxis.setValueFormatter(new IndexAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                int valueInt = (int) value;
-                return String.valueOf(dataValues.get(valueInt));
-            }
-        });
+//        xAxis.setValueFormatter(new IndexAxisValueFormatter() {
+//            @Override
+//            public String getFormattedValue(float value, AxisBase axis) {
+//                int valueInt = (int) value;
+//                return String.valueOf(dataValues.get(valueInt));
+//            }
+//        });
 
-        xAxis.setGranularity(1f);
         xAxis.setTextSize(10f);
         xAxis.setDrawLabels(true);
 
 
         yAxis = chart.getAxisLeft();
         yAxis.setDrawGridLines(false);
-
-        yAxis.setValueFormatter(new IndexAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                int valueInt = (int) value;
-                axis.setLabelCount(2);
-                return String.valueOf(valueInt);
-            }
-
-        });
+        yAxis.setDrawLabels(false);
+//        yAxis.setValueFormatter(new IndexAxisValueFormatter() {
+//            @Override
+//            public String getFormattedValue(float value, AxisBase axis) {
+//                int valueInt = (int) value;
+//                axis.setLabelCount(2);
+//                return String.valueOf(valueInt);
+//            }
+//
+//        });
 
         chart.getAxisRight().setEnabled(false);
 
@@ -153,12 +155,13 @@ public class HabitDetailsActivity extends AppCompatActivity {
         return new Intent(context, HabitDetailsActivity.class);
     }
 
-//    public class MyValueFormatter extends ValueFormatter implements IValueFormatter {
-//        @Override
-//        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-//            int valueInt = (int) value;
-//            return String.valueOf(dataValues.get(valueInt));
-//        }
+    public class MyValueFormatter extends ValueFormatter implements IValueFormatter {
+        @Override
+        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+            int valueInt = (int) value;
+            return String.valueOf(valueInt);
+        }
+    }
 }
 
 
