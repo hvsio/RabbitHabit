@@ -70,7 +70,7 @@ public class HabitDetailsActivity extends AppCompatActivity {
         statsSettings();
         LineDataSet lineDataSet = new LineDataSet(dataValues, "DataSet");
         lineDataSet.setDrawValues(false);
-        lineDataSet.setCircleRadius(0);
+        lineDataSet.setCircleRadius(1);
         lineDataSet.setColor(R.color.orange);
         lineDataSet.setValueFormatter(new MyValueFormatter());
         lineDataSet.setLineWidth(4);
@@ -100,7 +100,7 @@ public class HabitDetailsActivity extends AppCompatActivity {
         chart.setDescription(description);
         legend = chart.getLegend();
         legend.setEnabled(true);
-        LegendEntry[] legendEntry = new LegendEntry[2];
+        LegendEntry[] legendEntry = new LegendEntry[1];
         LegendEntry entry = new LegendEntry();
         entry.label = "Peaks mean the habit was completed on this day";
         legendEntry[0] = entry;
