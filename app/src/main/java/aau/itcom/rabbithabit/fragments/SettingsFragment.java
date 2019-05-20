@@ -64,7 +64,7 @@ public class SettingsFragment extends Fragment {
         SwitchPreference photoDownload;
         SwitchPreference photoTake;
         MultiSelectListPreference frequencyOfNotifications;
-        ListPreference snooze;
+        //ListPreference snooze;
         Preference feedback;
         private FirebaseAuth mAuth;
         private FirebaseAnalytics mFirebaseAnalytics;
@@ -85,7 +85,7 @@ public class SettingsFragment extends Fragment {
             photoDownload = (SwitchPreference) findPreference(DOWNLOAD_PHOTO);
             photoTake = (SwitchPreference) findPreference(TAKE_PHOTO);
             frequencyOfNotifications = (MultiSelectListPreference) findPreference(NOTIFICATION_FREQUENCY);
-            snooze = (ListPreference) findPreference(SNOOZE_TIME);
+            //snooze = (ListPreference) findPreference(SNOOZE_TIME);
             feedback = findPreference(FEEDBACK);
 
 
@@ -147,6 +147,8 @@ public class SettingsFragment extends Fragment {
                     return true;
                 }
             });
+
+            //feedback.setOnPreferenceClickListener(new On);
         }
 
         private void updateNotifications(Set<String> selections) {
@@ -209,6 +211,7 @@ public class SettingsFragment extends Fragment {
             getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
         }
 
+/*
 
         public static void sendFeedback(Context context) {
             String body = null;
@@ -227,6 +230,7 @@ public class SettingsFragment extends Fragment {
             intent.putExtra(Intent.EXTRA_TEXT, body);
             context.startActivity(Intent.createChooser(intent, context.getString(R.string.email_input)));
         }
+*/
     }
 }
 

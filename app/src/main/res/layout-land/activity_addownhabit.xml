@@ -112,8 +112,9 @@
 
             <EditText
                 android:id="@+id/detailsEditText"
-                android:layout_width="474dp"
-                android:layout_height="69dp"
+                android:layout_width="305dp"
+                android:layout_height="83dp"
+                android:inputType="text"
                 app:layout_constraintBottom_toBottomOf="@+id/cloudArea"
                 app:layout_constraintEnd_toEndOf="@+id/cloudArea"
                 app:layout_constraintStart_toStartOf="@+id/cloudArea"

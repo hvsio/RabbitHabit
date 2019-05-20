@@ -159,9 +159,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initializeSignInWithEmailAndPassword() {
-        String text = "Don't have an account? Sign in.";
 
-        SpannableString ss = new SpannableString(text);
+        SpannableString ss = new SpannableString(getString(R.string.register_if_no_account));
 
         ClickableSpan cs = new ClickableSpan() {
             public void onClick(View widget) {

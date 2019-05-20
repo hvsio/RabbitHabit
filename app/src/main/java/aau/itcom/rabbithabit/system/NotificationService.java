@@ -3,7 +3,9 @@ package aau.itcom.rabbithabit.system;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.os.Build;
@@ -16,6 +18,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.Random;
 
 import aau.itcom.rabbithabit.R;
+import aau.itcom.rabbithabit.activities.LoginActivity;
 
 public class NotificationService extends FirebaseMessagingService {
     private static final String TAG = "NotificationService";
@@ -41,6 +44,9 @@ public class NotificationService extends FirebaseMessagingService {
             notificationManager.createNotificationChannel(notificationChannel);
         }
 
+        Intent notificationIntent = new Intent(this.getApplicationContext(), LoginActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this.getApplicationContext(), 0, notificationIntent, 0);
+
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         notificationBuilder.setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_ALL)
@@ -49,7 +55,8 @@ public class NotificationService extends FirebaseMessagingService {
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setContentTitle(title)
                 .setContentText(body)
-                .setContentInfo("Info");
+                .setContentInfo("Info")
+                .setContentIntent(contentIntent);
 
         notificationManager.notify(new Random().nextInt(), notificationBuilder.build());
     }

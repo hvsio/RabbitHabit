@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
@@ -19,7 +18,6 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -72,6 +70,7 @@ public class HabitDetailsActivity extends AppCompatActivity {
         lineDataSet.setDrawValues(false);
         lineDataSet.setCircleRadius(1);
         lineDataSet.setColor(R.color.orange);
+        //lineDataSet.setColor(R.color.colorTEST);
         lineDataSet.setValueFormatter(new MyValueFormatter());
         lineDataSet.setLineWidth(4);
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
@@ -85,7 +84,7 @@ public class HabitDetailsActivity extends AppCompatActivity {
 
     private int convertBooleanValue(HabitPersonal habit, String date) {
         boolean ifDone = habit.getComplexionMap().get(date);
-        System.out.println(date + ifDone);
+
         if (ifDone) {
             return 1;
         } else {
@@ -114,7 +113,7 @@ public class HabitDetailsActivity extends AppCompatActivity {
         for (String date : dates) {
             StringBuilder sb = new StringBuilder(date);
             String day = sb.substring(0, 2);
-            System.out.println(day);
+            //System.out.println(day);
             dataValues.add(new Entry(Integer.valueOf(day), convertBooleanValue(habitPersonal, date)));
         }
 

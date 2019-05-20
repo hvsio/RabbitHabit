@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -489,5 +490,21 @@ public class Database {
             HabitPublished habit = (HabitPublished) habitPublished;
             db.addHabitPublished(habit);
         }
+    }
+
+    public void deleteAccount(FirebaseUser user){
+
+        user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG,"User was deleted!");
+                    LoginManager.getInstance().logOut();
+                    FirebaseAuth.getInstance().signOut();
+                } else {
+                    Log.w(TAG,"Something is wrong with deleting a user!");
+                }
+            }
+        });
     }
 }
