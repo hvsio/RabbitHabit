@@ -127,8 +127,6 @@ public class AddHabitActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            //Log.d(THREAD_TRENDING_HABIT_TAG, db.getArrayListOfHabitsPublished().toString());
-
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

@@ -49,7 +49,7 @@ public class CalendarFragment extends Fragment {
     ProgressBar habitProgressBar;
     ProgressBar storyProgressBar;
     ProgressBar photoProgressBar;
-    Story story;
+    //Story story;
     Database db;
     Date date = null;
 
@@ -165,6 +165,7 @@ public class CalendarFragment extends Fragment {
         Log.d(TAG, "Inside displayStory()");
         storyTextView.setText("No story to display!");
 
+        Story story = null;
         try {
             story = db.getStory();
         } catch (NoSuchElementException ex) {
@@ -254,8 +255,6 @@ public class CalendarFragment extends Fragment {
                 e.printStackTrace();
             }
             Log.d(THREAD_HABIT_TAG, "After try-catch statement");
-
-            Log.d(THREAD_HABIT_TAG, "First element of array is: " + db.getArrayListOfHabitsPersonal().get(0).toString());
 
             if (isAdded()) {
                 getActivity().runOnUiThread(new Runnable() {
